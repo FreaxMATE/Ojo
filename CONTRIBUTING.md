@@ -3,7 +3,7 @@
 - use three spaces to indent
 - after controll structures brackets in new line under the keyword
 
-
+<pre><code>
 int main (int argc, char **argv)
 {
    int i ;
@@ -15,3 +15,5 @@ int main (int argc, char **argv)
    
    return 0 ;
 }
+
+</code></pre>
