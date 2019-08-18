@@ -128,9 +128,7 @@ int main( int argc, char **argv)
    gtk_box_pack_start(GTK_BOX(box), player_widget, TRUE, TRUE, 0) ;
 
    //setup controls
-   //playpause_button = gtk_button_new_from_stock(GTK_STOCK_MEDIA_PLAY) ;
    playpause_button = gtk_button_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
- //  gtk_button_set_use_stock(GTK_BUTTON(playpause_button), TRUE) ;
    stop_button = gtk_button_new_from_icon_name("media-playback-stop", GTK_ICON_SIZE_BUTTON) ;
    g_signal_connect(playpause_button, "clicked", G_CALLBACK(on_playpause), NULL) ;
    g_signal_connect(stop_button, "clicked", G_CALLBACK(on_stop), NULL) ;
@@ -140,11 +138,6 @@ int main( int argc, char **argv)
    gtk_box_pack_start(GTK_BOX(buttonbox), playpause_button, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(buttonbox), stop_button, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(box), buttonbox, FALSE, FALSE, 0) ;
-
-   //setup vlc
-   //   const char *word = "--no-xlib" ;
-   //   const char **nolib = &word;
-   //   vlc_inst = libvlc_new(1, nolib) ;
 
 
    vlc_inst = libvlc_new(0, NULL) ;
