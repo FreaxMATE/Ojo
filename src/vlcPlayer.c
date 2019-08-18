@@ -32,7 +32,7 @@ void open_media(const char* uri)
 }
 
 
-void on_playpause(void)
+void on_playpause()
 {
    if(libvlc_media_player_is_playing(media_player) == 1)
    {
@@ -50,13 +50,13 @@ void on_stop()
    libvlc_media_player_stop(media_player) ;
 }
 
-void play(void)
+void play()
 {
    libvlc_media_player_play(media_player) ;
    setButtonIcon("media-playback-pause") ;
 }
 
-void pause_player(void)
+void pause_player()
 {
    libvlc_media_player_pause(media_player) ;
    setButtonIcon("media-playback-start") ;

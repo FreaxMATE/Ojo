@@ -3,6 +3,8 @@
 
 #include <vlc/vlc.h>
 
+#include "widget.h"
+
 libvlc_media_player_t *media_player ;
 libvlc_instance_t *vlc_inst ;
 
