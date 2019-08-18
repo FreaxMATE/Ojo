@@ -19,6 +19,7 @@ void on_stop(GtkWidget *widget, gpointer data);
 libvlc_media_player_t *media_player;
 libvlc_instance_t *vlc_inst;
 GtkWidget *playpause_button;
+GtkWidget *image ;
 
 void destroy(GtkWidget *widget, gpointer data)
 {
@@ -75,13 +76,15 @@ void on_stop(GtkWidget *widget, gpointer data)
 void play(void)
 {
    libvlc_media_player_play(media_player) ;
-   gtk_button_set_label(GTK_BUTTON(playpause_button), "gtk-media-pause") ;
+   image = gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
+   gtk_button_set_image(GTK_BUTTON(playpause_button), image) ;
 }
 
 void pause_player(void)
 {
    libvlc_media_player_pause(media_player) ;
-   gtk_button_set_label(GTK_BUTTON(playpause_button), "gtk-media-play") ;
+   image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON) ;
+   gtk_button_set_image(GTK_BUTTON(playpause_button), image) ;
 }
 
 int main( int argc, char **argv)
@@ -95,7 +98,7 @@ int main( int argc, char **argv)
    GtkWidget *player_widget ;
    GtkWidget *buttonbox ;
    GtkWidget *stop_button ;
-    
+
    gtk_init (&argc, &argv) ;
    // setup window
    window = gtk_window_new(GTK_WINDOW_TOPLEVEL) ;
@@ -125,9 +128,9 @@ int main( int argc, char **argv)
 
    //setup controls
    //playpause_button = gtk_button_new_from_stock(GTK_STOCK_MEDIA_PLAY) ;
-   playpause_button = gtk_button_new_with_label("gtk-media-play") ;
+   playpause_button = gtk_button_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
  //  gtk_button_set_use_stock(GTK_BUTTON(playpause_button), TRUE) ;
-   stop_button = gtk_button_new_with_label("stop") ;
+   stop_button = gtk_button_new_from_icon_name("media-playback-stop", GTK_ICON_SIZE_BUTTON) ;
    g_signal_connect(playpause_button, "clicked", G_CALLBACK(on_playpause), NULL) ;
    g_signal_connect(stop_button, "clicked", G_CALLBACK(on_stop), NULL) ;
    buttonbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
@@ -141,6 +144,7 @@ int main( int argc, char **argv)
    //   const char *word = "--no-xlib" ;
    //   const char **nolib = &word;
    //   vlc_inst = libvlc_new(1, nolib) ;
+
 
    vlc_inst = libvlc_new(0, NULL) ;
    media_player = libvlc_media_player_new(vlc_inst) ;
