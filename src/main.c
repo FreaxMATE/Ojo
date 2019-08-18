@@ -20,7 +20,7 @@ int main( int argc, char **argv)
    initVlc(playerWidget) ;
 
    gtk_widget_show_all(window) ;
-   gtk_main () ;
+   gtk_main() ;
    quitVlc() ;
 
    return 0 ;

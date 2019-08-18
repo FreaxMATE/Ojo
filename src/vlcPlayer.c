@@ -24,9 +24,9 @@ void playerWidgetOnRealize(GtkWidget *widget)
 
 void openMedia(const char* uri)
 {
-   libvlc_media_t *media ;
    media = libvlc_media_new_location(vlcInst, uri) ;
    libvlc_media_player_set_media(mediaPlayer, media) ;
+   startProgressBar() ;
    play() ;
    libvlc_media_release(media) ;
 }
@@ -62,5 +62,14 @@ void pausePlayer()
    setButtonIcon("media-playback-start") ;
 }
 
+int64_t getDuration()
+{
+   return libvlc_media_get_duration(media) ;
+   //printf ("Duration = %ld\n", (duration/1000)/60) ;
+}
 
+int64_t getCurrentTime()
+{
+   return libvlc_media_player_get_time(mediaPlayer) ;
+}
 
