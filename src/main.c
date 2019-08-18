@@ -1,5 +1,3 @@
-// gcc -o gtk_player gtk_player.c `pkg-config --libs gtk+-2.0 libvlc` `pkg-config --cflags gtk+-2.0 libvlc`
-
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
@@ -70,7 +68,7 @@ int main( int argc, char **argv)
    gtk_container_set_border_width (GTK_CONTAINER (window), 0) ;
    gtk_window_set_title(GTK_WINDOW(window), "Ojo") ;
 
-   //setup vbox
+   //setup box
    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0) ;
    gtk_container_add(GTK_CONTAINER(window), box) ;
 
