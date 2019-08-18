@@ -17,7 +17,7 @@ int main( int argc, char **argv)
    setupWindow() ;
    setupMenu(getWindow(), getBox()) ;
    setupWidgets() ;
-   initVlc(player_widget) ;
+   initVlc(playerWidget) ;
 
    gtk_widget_show_all(window) ;
    gtk_main () ;

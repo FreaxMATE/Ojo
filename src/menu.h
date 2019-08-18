@@ -6,11 +6,8 @@
 GtkWidget *menubar ;
 GtkWidget *filemenu ;
 GtkWidget *fileitem ;
-GtkWidget *filemenu_openitem ;
-
+GtkWidget *filemenuOpenitem ;
 
 void setupMenu(GtkWidget *window, GtkWidget *box) ;
-
-
 
 #endif

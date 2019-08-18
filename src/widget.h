@@ -6,11 +6,11 @@
 
 #define BORDER_WIDTH 6
 
-GtkWidget *playpause_button;
+GtkWidget *playpauseButton;
 GtkWidget *image ;
-GtkWidget *player_widget ;
+GtkWidget *playerWidget ;
 GtkWidget *buttonbox ;
-GtkWidget *stop_button ;
+GtkWidget *stopButton ;
 
 void setupWidgets(void) ;
 void setButtonIcon(char *iconName) ;

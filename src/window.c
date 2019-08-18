@@ -20,7 +20,7 @@ void destroy()
    gtk_main_quit() ;
 }
 
-void on_open(GtkWidget *widget, gpointer data)
+void onOpen(GtkWidget *widget, gpointer data)
 {
    GtkWidget *dialog ;
    dialog = gtk_file_chooser_dialog_new("Choose Media", data, GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel",
@@ -29,7 +29,7 @@ void on_open(GtkWidget *widget, gpointer data)
    {
       char *uri ;
       uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog)) ;
-      open_media(uri) ;
+      openMedia(uri) ;
       g_free(uri) ;
    }
    gtk_widget_destroy(dialog) ;

@@ -5,17 +5,17 @@
 
 #include "widget.h"
 
-libvlc_media_player_t *media_player ;
-libvlc_instance_t *vlc_inst ;
+libvlc_media_player_t *mediaPlayer ;
+libvlc_instance_t *vlcInst ;
 
 void initVlc(GtkWidget *player_widget) ;
 void quitVlc(void) ;
-void player_widget_on_realize(GtkWidget *widget) ;
-void open_media(const char* uri) ;
-void on_playpause(void) ;
-void on_stop(void) ;
+void playerWidgetOnRealize(GtkWidget *widget) ;
+void openMedia(const char* uri) ;
+void onPlayPause(void) ;
+void onStop(void) ;
 void play(void) ;
-void pause_player(void) ;
+void pausePlayer(void) ;
 
 
 #endif

@@ -4,39 +4,39 @@
 
 #include "vlcPlayer.h"
 
-void initVlc(GtkWidget *player_widget)
+void initVlc(GtkWidget *playerWidget)
 {
-   vlc_inst = libvlc_new(0, NULL) ;
-   media_player = libvlc_media_player_new(vlc_inst) ;
-   g_signal_connect(G_OBJECT(player_widget), "realize", G_CALLBACK(player_widget_on_realize), NULL) ;
+   vlcInst = libvlc_new(0, NULL) ;
+   mediaPlayer = libvlc_media_player_new(vlcInst) ;
+   g_signal_connect(G_OBJECT(playerWidget), "realize", G_CALLBACK(playerWidgetOnRealize), NULL) ;
 }
 
 void quitVlc()
 {
-   libvlc_media_player_release(media_player) ;
-   libvlc_release(vlc_inst) ;
+   libvlc_media_player_release(mediaPlayer) ;
+   libvlc_release(vlcInst) ;
 }
 
-void player_widget_on_realize(GtkWidget *widget)
+void playerWidgetOnRealize(GtkWidget *widget)
 {
-   libvlc_media_player_set_xwindow(media_player, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
+   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
 }
 
-void open_media(const char* uri)
+void openMedia(const char* uri)
 {
    libvlc_media_t *media ;
-   media = libvlc_media_new_location(vlc_inst, uri) ;
-   libvlc_media_player_set_media(media_player, media) ;
+   media = libvlc_media_new_location(vlcInst, uri) ;
+   libvlc_media_player_set_media(mediaPlayer, media) ;
    play() ;
    libvlc_media_release(media) ;
 }
 
 
-void on_playpause()
+void onPlayPause()
 {
-   if(libvlc_media_player_is_playing(media_player) == 1)
+   if(libvlc_media_player_is_playing(mediaPlayer) == 1)
    {
-      pause_player() ;
+      pausePlayer() ;
    }
    else
    {
@@ -44,21 +44,21 @@ void on_playpause()
    }
 }
 
-void on_stop()
+void onStop()
 {
-   pause_player() ;
-   libvlc_media_player_stop(media_player) ;
+   pausePlayer() ;
+   libvlc_media_player_stop(mediaPlayer) ;
 }
 
 void play()
 {
-   libvlc_media_player_play(media_player) ;
+   libvlc_media_player_play(mediaPlayer) ;
    setButtonIcon("media-playback-pause") ;
 }
 
-void pause_player()
+void pausePlayer()
 {
-   libvlc_media_player_pause(media_player) ;
+   libvlc_media_player_pause(mediaPlayer) ;
    setButtonIcon("media-playback-start") ;
 }
 
