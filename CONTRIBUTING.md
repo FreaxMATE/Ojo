@@ -1,6 +1,6 @@
 # Code Style
 
-- use three spaces to indent
+- use 3 spaces to indent
 - after controll structures brackets in new line under the keyword
 
 <pre><code>
