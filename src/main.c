@@ -1,34 +1,21 @@
 // gcc -o gtk_player gtk_player.c `pkg-config --libs gtk+-2.0 libvlc` `pkg-config --cflags gtk+-2.0 libvlc`
 
 #include <stdlib.h>
+#include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <vlc/vlc.h>
 
 #define BORDER_WIDTH 6
 
-void destroy(GtkWidget *widget, gpointer data);
-void player_widget_on_realize(GtkWidget *widget, gpointer data);
-void on_open(GtkWidget *widget, gpointer data);
-void open_media(const char* uri);
-void play(void);
-void pause_player(void);
-void on_playpause(GtkWidget *widget, gpointer data);
-void on_stop(GtkWidget *widget, gpointer data);
+#include "vlcPlayer.h"
 
-libvlc_media_player_t *media_player;
-libvlc_instance_t *vlc_inst;
 GtkWidget *playpause_button;
 GtkWidget *image ;
 
 void destroy(GtkWidget *widget, gpointer data)
 {
    gtk_main_quit() ;
-}
-
-void player_widget_on_realize(GtkWidget *widget, gpointer data)
-{
-   libvlc_media_player_set_xwindow(media_player, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
 }
 
 void on_open(GtkWidget *widget, gpointer data)
@@ -46,45 +33,20 @@ void on_open(GtkWidget *widget, gpointer data)
    gtk_widget_destroy(dialog) ;
 }
 
-void open_media(const char* uri)
+void setButtonIcon(char *iconName)
 {
-   libvlc_media_t *media ;
-   media = libvlc_media_new_location(vlc_inst, uri) ;
-   libvlc_media_player_set_media(media_player, media) ;
-   play() ;
-   libvlc_media_release(media) ;
-}
-
-void on_playpause(GtkWidget *widget, gpointer data)
-{
-   if(libvlc_media_player_is_playing(media_player) == 1)
+   if (strcmp(iconName, "media-playback-pause") == 0)
    {
-      pause_player() ;
+      image = gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
+      gtk_button_set_image(GTK_BUTTON(playpause_button), image) ;
    }
-   else
+   else if (strcmp(iconName, "media-playback-start") == 0)
    {
-      play() ;
+      image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON) ;
+      gtk_button_set_image(GTK_BUTTON(playpause_button), image) ;
    }
-}
 
-void on_stop(GtkWidget *widget, gpointer data)
-{
-   pause_player() ;
-   libvlc_media_player_stop(media_player) ;
-}
-
-void play(void)
-{
-   libvlc_media_player_play(media_player) ;
-   image = gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
-   gtk_button_set_image(GTK_BUTTON(playpause_button), image) ;
-}
-
-void pause_player(void)
-{
-   libvlc_media_player_pause(media_player) ;
-   image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON) ;
-   gtk_button_set_image(GTK_BUTTON(playpause_button), image) ;
+   return ;
 }
 
 int main( int argc, char **argv)
@@ -139,15 +101,12 @@ int main( int argc, char **argv)
    gtk_box_pack_start(GTK_BOX(buttonbox), stop_button, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(box), buttonbox, FALSE, FALSE, 0) ;
 
-
-   vlc_inst = libvlc_new(0, NULL) ;
-   media_player = libvlc_media_player_new(vlc_inst) ;
-   g_signal_connect(G_OBJECT(player_widget), "realize", G_CALLBACK(player_widget_on_realize), NULL) ;
+   initVlc(player_widget) ;
 
    gtk_widget_show_all(window) ;
    gtk_main () ;
 
-   libvlc_media_player_release(media_player) ;
-   libvlc_release(vlc_inst) ;
+   quitVlc() ;
+
    return 0 ;
 }
