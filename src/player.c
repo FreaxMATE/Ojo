@@ -99,6 +99,7 @@ int main( int argc, char **argv)
    GtkWidget *buttonbox ;
    GtkWidget *stop_button ;
 
+   XInitThreads() ;
    gtk_init (&argc, &argv) ;
    // setup window
    window = gtk_window_new(GTK_WINDOW_TOPLEVEL) ;
