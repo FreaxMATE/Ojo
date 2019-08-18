@@ -106,7 +106,7 @@ int main( int argc, char **argv)
    gtk_window_set_default_size(GTK_WINDOW(window), 400, 300) ;
    g_signal_connect(window, "destroy", G_CALLBACK(destroy), NULL) ;
    gtk_container_set_border_width (GTK_CONTAINER (window), 0) ;
-   gtk_window_set_title(GTK_WINDOW(window), "GTK+ libVLC Demo") ;
+   gtk_window_set_title(GTK_WINDOW(window), "Ojo") ;
 
    //setup vbox
    box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0) ;
