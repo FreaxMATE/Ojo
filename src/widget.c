@@ -19,13 +19,17 @@ void setupWidgets()
    g_signal_connect(playpauseButton, "clicked", G_CALLBACK(onPlayPause), NULL) ;
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
 
-   buttonbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
-   gtk_container_set_border_width(GTK_CONTAINER(buttonbox), BORDER_WIDTH) ;
-   gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonbox), GTK_BUTTONBOX_START) ;
-   gtk_box_pack_start(GTK_BOX(buttonbox), playpauseButton, FALSE, FALSE, 0) ;
-   gtk_box_pack_start(GTK_BOX(buttonbox), stopButton, FALSE, FALSE, 0) ;
-   gtk_box_pack_start(GTK_BOX(buttonbox), progressBar, FALSE, FALSE, 0) ;
-   gtk_box_pack_start(GTK_BOX(box), buttonbox, FALSE, FALSE, 0) ;
+   buttonBox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
+   gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
+   gtk_container_set_border_width(GTK_CONTAINER(buttonBox), 0) ;
+   gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
+   gtk_box_pack_start(GTK_BOX(buttonBox), playpauseButton, FALSE, FALSE, 0) ;
+   gtk_box_pack_start(GTK_BOX(buttonBox), stopButton, FALSE, FALSE, 0) ;
+   gtk_box_pack_start(GTK_BOX(box), buttonBox, FALSE, FALSE, 0) ;
+   
+   barBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0) ;
+   gtk_box_pack_start(GTK_BOX(barBox), progressBar, TRUE, FALSE, 0) ;
+   gtk_box_pack_start(GTK_BOX(box), barBox, FALSE, FALSE, 0) ;
 
    return ;
 }

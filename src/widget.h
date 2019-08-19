@@ -6,12 +6,12 @@
 #include "window.h"
 #include "vlcPlayer.h"
 
-#define BORDER_WIDTH 6
-
 GtkWidget *playpauseButton;
 GtkWidget *image ;
 GtkWidget *playerWidget ;
-GtkWidget *buttonbox ;
+GtkWidget *buttonBox ;
+GtkWidget *progressBox ;
+GtkWidget *barBox ;
 GtkWidget *stopButton ;
 GtkWidget *progressBar ;
 
