@@ -10,6 +10,12 @@ libvlc_media_t *media ;
 libvlc_instance_t *vlcInst ;
 int64_t duration ;
 
+struct metaData
+{
+   char title[64] ;
+
+}metaData ;
+
 void initVlc(GtkWidget *player_widget) ;
 void quitVlc(void) ;
 void playerWidgetOnRealize(GtkWidget *widget) ;

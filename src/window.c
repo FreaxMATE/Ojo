@@ -45,7 +45,13 @@ GtkWidget *getBox()
    return box ;
 }
 
-
+void setTitle(char *trackName)
+{
+   char title[64] ;
+   sprintf(title, "Ojo - %s", trackName) ;
+   gtk_window_set_title(GTK_WINDOW(window), title) ;
+   return ;
+}
 
 
 
