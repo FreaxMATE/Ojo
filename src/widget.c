@@ -12,9 +12,11 @@ void setupWidgets()
    progressBar = gtk_progress_bar_new() ;
 
    //setup buttons
-   playpauseButton = gtk_button_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
+   playpauseButton = gtk_button_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON) ;
+   gtk_widget_set_tooltip_text (playpauseButton, "Play");
    gtk_button_set_relief(GTK_BUTTON(playpauseButton), GTK_RELIEF_NONE) ;
    stopButton = gtk_button_new_from_icon_name("media-playback-stop", GTK_ICON_SIZE_BUTTON) ;
+   gtk_widget_set_tooltip_text (stopButton, "Stop");
    gtk_button_set_relief(GTK_BUTTON(stopButton), GTK_RELIEF_NONE) ;
    g_signal_connect(playpauseButton, "clicked", G_CALLBACK(onPlayPause), NULL) ;
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
@@ -40,11 +42,13 @@ void setButtonIcon(char *iconName)
    {
       image = gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON) ;
       gtk_button_set_image(GTK_BUTTON(playpauseButton), image) ;
+      gtk_widget_set_tooltip_text(playpauseButton, "Pause") ;
    }
    else if (strcmp(iconName, "media-playback-start") == 0)
    {
       image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON) ;
       gtk_button_set_image(GTK_BUTTON(playpauseButton), image) ;
+      gtk_widget_set_tooltip_text(playpauseButton, "Play") ;
    }
 
    return ;
