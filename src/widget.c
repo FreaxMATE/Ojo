@@ -21,14 +21,20 @@ void setupWidgets()
    g_signal_connect(playpauseButton, "clicked", G_CALLBACK(onPlayPause), NULL) ;
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
 
+   timeLabel = gtk_label_new ("") ;
+   controlBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0) ;
+   gtk_container_set_border_width(GTK_CONTAINER(controlBox), 6) ;
    buttonBox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
    gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
    gtk_container_set_border_width(GTK_CONTAINER(buttonBox), 0) ;
    gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
    gtk_box_pack_start(GTK_BOX(buttonBox), playpauseButton, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(buttonBox), stopButton, FALSE, FALSE, 0) ;
-   gtk_box_pack_start(GTK_BOX(box), buttonBox, FALSE, FALSE, 0) ;
-   
+   gtk_box_pack_start(GTK_BOX(controlBox), buttonBox, FALSE, FALSE, 0) ;
+
+   gtk_box_pack_end(GTK_BOX(controlBox), timeLabel, FALSE, FALSE, 0) ;
+   gtk_box_pack_start(GTK_BOX(box), controlBox, FALSE, FALSE, 0) ;
+
    barBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0) ;
    gtk_box_pack_start(GTK_BOX(barBox), progressBar, TRUE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(box), barBox, FALSE, FALSE, 0) ;
@@ -61,9 +67,12 @@ GtkWidget *getPlayerWidget()
 
 gboolean updateBar()
 {
+   double currentTime = (double)getCurrentTime() ;
+   double duration = (double)getDuration() ;
 
-   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progressBar),
-                                 (double)getCurrentTime()/(double)getDuration()) ;
+   gtk_label_set_text(GTK_LABEL(timeLabel), timeToString(currentTime, duration)) ;
+
+   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progressBar), currentTime/duration) ;
    if (gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(progressBar)) == 1)
       return FALSE ;
    return TRUE ;
@@ -74,6 +83,15 @@ void startProgressBar()
    g_timeout_add_seconds(1, G_SOURCE_FUNC(updateBar), NULL) ;
 }
 
+char *timeToString(double currentTime, double duration)
+{
+   currentTime /= 1000 ;
+   duration /= 1000 ;
+   int curMinutes = ((int)currentTime)/60 ; int allMinutes = ((int)duration)/60 ; 
+   int curSeconds = ((int)currentTime)%60 ; int allSeconds = ((int)duration)%60 ;
 
+   sprintf(string, "%02d:%02d / %02d:%02d", curMinutes, curSeconds, allMinutes, allSeconds) ;
+   return string ;
+}
 
 
