@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Ojo
+GenericName=Media Player
+Comment=Play media files
+Keywords=Media
+Exec=/bin/ojo
+Icon=/usr/share/icons/Ojo.png
+Terminal=false
+Type=Application
+Categories=AudioVideo;
