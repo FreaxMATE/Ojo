@@ -23,7 +23,7 @@ void setupWidgets()
 
    timeLabel = gtk_label_new ("") ;
    controlBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0) ;
-   gtk_container_set_border_width(GTK_CONTAINER(controlBox), 6) ;
+   gtk_container_set_border_width(GTK_CONTAINER(controlBox), 0) ;
    buttonBox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
    gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
    gtk_container_set_border_width(GTK_CONTAINER(buttonBox), 0) ;
@@ -90,7 +90,7 @@ char *timeToString(double currentTime, double duration)
    int curMinutes = ((int)currentTime)/60 ; int allMinutes = ((int)duration)/60 ; 
    int curSeconds = ((int)currentTime)%60 ; int allSeconds = ((int)duration)%60 ;
 
-   sprintf(string, "%02d:%02d / %02d:%02d", curMinutes, curSeconds, allMinutes, allSeconds) ;
+   sprintf(string, "%02d:%02d / %02d:%02d  ", curMinutes, curSeconds, allMinutes, allSeconds) ;
    return string ;
 }
 
