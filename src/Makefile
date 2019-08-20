@@ -35,13 +35,13 @@ install: ojo
 
 	sudo cp ojo /usr/local/bin/ojo
 	sudo cp Ojo.desktop /usr/local/share/applications/Ojo.desktop
-	sudo cp ../data/Ojo.png /usr/local/share/icons/Ojo.png
+	sudo cp ../data/ojoIcon.svg /usr/local/share/icons/ojoIcon.svg
 	
 uninstall:
 
 	sudo rm -f /usr/local/bin/ojo
-	sudo rm -f /usr/local/share/applications/Ojo.desktop
-	sudo rm -f /usr/local/share/icons/Ojo.png
+	sudo rm -f /usr/local/share/applications/ojo.desktop
+	sudo rm -f /usr/local/share/icons/ojoIcon.svg
 	
 	
 
