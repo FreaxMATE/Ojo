@@ -33,15 +33,15 @@ clean:
 
 install: ojo
 
-	sudo cp ojo /bin/ojo
-	sudo cp Ojo.desktop /usr/share/applications/Ojo.desktop
-	sudo cp ../data/Ojo.png /usr/share/icons/Ojo.png
+	sudo cp ojo /usr/local/bin/ojo
+	sudo cp Ojo.desktop /usr/local/share/applications/Ojo.desktop
+	sudo cp ../data/Ojo.png /usr/local/share/icons/Ojo.png
 	
 uninstall:
 
-	sudo rm -f /bin/ojo
-	sudo rm -f /usr/share/applications/Ojo.desktop
-	sudo rm -f /usr/share/icons/Ojo.png
+	sudo rm -f /usr/local/bin/ojo
+	sudo rm -f /usr/local/share/applications/Ojo.desktop
+	sudo rm -f /usr/local/share/icons/Ojo.png
 	
 	
 
