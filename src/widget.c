@@ -53,7 +53,7 @@ void setupWidgets()
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
    g_signal_connect(seekForwardButton, "clicked", G_CALLBACK(onSeekForward), NULL) ;
 
-   timeLabel = gtk_label_new ("") ;
+   timeLabel = gtk_label_new ("00:00") ;
    controlBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0) ;
    gtk_container_set_border_width(GTK_CONTAINER(controlBox), 0) ;
    buttonBox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
