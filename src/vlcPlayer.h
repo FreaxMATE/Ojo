@@ -42,11 +42,12 @@ void openMedia(const char* uri) ;
 void onSeekForward() ;
 void onPlayPause(void) ;
 void onStop(void) ;
-void onSeekBackward() ;
+void onSeekBackward(void) ;
+void onVolumeChanged(void) ;
 void play(void) ;
 void pausePlayer(void) ;
 int64_t getDuration(void) ;
-int64_t getCurrentTime() ;
-void startProgressBar() ;
+int64_t getCurrentTime(void) ;
+void startProgressBar(void) ;
 
 #endif

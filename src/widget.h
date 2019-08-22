@@ -37,6 +37,7 @@ GtkWidget *barBox ;
 GtkWidget *stopButton ;
 GtkWidget *progressBar ;
 GtkWidget *timeLabel ;
+GtkWidget *volumeButton ;
 char string[32] ;
 
 void setupWidgets(void) ;
@@ -44,5 +45,6 @@ void setButtonIcon(char *iconName) ;
 GtkWidget *getPlayerWidget() ;
 gboolean updateBar(void) ;
 char *timeToString(double currentTime, double duration) ;
+double getVolumeLevel() ;
 
 #endif

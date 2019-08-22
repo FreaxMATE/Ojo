@@ -53,7 +53,7 @@ void setupWidgets()
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
    g_signal_connect(seekForwardButton, "clicked", G_CALLBACK(onSeekForward), NULL) ;
 
-   timeLabel = gtk_label_new ("00:00  ") ;
+
    controlBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0) ;
    gtk_container_set_border_width(GTK_CONTAINER(controlBox), 0) ;
    buttonBox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
@@ -66,6 +66,12 @@ void setupWidgets()
    gtk_box_pack_start(GTK_BOX(buttonBox), seekForwardButton, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(controlBox), buttonBox, FALSE, FALSE, 0) ;
 
+   volumeButton = gtk_volume_button_new() ;
+   gtk_scale_button_set_value(GTK_SCALE_BUTTON(volumeButton), 1) ;
+   g_signal_connect(GTK_VOLUME_BUTTON(volumeButton), "value-changed", G_CALLBACK(onVolumeChanged), NULL) ;
+
+   gtk_box_pack_end(GTK_BOX(controlBox), volumeButton, FALSE, FALSE, 0) ;
+   timeLabel = gtk_label_new ("00:00  ") ;
    gtk_box_pack_end(GTK_BOX(controlBox), timeLabel, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(box), controlBox, FALSE, FALSE, 0) ;
 
@@ -137,6 +143,11 @@ char *timeToString(double currentTime, double duration)
    }
 
    return string ;
+}
+
+double getVolumeLevel()
+{
+   return gtk_scale_button_get_value(GTK_SCALE_BUTTON(volumeButton)) ;
 }
 
 

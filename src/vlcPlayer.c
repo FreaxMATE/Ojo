@@ -43,9 +43,9 @@ void playerWidgetOnRealize(GtkWidget *widget)
 
 void openMedia(const char* uri)
 {
-
    media = libvlc_media_new_location(vlcInst, uri) ;
    libvlc_media_player_set_media(mediaPlayer, media) ;
+   libvlc_audio_set_volume(mediaPlayer, 100) ;
    startProgressBar() ;
    play() ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
@@ -79,6 +79,11 @@ void onStop()
 void onSeekBackward()
 {
    libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)-0.05) ;
+}
+
+void onVolumeChanged()
+{
+   libvlc_audio_set_volume(mediaPlayer, (int)(100*getVolumeLevel())) ;
 }
 
 void play()
