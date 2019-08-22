@@ -37,7 +37,7 @@ GtkWidget *barBox ;
 GtkWidget *stopButton ;
 GtkWidget *progressBar ;
 GtkWidget *timeLabel ;
-char string[16] ;
+char string[32] ;
 
 void setupWidgets(void) ;
 void setButtonIcon(char *iconName) ;

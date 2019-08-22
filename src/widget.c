@@ -53,7 +53,7 @@ void setupWidgets()
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
    g_signal_connect(seekForwardButton, "clicked", G_CALLBACK(onSeekForward), NULL) ;
 
-   timeLabel = gtk_label_new ("00:00") ;
+   timeLabel = gtk_label_new ("00:00  ") ;
    controlBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0) ;
    gtk_container_set_border_width(GTK_CONTAINER(controlBox), 0) ;
    buttonBox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL) ;
@@ -121,10 +121,21 @@ char *timeToString(double currentTime, double duration)
 {
    currentTime /= 1000 ;
    duration /= 1000 ;
+
    int curMinutes = ((int)currentTime)/60 ; int allMinutes = ((int)duration)/60 ; 
    int curSeconds = ((int)currentTime)%60 ; int allSeconds = ((int)duration)%60 ;
 
-   sprintf(string, "%02d:%02d / %02d:%02d  ", curMinutes, curSeconds, allMinutes, allSeconds) ;
+   if (curMinutes > 59 || allMinutes > 59)
+   {
+       int curHours = ((int)curMinutes)/60 ; int allHours = ((int)allMinutes)/60 ;
+       sprintf(string, "%02d:%02d:%02d / %02d:%02d:%02d  ", curHours, curMinutes-(curHours*60),
+               curSeconds, allHours, allMinutes-(allHours*60), allSeconds) ;
+   }
+   else
+   {
+      sprintf(string, "%02d:%02d / %02d:%02d  ", curMinutes, curSeconds, allMinutes, allSeconds) ;
+   }
+
    return string ;
 }
 
