@@ -31,14 +31,27 @@ void setupWidgets()
    progressBar = gtk_progress_bar_new() ;
 
    //setup buttons
+
+   seekBackwardButton = gtk_button_new_from_icon_name("media-seek-backward", GTK_ICON_SIZE_BUTTON) ;
+   gtk_widget_set_tooltip_text (seekBackwardButton, "Rewind");
+   gtk_button_set_relief(GTK_BUTTON(seekBackwardButton), GTK_RELIEF_NONE) ;
+
    playpauseButton = gtk_button_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON) ;
    gtk_widget_set_tooltip_text (playpauseButton, "Play");
    gtk_button_set_relief(GTK_BUTTON(playpauseButton), GTK_RELIEF_NONE) ;
+
    stopButton = gtk_button_new_from_icon_name("media-playback-stop", GTK_ICON_SIZE_BUTTON) ;
    gtk_widget_set_tooltip_text (stopButton, "Stop");
    gtk_button_set_relief(GTK_BUTTON(stopButton), GTK_RELIEF_NONE) ;
+
+   seekForwardButton = gtk_button_new_from_icon_name("media-seek-forward", GTK_ICON_SIZE_BUTTON) ;
+   gtk_widget_set_tooltip_text (seekForwardButton, "Forward");
+   gtk_button_set_relief(GTK_BUTTON(seekForwardButton), GTK_RELIEF_NONE) ;
+
+   g_signal_connect(seekBackwardButton, "clicked", G_CALLBACK(onSeekBackward), NULL) ;
    g_signal_connect(playpauseButton, "clicked", G_CALLBACK(onPlayPause), NULL) ;
    g_signal_connect(stopButton, "clicked", G_CALLBACK(onStop), NULL) ;
+   g_signal_connect(seekForwardButton, "clicked", G_CALLBACK(onSeekForward), NULL) ;
 
    timeLabel = gtk_label_new ("") ;
    controlBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0) ;
@@ -47,8 +60,10 @@ void setupWidgets()
    gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
    gtk_container_set_border_width(GTK_CONTAINER(buttonBox), 0) ;
    gtk_button_box_set_layout(GTK_BUTTON_BOX(buttonBox), GTK_BUTTONBOX_START) ;
+   gtk_box_pack_start(GTK_BOX(buttonBox), seekBackwardButton, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(buttonBox), playpauseButton, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(buttonBox), stopButton, FALSE, FALSE, 0) ;
+   gtk_box_pack_start(GTK_BOX(buttonBox), seekForwardButton, FALSE, FALSE, 0) ;
    gtk_box_pack_start(GTK_BOX(controlBox), buttonBox, FALSE, FALSE, 0) ;
 
    gtk_box_pack_end(GTK_BOX(controlBox), timeLabel, FALSE, FALSE, 0) ;

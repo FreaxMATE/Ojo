@@ -53,6 +53,10 @@ void openMedia(const char* uri)
    libvlc_media_release(media) ;
 }
 
+void onSeekForward()
+{
+   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)+0.05) ;
+}
 
 void onPlayPause()
 {
@@ -70,6 +74,11 @@ void onStop()
 {
    pausePlayer() ;
    libvlc_media_player_stop(mediaPlayer) ;
+}
+
+void onSeekBackward()
+{
+   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)-0.05) ;
 }
 
 void play()

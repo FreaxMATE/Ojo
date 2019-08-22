@@ -25,7 +25,9 @@
 #include "window.h"
 #include "vlcPlayer.h"
 
-GtkWidget *playpauseButton;
+GtkWidget *playpauseButton ;
+GtkWidget *seekForwardButton ;
+GtkWidget *seekBackwardButton ;
 GtkWidget *image ;
 GtkWidget *playerWidget ;
 GtkWidget *buttonBox ;
