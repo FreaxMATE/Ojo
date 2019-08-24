@@ -22,7 +22,7 @@
 
 #include <vlc/vlc.h>
 
-#include "widget.h"
+#include "window.h"
 
 libvlc_media_player_t *mediaPlayer ;
 libvlc_media_t *media ;
@@ -50,4 +50,4 @@ int64_t getDuration(void) ;
 int64_t getCurrentTime(void) ;
 void startProgressBar(void) ;
 
-#endif
+#endif /* _vlc_player_h_ */

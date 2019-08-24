@@ -22,14 +22,17 @@
 
 #include "vlcPlayer.h"
 
-GtkWidget *window ;
-GtkWidget *box ;
+GtkBuilder  *builder; 
+GtkWidget   *window ;
+GtkWidget   *playerWidget ;
+GtkWidget   *progressBar ;
+GtkWidget *menubar ;
+GtkWidget *filemenu ;
+GtkWidget *fileitem ;
+GtkWidget *filemenuOpenitem ;
 
 void setupWindow(void) ;
 void destroy(void) ;
-void onOpen(GtkWidget *widget, gpointer data) ;
-GtkWidget *getWindow(void) ;
-GtkWidget *getBox(void) ;
-void setTitle(char *trackName) ;
+void on_ojo_open_activate() ;
 
-#endif
+#endif /* _window_h_ */

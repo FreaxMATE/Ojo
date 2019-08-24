@@ -24,9 +24,7 @@
 #include <vlc/vlc.h>
 
 #include "vlcPlayer.h"
-#include "menu.h"
 #include "window.h"
-#include "widget.h"
 
 int main( int argc, char **argv)
 {
@@ -34,11 +32,9 @@ int main( int argc, char **argv)
    gtk_init (&argc, &argv) ;
 
    setupWindow() ;
-   setupMenu(getWindow(), getBox()) ;
-   setupWidgets() ;
+   gtk_widget_show(window);
    initVlc(playerWidget) ;
 
-   gtk_widget_show_all(window) ;
    gtk_main() ;
    quitVlc() ;
 

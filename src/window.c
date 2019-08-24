@@ -21,29 +21,10 @@
 
 #include "window.h"
 
-void setupWindow()
-{
-   window = gtk_window_new(GTK_WINDOW_TOPLEVEL) ;
-   gtk_window_set_default_size(GTK_WINDOW(window), 960, 540) ;
-   g_signal_connect(window, "destroy", G_CALLBACK(destroy), NULL) ;
-   gtk_container_set_border_width (GTK_CONTAINER (window), 0) ;
-   gtk_window_set_title(GTK_WINDOW(window), "Ojo") ;
-
-   //setup box
-   box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0) ;
-   gtk_container_add(GTK_CONTAINER(window), box) ;
-}
-
-void destroy()
-{
-   gtk_main_quit() ;
-}
-
-void onOpen(GtkWidget *widget, gpointer data)
+void on_ojo_open_activate()
 {
    GtkWidget *dialog ;
-   dialog = gtk_file_chooser_dialog_new("Choose Media", data, GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel",
-                                        GTK_RESPONSE_CANCEL, "Open", GTK_RESPONSE_ACCEPT, NULL) ;
+   dialog = gtk_file_chooser_dialog_new("Choose Media", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel", GTK_RESPONSE_CANCEL, "Open", GTK_RESPONSE_ACCEPT, NULL) ;
    if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
    {
       char *uri ;
@@ -54,28 +35,25 @@ void onOpen(GtkWidget *widget, gpointer data)
    gtk_widget_destroy(dialog) ;
 }
 
-GtkWidget *getWindow()
+void on_window_main_destroy()
 {
-   return window ;
+   gtk_main_quit() ;
 }
 
-GtkWidget *getBox()
+void setupWindow()
 {
-   return box ;
+    builder = gtk_builder_new();
+    gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
+
+    window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
+    gtk_builder_connect_signals(builder, NULL);
+
+    playerWidget = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
+   menubar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu")) ;
+   filemenu = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_item")) ;
+   fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
+   filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
+    progressBar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_progress_bar"));
+
+    g_object_unref(builder);
 }
-
-void setTitle(char *trackName)
-{
-   char title[64] ;
-   sprintf(title, "Ojo - %s", trackName) ;
-   gtk_window_set_title(GTK_WINDOW(window), title) ;
-   return ;
-}
-
-
-
-
-
-
-
-
