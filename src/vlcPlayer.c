@@ -27,18 +27,13 @@ void initVlc(GtkWidget *playerWidget)
 {
    vlcInst = libvlc_new(0, NULL) ;
    mediaPlayer = libvlc_media_player_new(vlcInst) ;
-   g_signal_connect(G_OBJECT(playerWidget), "realize", G_CALLBACK(playerWidgetOnRealize), NULL) ;
+   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
 }
 
 void quitVlc()
 {
    libvlc_media_player_release(mediaPlayer) ;
    libvlc_release(vlcInst) ;
-}
-
-void playerWidgetOnRealize(GtkWidget *widget)
-{
-   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
 }
 
 void openMedia(const char* uri)
