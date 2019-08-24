@@ -23,13 +23,30 @@
 
 void setupMenu(GtkWidget *window, GtkWidget *box)
 {
-   menubar = gtk_menu_bar_new() ;
-   filemenu = gtk_menu_new() ;
-   fileitem = gtk_menu_item_new_with_label ("File") ;
-   filemenuOpenitem = gtk_menu_item_new_with_label("Open") ;
-   gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), filemenuOpenitem) ;
-   gtk_menu_item_set_submenu(GTK_MENU_ITEM(fileitem), filemenu) ;
-   gtk_menu_shell_append(GTK_MENU_SHELL(menubar), fileitem) ;
-   gtk_box_pack_start(GTK_BOX(box), menubar, FALSE, FALSE, 0) ;
-   g_signal_connect(filemenuOpenitem, "activate", G_CALLBACK(onOpen), window) ;
+   menuBar = gtk_menu_bar_new() ;
+   fileMenu = gtk_menu_new() ;
+   fileItem = gtk_menu_item_new_with_label ("File") ;
+   fileMenuOpenItem = gtk_menu_item_new_with_label("Open") ;
+   gtk_menu_shell_append(GTK_MENU_SHELL(fileMenu), fileMenuOpenItem) ;
+   gtk_menu_item_set_submenu(GTK_MENU_ITEM(fileItem), fileMenu) ;
+   gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), fileItem) ;
+
+   helpMenu = gtk_menu_new() ;
+   helpItem = gtk_menu_item_new_with_label ("Help") ;
+   helpMenuAboutItem = gtk_menu_item_new_with_label("About") ;
+   gtk_menu_shell_append(GTK_MENU_SHELL(helpMenu), helpMenuAboutItem) ;
+   gtk_menu_item_set_submenu(GTK_MENU_ITEM(helpItem), helpMenu) ;
+   gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), helpItem) ;
+
+
+   gtk_box_pack_start(GTK_BOX(box), menuBar, FALSE, FALSE, 0) ;
+   g_signal_connect(fileMenuOpenItem, "activate", G_CALLBACK(onOpen), window) ;
+   g_signal_connect(helpMenuAboutItem, "activate", G_CALLBACK(onAbout), window) ;
 }
+
+
+
+
+
+
+

@@ -31,5 +31,6 @@ void onOpen(GtkWidget *widget, gpointer data) ;
 GtkWidget *getWindow(void) ;
 GtkWidget *getBox(void) ;
 void setTitle(char *trackName) ;
+void onAbout(GtkWidget *widget, gpointer data) ;
 
 #endif

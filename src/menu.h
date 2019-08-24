@@ -22,10 +22,13 @@
 
 #include "window.h"
 
-GtkWidget *menubar ;
-GtkWidget *filemenu ;
-GtkWidget *fileitem ;
-GtkWidget *filemenuOpenitem ;
+GtkWidget *menuBar ;
+GtkWidget *fileMenu ;
+GtkWidget *fileItem ;
+GtkWidget *fileMenuOpenItem ;
+GtkWidget *helpMenu ;
+GtkWidget *helpItem ;
+GtkWidget *helpMenuAboutItem ;
 
 void setupMenu(GtkWidget *window, GtkWidget *box) ;
 

@@ -73,6 +73,23 @@ void setTitle(char *trackName)
 }
 
 
+void onAbout(GtkWidget *widget, gpointer data)
+{
+   GtkWidget *about ;
+   about = gtk_about_dialog_new() ;
+   gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about), "Ojo") ;
+   gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(about), "an open source media player for the MATE Desktop") ;
+   gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about), "0.1") ;
+   gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(about), "\u00A9 2019 FreaxMATE") ;
+   gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about), "GPLv3") ;
+   gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(about), GTK_LICENSE_GPL_3_0) ;
+   gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about), "https://github.com/FreaxMATE/Ojo") ;
+   gtk_about_dialog_set_logo(GTK_ABOUT_DIALOG(about), gdk_pixbuf_new_from_file("/usr/local/share/icons/ojoIconAboutDialog.png", NULL)) ;
+   g_signal_connect_swapped(about, "response", G_CALLBACK (gtk_widget_destroy), about) ;
+   gtk_dialog_run(GTK_DIALOG(about)) ;
+
+   return ;
+}
 
 
 
