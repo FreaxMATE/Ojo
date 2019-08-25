@@ -21,7 +21,7 @@
 
 #include "window.h"
 
-void on_ojo_open_activate()
+void on_ojo_menu_open_activate()
 {
    GtkWidget *dialog ;
    dialog = gtk_file_chooser_dialog_new("Choose Media", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel", GTK_RESPONSE_CANCEL, "Open", GTK_RESPONSE_ACCEPT, NULL) ;

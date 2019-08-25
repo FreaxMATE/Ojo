@@ -26,13 +26,13 @@ GtkBuilder  *builder;
 GtkWidget   *window ;
 GtkWidget   *playerWidget ;
 GtkWidget   *progressBar ;
-GtkWidget *menubar ;
-GtkWidget *filemenu ;
-GtkWidget *fileitem ;
-GtkWidget *filemenuOpenitem ;
+GtkWidget   *menubar ;
+GtkWidget   *filemenu ;
+GtkWidget   *fileitem ;
+GtkWidget   *filemenuOpenitem ;
 
 void setupWindow(void) ;
 void destroy(void) ;
-void on_ojo_open_activate() ;
+void on_ojo_menu_open_activate() ;
 
 #endif /* _window_h_ */

@@ -26,7 +26,7 @@
 #include "vlcPlayer.h"
 #include "window.h"
 
-int main( int argc, char **argv)
+int main(int argc, char **argv)
 {
    XInitThreads() ;
    gtk_init (&argc, &argv) ;
