@@ -30,10 +30,12 @@ GtkWidget   *menubar ;
 GtkWidget   *filemenu ;
 GtkWidget   *fileitem ;
 GtkWidget   *filemenuOpenitem ;
+GtkWidget *volumeButton ;
 
 void setupWindow(void) ;
 void destroy(void) ;
 void on_ojo_menu_open_activate() ;
+void setTitle(char *trackName) ;
 char string[32] ;
 
 #endif /* _window_h_ */

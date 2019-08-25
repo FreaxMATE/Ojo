@@ -45,7 +45,6 @@ void on_ojo_play_pause_clicked()
    if(libvlc_media_player_is_playing(mediaPlayer) == 1)
    {
       libvlc_media_player_pause(mediaPlayer) ;
-
    }
    else
    {
@@ -92,6 +91,14 @@ char *timeToString(double currentTime, double duration)
    return string ;
 }
 
+void setTitle(char *trackName)
+{
+   char title[64] ;
+   sprintf(title, "Ojo - %s", trackName) ;
+   gtk_window_set_title(GTK_WINDOW(window), title) ;
+   return ;
+}
+
 void setupWindow()
 {
     builder = gtk_builder_new();
@@ -106,6 +113,7 @@ void setupWindow()
    fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
    filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
     progressBar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_progress_bar"));
+    volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume"));
 
     g_object_unref(builder);
 }

@@ -2,20 +2,25 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkImage" id="ojo_forw">
+  <object class="GtkImage" id="img_ojo_forw">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-forward</property>
   </object>
-  <object class="GtkImage" id="ojo_play">
+  <object class="GtkImage" id="img_ojo_play">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-play</property>
   </object>
-  <object class="GtkImage" id="ojo_prev">
+  <object class="GtkImage" id="img_ojo_prev">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-previous</property>
+  </object>
+  <object class="GtkImage" id="img_ojo_stop">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-stop</property>
   </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
@@ -200,6 +205,17 @@
           </packing>
         </child>
         <child>
+          <object class="GtkProgressBar" id="ojo_progress_bar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -208,7 +224,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">ojo_play</property>
+                <property name="image">img_ojo_play</property>
                 <signal name="clicked" handler="on_ojo_play_pause_clicked" swapped="no"/>
               </object>
               <packing>
@@ -222,7 +238,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">ojo_prev</property>
+                <property name="image">img_ojo_prev</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -231,11 +247,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="ojo_for">
+              <object class="GtkButton" id="ojo_sto">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">ojo_forw</property>
+                <property name="image">img_ojo_stop</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -243,17 +259,58 @@
                 <property name="position">2</property>
               </packing>
             </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkProgressBar" id="ojo_progress_bar">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="ojo_for">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">img_ojo_forw</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVolumeButton" id="ojo_volume">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <property name="orientation">vertical</property>
+                <property name="icons">audio-volume-muted-symbolic
+audio-volume-high-symbolic
+audio-volume-low-symbolic
+audio-volume-medium-symbolic</property>
+                <signal name="value-changed" handler="on_ojo_volume_value_changed" swapped="no"/>
+                <child internal-child="plus_button">
+                  <object class="GtkButton">
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                  </object>
+                </child>
+                <child internal-child="minus_button">
+                  <object class="GtkButton">
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="relief">none</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>

@@ -44,6 +44,7 @@ void openMedia(const char* uri)
    startProgressBar() ;
    libvlc_media_player_play(mediaPlayer) ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
+   setTitle(metaData.title) ;
    libvlc_media_release(media) ;
 }
 
@@ -62,9 +63,10 @@ void onSeekBackward()
    libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)-0.05) ;
 }
 
-void onVolumeChanged()
+void on_ojo_volume_value_changed()
 {
- //  libvlc_audio_set_volume(mediaPlayer, (int)(100*getVolumeLevel())) ;
+    double volume = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volumeButton));
+    libvlc_audio_set_volume(mediaPlayer, (int)(100*volume)) ;
 }
 
 int64_t getDuration()

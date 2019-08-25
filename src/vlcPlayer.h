@@ -47,5 +47,6 @@ void onVolumeChanged(void) ;
 int64_t getDuration(void) ;
 int64_t getCurrentTime(void) ;
 void startProgressBar(void) ;
+double getVolumeLevel() ;
 
 #endif /* _vlc_player_h_ */
