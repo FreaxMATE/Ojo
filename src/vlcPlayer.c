@@ -27,7 +27,7 @@ void initVlc(GtkWidget *playerWidget)
 {
    vlcInst = libvlc_new(0, NULL) ;
    mediaPlayer = libvlc_media_player_new(vlcInst) ;
-   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
+   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(playerWidget))) ;
 }
 
 void quitVlc()
