@@ -34,5 +34,6 @@ GtkWidget   *filemenuOpenitem ;
 void setupWindow(void) ;
 void destroy(void) ;
 void on_ojo_menu_open_activate() ;
+char string[32] ;
 
 #endif /* _window_h_ */

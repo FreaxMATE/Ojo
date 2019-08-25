@@ -41,6 +41,7 @@ void openMedia(const char* uri)
    media = libvlc_media_new_location(vlcInst, uri) ;
    libvlc_media_player_set_media(mediaPlayer, media) ;
    libvlc_audio_set_volume(mediaPlayer, 100) ;
+   startProgressBar() ;
    libvlc_media_player_play(mediaPlayer) ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
    libvlc_media_release(media) ;
@@ -64,18 +65,6 @@ void onSeekBackward()
 void onVolumeChanged()
 {
  //  libvlc_audio_set_volume(mediaPlayer, (int)(100*getVolumeLevel())) ;
-}
-
-void on_ojo_play_pause_clicked()
-{
-   if(libvlc_media_player_is_playing(mediaPlayer) == 1)
-   {
-         libvlc_media_player_pause(mediaPlayer) ;
-   }
-   else
-   {
-      libvlc_media_player_play(mediaPlayer) ;
-   }
 }
 
 int64_t getDuration()

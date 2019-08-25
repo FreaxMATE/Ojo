@@ -40,6 +40,58 @@ void on_window_main_destroy()
    gtk_main_quit() ;
 }
 
+void on_ojo_play_pause_clicked()
+{
+   if(libvlc_media_player_is_playing(mediaPlayer) == 1)
+   {
+      libvlc_media_player_pause(mediaPlayer) ;
+
+   }
+   else
+   {
+      libvlc_media_player_play(mediaPlayer) ;
+   }
+}
+
+gboolean updateBar()
+{
+   double currentTime = (double)getCurrentTime() ;
+   double duration = (double)getDuration() ;
+
+  // gtk_label_set_text(GTK_LABEL(timeLabel), timeToString(currentTime, duration)) ;
+
+   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progressBar), currentTime/duration) ;
+   if (gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(progressBar)) == 1)
+      return FALSE ;
+   return TRUE ;
+}
+
+void startProgressBar()
+{
+   g_timeout_add_seconds(1, G_SOURCE_FUNC(updateBar), NULL) ;
+}
+
+char *timeToString(double currentTime, double duration)
+{
+   currentTime /= 1000 ;
+   duration /= 1000 ;
+
+   int curMinutes = ((int)currentTime)/60 ; int allMinutes = ((int)duration)/60 ; 
+   int curSeconds = ((int)currentTime)%60 ; int allSeconds = ((int)duration)%60 ;
+
+   if (curMinutes > 59 || allMinutes > 59)
+   {
+       int curHours = ((int)curMinutes)/60 ; int allHours = ((int)allMinutes)/60 ;
+       sprintf(string, "%02d:%02d:%02d / %02d:%02d:%02d  ", curHours, curMinutes-(curHours*60), curSeconds, allHours, allMinutes-(allHours*60), allSeconds) ;
+   }
+   else
+   {
+      sprintf(string, "%02d:%02d / %02d:%02d  ", curMinutes, curSeconds, allMinutes, allSeconds) ;
+   }
+
+   return string ;
+}
+
 void setupWindow()
 {
     builder = gtk_builder_new();

@@ -33,7 +33,7 @@ struct metaData
 {
    char title[64] ;
 
-}metaData ;
+} metaData ;
 
 void initVlc(GtkWidget *player_widget) ;
 void quitVlc(void) ;
