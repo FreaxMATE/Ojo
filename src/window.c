@@ -59,7 +59,7 @@ gboolean updateBar()
    double currentTime = (double)getCurrentTime() ;
    double duration = (double)getDuration() ;
 
-  // gtk_label_set_text(GTK_LABEL(timeLabel), timeToString(currentTime, duration)) ;
+   gtk_label_set_text(GTK_LABEL(timeLabel), timeToString(currentTime, duration)) ;
 
    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progressBar), currentTime/duration) ;
    if (gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(progressBar)) == 1)
@@ -110,12 +110,14 @@ void setupWindow()
     gtk_builder_connect_signals(builder, NULL);
 
     playerWidget = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
-   menubar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu")) ;
-   filemenu = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_item")) ;
-   fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
-   filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
+    menubar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu")) ;
+    filemenu = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_item")) ;
+    fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
+    filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
     progressBar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_progress_bar"));
     volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume"));
-playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause"));
+    playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause"));
+    timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl"));
+
     g_object_unref(builder);
 }

@@ -43,7 +43,7 @@ void openMedia(const char* uri)
    libvlc_audio_set_volume(mediaPlayer, 100) ;
    startProgressBar() ;
    libvlc_media_player_play(mediaPlayer) ;
-      gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
+   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
    setTitle(metaData.title) ;
    libvlc_media_release(media) ;
