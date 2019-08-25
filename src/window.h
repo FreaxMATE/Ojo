@@ -33,6 +33,7 @@ GtkWidget   *filemenuOpenitem ;
 GtkWidget   *volumeButton ;
 GtkWidget   *timeLabel ;
 GtkButton   *playpauseButton ;
+GtkDialog	*about ;
 
 void setupWindow(void) ;
 void destroy(void) ;

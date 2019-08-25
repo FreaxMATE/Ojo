@@ -44,14 +44,45 @@ void on_ojo_play_pause_clicked()
 {
    if(libvlc_media_player_is_playing(mediaPlayer) == 1)
    {
-      libvlc_media_player_pause(mediaPlayer) ;
-      gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
+      pausePlayer() ;
    }
    else
    {
-      libvlc_media_player_play(mediaPlayer) ;
-      gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
+      playPlayer() ;
    }
+}
+
+
+void on_ojo_forw_clicked()
+{
+   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)+0.05) ;
+}
+
+void on_ojo_stop_clicked()
+{
+   pausePlayer() ;
+   libvlc_media_player_stop(mediaPlayer) ;
+}
+
+void on_ojo_prev_clicked()
+{
+   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)-0.05) ;
+}
+
+void on_ojo_volume_value_changed()
+{
+    double volume = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volumeButton));
+    libvlc_audio_set_volume(mediaPlayer, (int)(100*volume)) ;
+}
+
+void on_ojo_menu_about_activate()
+{
+	gtk_dialog_run(GTK_DIALOG(about)) ;
+}
+
+void on_ojo_onAbout_close()
+{
+
 }
 
 gboolean updateBar()
@@ -118,6 +149,7 @@ void setupWindow()
     volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume"));
     playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause"));
     timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl"));
+	about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout"));
 
     g_object_unref(builder);
 }

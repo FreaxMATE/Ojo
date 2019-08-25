@@ -42,32 +42,22 @@ void openMedia(const char* uri)
    libvlc_media_player_set_media(mediaPlayer, media) ;
    libvlc_audio_set_volume(mediaPlayer, 100) ;
    startProgressBar() ;
-   libvlc_media_player_play(mediaPlayer) ;
-   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
+   playPlayer() ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
    setTitle(metaData.title) ;
    libvlc_media_release(media) ;
 }
 
-void onSeekForward()
+void playPlayer()
 {
-   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)+0.05) ;
+   libvlc_media_player_play(mediaPlayer) ;
+   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
 }
 
-void onStop()
+void pausePlayer()
 {
-   libvlc_media_player_stop(mediaPlayer) ;
-}
-
-void onSeekBackward()
-{
-   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)-0.05) ;
-}
-
-void on_ojo_volume_value_changed()
-{
-    double volume = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volumeButton));
-    libvlc_audio_set_volume(mediaPlayer, (int)(100*volume)) ;
+   libvlc_media_player_pause(mediaPlayer) ;
+   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 int64_t getDuration()
