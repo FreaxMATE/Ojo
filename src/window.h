@@ -30,7 +30,8 @@ GtkWidget   *menubar ;
 GtkWidget   *filemenu ;
 GtkWidget   *fileitem ;
 GtkWidget   *filemenuOpenitem ;
-GtkWidget *volumeButton ;
+GtkWidget   *volumeButton ;
+GtkButton  *playpauseButton ;
 
 void setupWindow(void) ;
 void destroy(void) ;

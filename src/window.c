@@ -45,10 +45,12 @@ void on_ojo_play_pause_clicked()
    if(libvlc_media_player_is_playing(mediaPlayer) == 1)
    {
       libvlc_media_player_pause(mediaPlayer) ;
+      gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
    }
    else
    {
       libvlc_media_player_play(mediaPlayer) ;
+      gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
    }
 }
 
@@ -114,6 +116,6 @@ void setupWindow()
    filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
     progressBar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_progress_bar"));
     volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume"));
-
+playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause"));
     g_object_unref(builder);
 }
