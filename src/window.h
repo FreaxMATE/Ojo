@@ -39,12 +39,7 @@ void setupWindow(void) ;
 void destroy(void) ;
 void on_ojo_menu_open_activate() ;
 void setTitle(char *trackName) ;
-<<<<<<< HEAD
 char *timeToString(double currentTime, double duration) ;
 char string[32] ;
-||||||| merged common ancestors
-=======
-void onAbout(GtkWidget *widget, gpointer data) ;
->>>>>>> master
 
 #endif /* _window_h_ */
