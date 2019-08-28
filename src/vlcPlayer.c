@@ -27,7 +27,7 @@ void initVlc(GtkWidget *playerWidget)
 {
    vlcInst = libvlc_new(0, NULL) ;
    mediaPlayer = libvlc_media_player_new(vlcInst) ;
-   g_signal_connect(G_OBJECT(playerWidget), "realize", G_CALLBACK(playerWidgetOnRealize), NULL) ;
+   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(playerWidget))) ;
 }
 
 void quitVlc()
@@ -36,66 +36,28 @@ void quitVlc()
    libvlc_release(vlcInst) ;
 }
 
-void playerWidgetOnRealize(GtkWidget *widget)
-{
-   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(widget))) ;
-}
-
 void openMedia(const char* uri)
 {
    media = libvlc_media_new_location(vlcInst, uri) ;
    libvlc_media_player_set_media(mediaPlayer, media) ;
    libvlc_audio_set_volume(mediaPlayer, 100) ;
    startProgressBar() ;
-   play() ;
+   playPlayer() ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
    setTitle(metaData.title) ;
    libvlc_media_release(media) ;
 }
 
-void onSeekForward()
-{
-   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)+0.05) ;
-}
-
-void onPlayPause()
-{
-   if(libvlc_media_player_is_playing(mediaPlayer) == 1)
-   {
-      pausePlayer() ;
-   }
-   else
-   {
-      play() ;
-   }
-}
-
-void onStop()
-{
-   pausePlayer() ;
-   libvlc_media_player_stop(mediaPlayer) ;
-}
-
-void onSeekBackward()
-{
-   libvlc_media_player_set_position(mediaPlayer, libvlc_media_player_get_position(mediaPlayer)-0.05) ;
-}
-
-void onVolumeChanged()
-{
-   libvlc_audio_set_volume(mediaPlayer, (int)(100*getVolumeLevel())) ;
-}
-
-void play()
+void playPlayer()
 {
    libvlc_media_player_play(mediaPlayer) ;
-   setButtonIcon("media-playback-pause") ;
+   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 void pausePlayer()
 {
    libvlc_media_player_pause(mediaPlayer) ;
-   setButtonIcon("media-playback-start") ;
+   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 int64_t getDuration()
@@ -108,4 +70,3 @@ int64_t getCurrentTime()
 {
    return libvlc_media_player_get_time(mediaPlayer) ;
 }
-

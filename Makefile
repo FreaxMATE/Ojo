@@ -3,29 +3,21 @@ GTKVLCFLAGS = `pkg-config --libs gtk+-3.0 libvlc` `pkg-config --cflags gtk+-3.0 
 XFLAGS = -lX11
 CFLAGS = -Wall
 
-ojo: main.o menu.o window.o widget.o vlcPlayer.o
+ojo: main.o window.o vlcPlayer.o
 
-	$(CC) -o ojo main.o menu.o window.o widget.o vlcPlayer.o $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -rdynamic -o ojo main.o window.o vlcPlayer.o $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
-main.o: main.c
+main.o: src/main.c
 
-	$(CC) -c main.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -c src/main.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
-menu.o: menu.c menu.h
+window.o: src/window.c src/window.h
 
-	$(CC) -c menu.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -c src/window.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
-window.o: window.c window.h
+vlcPlayer.o: src/vlcPlayer.c src/vlcPlayer.h
 
-	$(CC) -c window.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
-
-widget.o: widget.c widget.h
-
-	$(CC) -c widget.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
-
-vlcPlayer.o: vlcPlayer.c vlcPlayer.h
-
-	$(CC) -c vlcPlayer.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -c src/vlcPlayer.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
 clean:
 
@@ -44,6 +36,3 @@ uninstall:
 	sudo rm -f /usr/local/share/applications/ojo.desktop
 	sudo rm -f /usr/local/share/icons/ojoIcon.svg
 	sudo rm -f /usr/local/share/icons/ojoIconAboutDialog.png
-	
-
-

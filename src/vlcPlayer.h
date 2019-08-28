@@ -22,7 +22,7 @@
 
 #include <vlc/vlc.h>
 
-#include "widget.h"
+#include "window.h"
 
 libvlc_media_player_t *mediaPlayer ;
 libvlc_media_t *media ;
@@ -33,21 +33,18 @@ struct metaData
 {
    char title[64] ;
 
-}metaData ;
+} metaData ;
 
 void initVlc(GtkWidget *player_widget) ;
 void quitVlc(void) ;
 void playerWidgetOnRealize(GtkWidget *widget) ;
 void openMedia(const char* uri) ;
-void onSeekForward() ;
-void onPlayPause(void) ;
-void onStop(void) ;
-void onSeekBackward(void) ;
-void onVolumeChanged(void) ;
-void play(void) ;
+void on_ojo_play_pause_clicked(void) ;
+void playPlayer(void) ;
 void pausePlayer(void) ;
 int64_t getDuration(void) ;
 int64_t getCurrentTime(void) ;
 void startProgressBar(void) ;
+double getVolumeLevel() ;
 
-#endif
+#endif /* _vlc_player_h_ */
