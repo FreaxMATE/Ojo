@@ -34,6 +34,7 @@ GtkWidget   *volumeButton ;
 GtkWidget   *timeLabel ;
 GtkButton   *playpauseButton ;
 GtkDialog	*about ;
+int about_dialog_response ;
 
 void setupWindow(void) ;
 void destroy(void) ;

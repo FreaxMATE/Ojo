@@ -341,6 +341,7 @@ audio-volume-medium-symbolic</property>
     <property name="artists">Konstantin Unruh, Johannes Unruh</property>
     <property name="logo">../data/ojoIconAboutDialog.png</property>
     <property name="license_type">gpl-3-0</property>
+    <signal name="response" handler="on_ojo_onAbout_response" swapped="no"/>
     <child>
       <placeholder/>
     </child>

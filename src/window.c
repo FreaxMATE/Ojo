@@ -77,12 +77,12 @@ void on_ojo_volume_value_changed()
 
 void on_ojo_menu_about_activate()
 {
-	gtk_dialog_run(GTK_DIALOG(about)) ;
+	about_dialog_response = gtk_dialog_run(GTK_DIALOG(about)) ;
 }
 
-void on_ojo_onAbout_close()
+void on_ojo_onAbout_response()
 {
-
+   gtk_widget_hide (GTK_WIDGET(about)) ;
 }
 
 gboolean updateBar()
