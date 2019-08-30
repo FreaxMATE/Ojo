@@ -121,6 +121,20 @@ void on_ojo_seek_bar_button_release_event()
    playPlayer() ;
 }
 
+void on_ojo_fullscreen_clicked()
+{
+   if (fullscreen == true)
+   {
+      gtk_window_unfullscreen(GTK_WINDOW(window)) ;
+      fullscreen = false ;
+   }
+   else
+   {
+      gtk_window_fullscreen(GTK_WINDOW(window)) ;
+      fullscreen = true ;
+   }
+}
+
 char *timeToString(double currentTime, double duration)
 {
    currentTime /= 1000 ;

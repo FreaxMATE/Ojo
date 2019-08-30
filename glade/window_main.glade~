@@ -7,6 +7,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-forward</property>
   </object>
+  <object class="GtkImage" id="img_ojo_fullscreen">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-fullscreen</property>
+  </object>
   <object class="GtkImage" id="img_ojo_play">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -27,6 +32,7 @@
     <property name="default_width">440</property>
     <property name="default_height">250</property>
     <signal name="destroy" handler="on_window_main_destroy" swapped="no"/>
+    <signal name="window-state-event" handler="on_window_main_window_state_event" swapped="no"/>
     <child>
       <placeholder/>
     </child>
@@ -203,9 +209,9 @@
             <property name="can_focus">True</property>
             <property name="round_digits">1</property>
             <property name="draw_value">False</property>
-            <signal name="button-press-event" handler="on_ojo_scale_bar_button_press_event" swapped="no"/>
-            <signal name="button-release-event" handler="on_ojo_scale_bar_button_release_event" swapped="no"/>
-            <signal name="value-changed" handler="on_ojo_scale_bar_value_changed" swapped="no"/>
+            <signal name="button-press-event" handler="on_ojo_seek_bar_button_press_event" swapped="no"/>
+            <signal name="button-release-event" handler="on_ojo_seek_bar_button_release_event" swapped="no"/>
+            <signal name="value-changed" handler="on_ojo_seek_bar_value_changed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -223,6 +229,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">img_ojo_play</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_ojo_play_pause_clicked" swapped="no"/>
               </object>
               <packing>
@@ -237,6 +244,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">img_ojo_prev</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_ojo_prev_clicked" swapped="no"/>
               </object>
               <packing>
@@ -251,6 +259,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">img_ojo_stop</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_ojo_stop_clicked" swapped="no"/>
               </object>
               <packing>
@@ -260,17 +269,34 @@
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="ojo_fullscreen">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">img_ojo_fullscreen</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_ojo_fullscreen_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="ojo_forw">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">img_ojo_forw</property>
+                <property name="relief">none</property>
                 <signal name="clicked" handler="on_ojo_forw_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
