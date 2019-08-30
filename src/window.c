@@ -21,6 +21,8 @@
 
 #include "window.h"
 
+gboolean fullscreen = FALSE ;
+
 void on_ojo_menu_open_activate()
 {
    GtkWidget *dialog ;
@@ -123,15 +125,17 @@ void on_ojo_seek_bar_button_release_event()
 
 void on_ojo_fullscreen_clicked()
 {
-   if (fullscreen == true)
+   if (fullscreen == TRUE)
    {
       gtk_window_unfullscreen(GTK_WINDOW(window)) ;
-      fullscreen = false ;
+      gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON)) ;
+      fullscreen = FALSE ;
    }
    else
    {
       gtk_window_fullscreen(GTK_WINDOW(window)) ;
-      fullscreen = true ;
+      gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
+      fullscreen = TRUE ;
    }
 }
 
@@ -179,6 +183,7 @@ void setupWindow()
    filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
    seek_bar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_seek_bar")) ;
    volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume")) ;
+   fullscreen_button = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_fullscreen")) ;
    playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
    timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
    about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout")) ;
