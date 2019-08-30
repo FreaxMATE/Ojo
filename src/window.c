@@ -87,20 +87,38 @@ void on_ojo_onAbout_response()
 
 gboolean updateBar()
 {
-   double currentTime = (double)getCurrentTime() ;
-   double duration = (double)getDuration() ;
+   double currentTime = (double)getCurrentTime() ; // in ms
+   double duration = (double)getDuration() ;       // in ms
 
    gtk_label_set_text(GTK_LABEL(timeLabel), timeToString(currentTime, duration)) ;
 
-   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progressBar), currentTime/duration) ;
-   if (gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(progressBar)) == 1)
-      return FALSE ;
+   gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, duration) ;
+   gtk_range_set_value(GTK_RANGE(seek_bar), currentTime) ;
+
+   
+
    return TRUE ;
 }
 
-void startProgressBar()
+void start_seek_bar()
 {
    g_timeout_add_seconds(1, G_SOURCE_FUNC(updateBar), NULL) ;
+}
+
+void on_ojo_seek_bar_value_changed()
+{
+   if (gtk_range_get_value(GTK_RANGE(seek_bar)) != (double)getCurrentTime())
+      setCurrentTime(gtk_range_get_value(GTK_RANGE(seek_bar))) ;
+}
+
+void on_ojo_seek_bar_button_press_event()
+{
+   pausePlayer() ;
+}
+
+void on_ojo_seek_bar_button_release_event()
+{
+   playPlayer() ;
 }
 
 char *timeToString(double currentTime, double duration)
@@ -134,22 +152,27 @@ void setTitle(char *trackName)
 
 void setupWindow()
 {
-    builder = gtk_builder_new();
-    gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
+   builder = gtk_builder_new();
+   gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
 
-    window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
-    gtk_builder_connect_signals(builder, NULL);
+   window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
+   gtk_builder_connect_signals(builder, NULL);
 
-    playerWidget = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
-    menubar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu")) ;
-    filemenu = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_item")) ;
-    fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
-    filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
-    progressBar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_progress_bar"));
-    volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume"));
-    playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause"));
-    timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl"));
-	about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout"));
+   playerWidget = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
+   menubar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu")) ;
+   filemenu = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_item")) ;
+   fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
+   filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
+   seek_bar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_seek_bar")) ;
+   volumeButton = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_volume")) ;
+   playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
+   timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
+   about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout")) ;
 
-    g_object_unref(builder);
+   gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, 60.0) ;
+   gtk_range_set_value(GTK_RANGE(seek_bar), 0.0) ;
+
+   g_object_unref(builder) ;
 }
+
+

@@ -41,7 +41,7 @@ void openMedia(const char* uri)
    media = libvlc_media_new_location(vlcInst, uri) ;
    libvlc_media_player_set_media(mediaPlayer, media) ;
    libvlc_audio_set_volume(mediaPlayer, 100) ;
-   startProgressBar() ;
+   start_seek_bar() ;
    playPlayer() ;
    strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
    setTitle(metaData.title) ;
@@ -63,10 +63,16 @@ void pausePlayer()
 int64_t getDuration()
 {
    return libvlc_media_get_duration(media) ;
-   //printf ("Duration = %ld\n", (duration/1000)/60) ;
 }
 
 int64_t getCurrentTime()
 {
    return libvlc_media_player_get_time(mediaPlayer) ;
 }
+
+void setCurrentTime(double time)
+{
+   libvlc_media_player_set_time(mediaPlayer, time) ;
+}
+
+

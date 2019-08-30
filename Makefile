@@ -1,11 +1,11 @@
 CC = gcc
 GTKVLCFLAGS = `pkg-config --libs gtk+-3.0 libvlc` `pkg-config --cflags gtk+-3.0 libvlc`
 XFLAGS = -lX11
-CFLAGS = -Wall
+CFLAGS = -rdynamic -Wall
 
 ojo: main.o window.o vlcPlayer.o
 
-	$(CC) -rdynamic -o ojo main.o window.o vlcPlayer.o $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -o ojo main.o window.o vlcPlayer.o $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
 main.o: src/main.c
 

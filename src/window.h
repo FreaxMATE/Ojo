@@ -25,7 +25,7 @@
 GtkBuilder  *builder; 
 GtkWidget   *window ;
 GtkWidget   *playerWidget ;
-GtkWidget   *progressBar ;
+GtkWidget   *seek_bar ;
 GtkWidget   *menubar ;
 GtkWidget   *filemenu ;
 GtkWidget   *fileitem ;
@@ -38,6 +38,7 @@ int about_dialog_response ;
 
 void setupWindow(void) ;
 void destroy(void) ;
+void on_ojo_stop_clicked(void) ;
 void on_ojo_menu_open_activate() ;
 void setTitle(char *trackName) ;
 char *timeToString(double currentTime, double duration) ;

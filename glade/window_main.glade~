@@ -198,9 +198,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkProgressBar" id="ojo_progress_bar">
+          <object class="GtkScale" id="ojo_seek_bar">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
+            <property name="round_digits">1</property>
+            <property name="draw_value">False</property>
+            <signal name="button-press-event" handler="on_ojo_scale_bar_button_press_event" swapped="no"/>
+            <signal name="button-release-event" handler="on_ojo_scale_bar_button_release_event" swapped="no"/>
+            <signal name="value-changed" handler="on_ojo_scale_bar_value_changed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
