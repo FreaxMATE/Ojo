@@ -158,6 +158,21 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="ojo_menu_fullscreen">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Fullscreen</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_ojo_menu_fullscreen_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>

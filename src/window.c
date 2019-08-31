@@ -139,6 +139,11 @@ void on_ojo_fullscreen_clicked()
    }
 }
 
+void on_ojo_menu_fullscreen_toggled()
+{
+   on_ojo_fullscreen_clicked() ;
+}
+
 char *timeToString(double currentTime, double duration)
 {
    currentTime /= 1000 ;

@@ -32,7 +32,6 @@
     <property name="default_width">440</property>
     <property name="default_height">250</property>
     <signal name="destroy" handler="on_window_main_destroy" swapped="no"/>
-    <signal name="window-state-event" handler="on_window_main_window_state_event" swapped="no"/>
     <child>
       <placeholder/>
     </child>
@@ -159,6 +158,20 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="ojo_menu_fullscreen">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Fullscreen</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
