@@ -35,6 +35,8 @@ GtkWidget   *fullscreen_button ;
 GtkWidget   *timeLabel ;
 GtkButton   *playpauseButton ;
 GtkDialog	*about ;
+GtkDialog	*preferences_dialog ;
+
 int about_dialog_response ;
 
 void setupWindow(void) ;

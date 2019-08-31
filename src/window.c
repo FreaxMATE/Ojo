@@ -22,6 +22,7 @@
 #include "window.h"
 
 gboolean fullscreen = FALSE ;
+gboolean dark_theme = FALSE;
 
 void on_ojo_menu_open_activate()
 {
@@ -144,6 +145,31 @@ void on_ojo_menu_fullscreen_toggled()
    on_ojo_fullscreen_clicked() ;
 }
 
+void on_ojo_preferences_apply_clicked()
+{
+    if (dark_theme)
+        g_object_set (gtk_settings_get_default (), "gtk-application-prefer-dark-theme", TRUE, NULL);
+    else if (!dark_theme)
+        g_object_set (gtk_settings_get_default (), "gtk-application-prefer-dark-theme", FALSE, NULL);
+    gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
+}
+
+void on_ojo_preferences_close_clicked()
+{
+    (dark_theme == TRUE) ? (dark_theme = TRUE) : (dark_theme = FALSE) ;
+    on_ojo_preferences_apply_clicked() ;
+}
+
+void on_ojo_menu_preferences_activate()
+{
+    gtk_dialog_run(GTK_DIALOG(preferences_dialog)) ;
+}
+
+void on_ojo_preferences_dark_mode_toggled()
+{
+    (dark_theme == TRUE) ? (dark_theme = FALSE) : (dark_theme = TRUE) ;
+}
+
 char *timeToString(double currentTime, double duration)
 {
    currentTime /= 1000 ;
@@ -192,6 +218,7 @@ void setupWindow()
    playpauseButton = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
    timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
    about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout")) ;
+   preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
 
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, 60.0) ;
    gtk_range_set_value(GTK_RANGE(seek_bar), 0.0) ;
