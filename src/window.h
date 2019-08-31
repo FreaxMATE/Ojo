@@ -36,6 +36,7 @@ GtkWidget   *timeLabel ;
 GtkButton   *playpauseButton ;
 GtkDialog	*about ;
 GtkDialog	*preferences_dialog ;
+GtkDialog	*filechooser_dialog ;
 
 int about_dialog_response ;
 

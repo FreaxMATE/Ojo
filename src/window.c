@@ -26,16 +26,21 @@ gboolean dark_theme = FALSE;
 
 void on_ojo_menu_open_activate()
 {
-   GtkWidget *dialog ;
-   dialog = gtk_file_chooser_dialog_new("Choose Media", NULL, GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel", GTK_RESPONSE_CANCEL, "Open", GTK_RESPONSE_ACCEPT, NULL) ;
-   if(gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-   {
-      char *uri ;
-      uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog)) ;
-      openMedia(uri) ;
-      g_free(uri) ;
-   }
-   gtk_widget_destroy(dialog) ;
+	gtk_dialog_run(GTK_DIALOG(filechooser_dialog)) ;
+}
+
+void on_ojo_filechooser_cancel_clicked()
+{
+   gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
+}
+
+void on_ojo_filechooser_open_clicked()
+{
+   gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
+   char *uri ;
+   uri = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(filechooser_dialog)) ;
+   openMedia(uri) ;
+   g_free(uri) ;
 }
 
 void on_window_main_destroy()
@@ -219,6 +224,7 @@ void setupWindow()
    timeLabel = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
    about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout")) ;
    preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
+   filechooser_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_filechooser_dialog")) ;
 
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, 60.0) ;
    gtk_range_set_value(GTK_RANGE(seek_bar), 0.0) ;

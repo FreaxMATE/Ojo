@@ -38,7 +38,8 @@ void quitVlc()
 
 void openMedia(const char* uri)
 {
-   media = libvlc_media_new_location(vlcInst, uri) ;
+   if ((media = libvlc_media_new_path(vlcInst, uri)) == NULL)
+      fprintf (stderr, "error\n") ;
    libvlc_media_player_set_media(mediaPlayer, media) ;
    libvlc_audio_set_volume(mediaPlayer, 100) ;
    start_seek_bar() ;

@@ -28,7 +28,6 @@ libvlc_media_player_t *mediaPlayer ;
 libvlc_media_t *media ;
 libvlc_instance_t *vlcInst ;
 int64_t duration ;
-libvlc_event_manager_t *events ;
 struct metaData
 {
    char title[64] ;
