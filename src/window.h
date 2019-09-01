@@ -30,6 +30,7 @@ GtkWidget   *menubar ;
 GtkWidget   *filemenu ;
 GtkWidget   *fileitem ;
 GtkWidget   *filemenuOpenitem ;
+GtkWidget   *menu_fullscreen ;
 GtkWidget   *volumeButton ;
 GtkWidget   *fullscreen_button ;
 GtkWidget   *timeLabel ;

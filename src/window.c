@@ -133,12 +133,16 @@ void on_ojo_fullscreen_clicked()
 {
    if (fullscreen == TRUE)
    {
+      if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu_fullscreen)) == TRUE)
+         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_fullscreen), FALSE) ;
       gtk_window_unfullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON)) ;
       fullscreen = FALSE ;
    }
    else
    {
+      if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu_fullscreen)) == FALSE)
+         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_fullscreen), TRUE) ;
       gtk_window_fullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
       fullscreen = TRUE ;
@@ -215,6 +219,7 @@ void setupWindow()
    playerWidget = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
    menubar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu")) ;
    filemenu = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_item")) ;
+   menu_fullscreen = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_fullscreen")) ;
    fileitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_submenu")) ;
    filemenuOpenitem = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
    seek_bar = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_seek_bar")) ;
