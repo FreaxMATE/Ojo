@@ -21,7 +21,9 @@ vlcPlayer.o: src/vlcPlayer.c src/vlcPlayer.h
 
 clean:
 
-	rm -f ojo && rm -f *.o && rm -f glade/#window_main.glade# && rm -rf window_main.glade~
+	rm -f ojo
+	rm -f *.o
+	rm -f glade/window_main.glade~
 
 install: ojo
 
