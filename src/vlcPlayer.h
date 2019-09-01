@@ -24,27 +24,29 @@
 
 #include "window.h"
 
-libvlc_media_player_t *mediaPlayer ;
-libvlc_media_t *media ;
-libvlc_instance_t *vlcInst ;
-int64_t duration ;
-struct metaData
+struct vlc
+{
+   libvlc_instance_t *inst ;
+   libvlc_media_t *media ;
+   libvlc_media_player_t *media_player ;
+   int64_t duration ;
+} vlc ;
+
+struct meta_data
 {
    char title[64] ;
 
-} metaData ;
+} meta_data ;
 
-void initVlc(void) ;
-void quitVlc(void) ;
-void playerWidgetOnRealize(GtkWidget *widget) ;
-void openMedia(const char* uri) ;
-void on_ojo_play_pause_clicked(void) ;
-void playPlayer(void) ;
-void pausePlayer(void) ;
-int64_t getDuration(void) ;
-int64_t getCurrentTime(void) ;
+void init_vlc(void) ;
+void quit_vlc(void) ;
+void open_media(const char* uri) ;
+void play_player(void) ;
+void pause_player(void) ;
+int64_t get_duration(void) ;
+int64_t get_current_time(void) ;
 void start_seek_bar(void) ;
-double getVolumeLevel() ;
-void setCurrentTime(double time) ;
+void set_current_time(double time) ;
 
 #endif /* _vlc_player_h_ */
+

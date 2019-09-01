@@ -22,31 +22,28 @@
 
 #include "vlcPlayer.h"
 
-GtkBuilder  *builder; 
-GtkWidget   *window ;
-GtkWidget   *playerWidget ;
-GtkWidget   *seek_bar ;
-GtkWidget   *menubar ;
-GtkWidget   *filemenu ;
-GtkWidget   *fileitem ;
-GtkWidget   *filemenuOpenitem ;
-GtkWidget   *menu_fullscreen ;
-GtkWidget   *volumeButton ;
-GtkWidget   *fullscreen_button ;
-GtkWidget   *timeLabel ;
-GtkButton   *playpauseButton ;
-GtkDialog	*about ;
-GtkDialog	*preferences_dialog ;
-GtkDialog	*filechooser_dialog ;
-
+GtkBuilder      *builder; 
+GtkWindow       *window ;
+GtkDrawingArea  *player_widget ;
+GtkMenuBar      *menu_bar ;
+GtkMenuItem     *file_menu,
+                *file_submenu ;
+GtkWidget       *file_menu_open,
+                *view_menu_fullscreen ;
+GtkScale        *seek_bar ;
+GtkLabel        *time_label ;
+GtkVolumeButton *volume_button ;
+GtkButton       *playpause_button,
+                *fullscreen_button ;
+GtkDialog       *about ;
+GtkDialog       *preferences_dialog ;
+GtkDialog       *filechooser_dialog ;
 int about_dialog_response ;
+char time_string[32] ;
 
-void setupWindow(void) ;
-void destroy(void) ;
-void on_ojo_stop_clicked(void) ;
-void on_ojo_menu_open_activate() ;
-void setTitle(char *trackName) ;
-char *timeToString(double currentTime, double duration) ;
-char string[32] ;
+void set_title(char *trackName) ;
+void setup_window(void) ;
+char *time_to_string(double current_time, double duration) ;
 
 #endif /* _window_h_ */
+

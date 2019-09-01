@@ -23,57 +23,57 @@
 
 #include "vlcPlayer.h"
 
-void initVlc()
+void init_vlc()
 {
-   vlcInst = libvlc_new(0, NULL) ;
-   mediaPlayer = libvlc_media_player_new(vlcInst) ;
+   vlc.inst = libvlc_new(0, NULL) ;
+   vlc.media_player = libvlc_media_player_new(vlc.inst) ;
 }
 
-void quitVlc()
+void quit_vlc()
 {
-   libvlc_media_player_release(mediaPlayer) ;
-   libvlc_release(vlcInst) ;
+   libvlc_media_player_release(vlc.media_player) ;
+   libvlc_release(vlc.inst) ;
 }
 
-void openMedia(const char* uri)
+void open_media(const char* uri)
 {
-   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(playerWidget))) ;
-   if ((media = libvlc_media_new_path(vlcInst, uri)) == NULL)
+   libvlc_media_player_set_xwindow(vlc.media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
+   if ((vlc.media = libvlc_media_new_path(vlc.inst, uri)) == NULL)
       fprintf (stderr, "error\n") ;
-   libvlc_media_player_set_media(mediaPlayer, media) ;
-   libvlc_audio_set_volume(mediaPlayer, 100) ;
+   libvlc_media_player_set_media(vlc.media_player, vlc.media) ;
+   libvlc_audio_set_volume(vlc.media_player, 100) ;
    start_seek_bar() ;
-   playPlayer() ;
-   strcpy(metaData.title, libvlc_media_get_meta(media, libvlc_meta_Title)) ;
-   setTitle(metaData.title) ;
-   libvlc_media_release(media) ;
+   play_player() ;
+   strcpy(meta_data.title, libvlc_media_get_meta(vlc.media, libvlc_meta_Title)) ;
+   set_title(meta_data.title) ;
+   libvlc_media_release(vlc.media) ;
 }
 
-void playPlayer()
+void play_player()
 {
-   libvlc_media_player_play(mediaPlayer) ;
-   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
+   libvlc_media_player_play(vlc.media_player) ;
+   gtk_button_set_image (GTK_BUTTON(playpause_button), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
 }
 
-void pausePlayer()
+void pause_player()
 {
-   libvlc_media_player_pause(mediaPlayer) ;
-   gtk_button_set_image (GTK_BUTTON(playpauseButton), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
+   libvlc_media_player_pause(vlc.media_player) ;
+   gtk_button_set_image (GTK_BUTTON(playpause_button), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
 }
 
-int64_t getDuration()
+int64_t get_duration()
 {
-   return libvlc_media_get_duration(media) ;
+   return libvlc_media_get_duration(vlc.media) ;
 }
 
-int64_t getCurrentTime()
+int64_t get_current_time()
 {
-   return libvlc_media_player_get_time(mediaPlayer) ;
+   return libvlc_media_player_get_time(vlc.media_player) ;
 }
 
-void setCurrentTime(double time)
+void set_current_time(double time)
 {
-   libvlc_media_player_set_time(mediaPlayer, time) ;
+   libvlc_media_player_set_time(vlc.media_player, time) ;
 }
 
 

@@ -31,11 +31,11 @@ int main(int argc, char **argv)
    XInitThreads() ;
    gtk_init (&argc, &argv) ;
 
-   setupWindow() ;
-   initVlc() ;
-   gtk_widget_show(window);
+   setup_window() ;
+   init_vlc() ;
+   gtk_widget_show(GTK_WIDGET(window)) ;
    gtk_main() ;
-   quitVlc() ;
+   quit_vlc() ;
 
    return 0 ;
 }
