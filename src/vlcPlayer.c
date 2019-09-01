@@ -23,11 +23,10 @@
 
 #include "vlcPlayer.h"
 
-void initVlc(GtkWidget *playerWidget)
+void initVlc()
 {
    vlcInst = libvlc_new(0, NULL) ;
    mediaPlayer = libvlc_media_player_new(vlcInst) ;
-   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(playerWidget))) ;
 }
 
 void quitVlc()
@@ -38,6 +37,7 @@ void quitVlc()
 
 void openMedia(const char* uri)
 {
+   libvlc_media_player_set_xwindow(mediaPlayer, GDK_WINDOW_XID(gtk_widget_get_window(playerWidget))) ;
    if ((media = libvlc_media_new_path(vlcInst, uri)) == NULL)
       fprintf (stderr, "error\n") ;
    libvlc_media_player_set_media(mediaPlayer, media) ;

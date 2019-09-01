@@ -34,7 +34,7 @@ struct metaData
 
 } metaData ;
 
-void initVlc(GtkWidget *player_widget) ;
+void initVlc(void) ;
 void quitVlc(void) ;
 void playerWidgetOnRealize(GtkWidget *widget) ;
 void openMedia(const char* uri) ;
