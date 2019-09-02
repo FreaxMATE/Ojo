@@ -1,5 +1,5 @@
 CC = gcc
-GTKVLCFLAGS = `pkg-config --libs gtk+-3.0 libvlc` `pkg-config --cflags gtk+-3.0 libvlc`
+GTKVLCFLAGS = `pkg-config --libs --cflags gtk+-3.0 libvlc`
 XFLAGS = -lX11
 CFLAGS = -rdynamic -Wall
 
