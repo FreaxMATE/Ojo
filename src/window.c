@@ -112,7 +112,6 @@ void on_ojo_menu_fullscreen_toggled()
 }
 
 // SEEKBAR
-
 gboolean update_bar()
 {
    double current_time = (double)get_current_time() ; // in ms
@@ -128,7 +127,7 @@ gboolean update_bar()
 
 void start_seek_bar()
 {
-   g_timeout_add_seconds(1, G_SOURCE_FUNC(update_bar), NULL) ;
+   g_timeout_add_seconds(1, update_bar, NULL) ;
 }
 
 void on_ojo_seek_bar_value_changed()
