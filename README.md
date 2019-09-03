@@ -8,7 +8,7 @@ an open soure gtk media player for the MATE desktop
 
 ```bash
 git clone https://github.com/FreaxMATE/Ojo.git
-cd Ojo/src/
+cd Ojo/
 make
 ./ojo
 ```
