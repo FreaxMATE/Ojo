@@ -21,10 +21,6 @@
 
 #include "window.h"
 
-gboolean fullscreen = FALSE ;
-gboolean dark_theme = FALSE ;
-
-
 /*
  *   FILECHOOSER dialog
  */
@@ -85,16 +81,21 @@ void on_ojo_volume_value_changed()
     libvlc_audio_set_volume(vlc.media_player, (int)(100*volume)) ;
 }
 
+/*
+ *   SETTINGS
+ */
+
+
 // FULLSCREEN
 void on_ojo_fullscreen_clicked()
 {
-   if (fullscreen == TRUE)
+   if (settings->fullscreen == TRUE)
    {
       if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(view_menu_fullscreen)) == TRUE)
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_fullscreen), FALSE) ;
       gtk_window_unfullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image(GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON)) ;
-      fullscreen = FALSE ;
+      settings->fullscreen = FALSE ;
    }
    else
    {
@@ -102,7 +103,7 @@ void on_ojo_fullscreen_clicked()
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_fullscreen), TRUE) ;
       gtk_window_fullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
-      fullscreen = TRUE ;
+      settings->fullscreen = TRUE ;
    }
 }
 
@@ -146,29 +147,33 @@ void on_ojo_seek_bar_button_release_event()
    play_player() ;
 }
 
+Settings *initialise_settings()
+{
+    Settings *new ;
+    new = (Settings*) malloc(sizeof(Settings)) ;
+    new->fullscreen = FALSE ;
+    new->dark_mode = FALSE ;
+    new->border_style = FALSE ;
+    return new ;
+}
 
 /*
- *   ABOUT dialog
+ *   ABOUT
  */
 void on_ojo_menu_about_activate()
 {
 	about_dialog_response = gtk_dialog_run(GTK_DIALOG(about)) ;
 }
 
-void on_ojo_onAbout_response()
+void on_ojo_on_about_response()
 {
    gtk_widget_hide(GTK_WIDGET(about)) ;
 }
 
 
 /*
- *   PREFERENCES dialog
+ *   PREFERENCES
  */
-void on_ojo_preferences_dark_mode_toggled()
-{
-    (dark_theme == TRUE) ? (dark_theme = FALSE) : (dark_theme = TRUE) ;
-}
-
 void on_ojo_menu_preferences_activate()
 {
     gtk_dialog_run(GTK_DIALOG(preferences_dialog)) ;
@@ -176,25 +181,61 @@ void on_ojo_menu_preferences_activate()
 
 void on_ojo_preferences_apply_clicked()
 {
-    if (dark_theme)
-        g_object_set (gtk_settings_get_default (), "gtk-application-prefer-dark-theme", TRUE, NULL);
-    else if (!dark_theme)
-        g_object_set (gtk_settings_get_default (), "gtk-application-prefer-dark-theme", FALSE, NULL);
+    set_dark_mode (gtk_toggle_button_get_active(preferences_dark_mode)) ;
+    set_border_style (gtk_toggle_button_get_active(preferences_border_style)) ;
     gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
 void on_ojo_preferences_close_clicked()
 {
-    (dark_theme == TRUE) ? (dark_theme = TRUE) : (dark_theme = FALSE) ;
-    on_ojo_preferences_apply_clicked() ;
+    gtk_toggle_button_set_active (preferences_dark_mode, settings->dark_mode) ;
+    gtk_toggle_button_set_active (preferences_border_style, settings->border_style) ;
+    gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
+void set_dark_mode (gboolean dark_mode)
+{
+    if (settings->dark_mode != dark_mode)
+    {
+        settings->dark_mode = dark_mode ;
+        g_object_set (gtk_settings_get_default (), "gtk-application-prefer-dark-theme", dark_mode, NULL) ;
+        settings->dark_mode = dark_mode ;
+    }
+}
+
+void set_border_style (gboolean border_style)
+{
+    if (settings->border_style != border_style)
+    {
+        if (border_style) 
+        {
+                gtk_button_set_relief (playpause_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (prev_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (stop_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (forw_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NORMAL) ;
+                settings->border_style = border_style ;
+        }
+        else
+        {
+                gtk_button_set_relief (playpause_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (prev_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (stop_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (forw_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NONE) ;
+                settings->border_style = border_style ;
+        }
+    }
+}
 
 /*
- *   WINDOW
+ *   WINDOW SETUP
  */
 void setup_window()
 {
+   settings = initialise_settings();
    builder = gtk_builder_new();
    gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
 
@@ -202,17 +243,28 @@ void setup_window()
    gtk_builder_connect_signals(builder, NULL);
 
    player_widget = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
+
    menu_bar = GTK_MENU_BAR(gtk_builder_get_object(builder, "ojo_menu")) ;
    file_menu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_menu_item")) ;
-   view_menu_fullscreen = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_fullscreen")) ;
    file_submenu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_submenu")) ;
+
+   view_menu_fullscreen = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_fullscreen")) ;
    file_menu_open = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
+
    seek_bar = GTK_SCALE(gtk_builder_get_object(builder, "ojo_seek_bar")) ;
+
+   playpause_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
+   prev_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_prev")) ;
+   stop_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_stop")) ;
+   forw_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_forw")) ;
    volume_button = GTK_VOLUME_BUTTON(gtk_builder_get_object(builder, "ojo_volume")) ;
    fullscreen_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_fullscreen")) ;
-   playpause_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
+   preferences_dark_mode = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_dark_mode")) ;
+   preferences_border_style = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_border_style")) ;
+
    time_label = GTK_LABEL(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
-   about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_onAbout")) ;
+
+   about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_on_about")) ;
    preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
    filechooser_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_filechooser_dialog")) ;
 

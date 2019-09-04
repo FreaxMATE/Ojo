@@ -31,6 +31,7 @@ void init_vlc()
 
 void quit_vlc()
 {
+   free(settings) ;
    libvlc_media_player_release(vlc.media_player) ;
    libvlc_release(vlc.inst) ;
 }
