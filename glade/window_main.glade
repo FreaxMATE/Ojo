@@ -487,7 +487,7 @@ audio-volume-medium-symbolic</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">0</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -519,7 +519,7 @@ audio-volume-medium-symbolic</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -533,7 +533,37 @@ audio-volume-medium-symbolic</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="draw_indicator">True</property>
-                <signal name="toggled" handler="on_ojo_preferences_dark_mode_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkCheckButton" id="ojo_preferences_border_style">
+                <property name="label" translatable="yes">Border around Control Buttons</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -554,10 +584,16 @@ audio-volume-medium-symbolic</property>
             <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
     </child>
   </object>
-  <object class="GtkAboutDialog" id="ojo_onAbout">
+  <object class="GtkAboutDialog" id="ojo_on_about">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">Ojo</property>
@@ -568,7 +604,7 @@ audio-volume-medium-symbolic</property>
     <property name="artists">Konstantin Unruh, Johannes Unruh</property>
     <property name="logo">../data/ojoIconAboutDialog.png</property>
     <property name="license_type">gpl-3-0</property>
-    <signal name="response" handler="on_ojo_onAbout_response" swapped="no"/>
+    <signal name="response" handler="on_ojo_on_about_response" swapped="no"/>
     <child>
       <placeholder/>
     </child>

@@ -30,17 +30,34 @@ GtkMenuItem     *file_menu,
                 *file_submenu ;
 GtkWidget       *file_menu_open,
                 *view_menu_fullscreen ;
+GtkToggleButton *preferences_dark_mode ,
+                *preferences_border_style ;
 GtkScale        *seek_bar ;
 GtkLabel        *time_label ;
 GtkVolumeButton *volume_button ;
 GtkButton       *playpause_button,
+                *prev_button ,
+                *stop_button ,
+                *forw_button ,
                 *fullscreen_button ;
 GtkDialog       *about ;
 GtkDialog       *preferences_dialog ;
 GtkDialog       *filechooser_dialog ;
+
+typedef struct _settings
+{
+    gboolean fullscreen ;
+    gboolean dark_mode ;
+    gboolean border_style ;
+} Settings ;
+
+Settings *settings ;
+
 int about_dialog_response ;
 char time_string[32] ;
 
+void set_dark_mode (gboolean dark_mode) ;
+void set_border_style (gboolean border_style) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
 char *time_to_string(double current_time, double duration) ;
