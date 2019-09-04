@@ -45,7 +45,7 @@ void open_media(const char* uri)
    libvlc_audio_set_volume(vlc.media_player, 100) ;
    start_seek_bar() ;
    play_player() ;
-   strcpy(meta_data.title, libvlc_media_get_meta(vlc.media, libvlc_meta_Title)) ;
+   strncpy(meta_data.title, libvlc_media_get_meta(vlc.media, libvlc_meta_Title), 57) ;
    set_title(meta_data.title) ;
    libvlc_media_release(vlc.media) ;
 }

@@ -32,7 +32,7 @@ struct vlc
    int64_t duration ;
 } vlc ;
 
-struct meta_data
+struct _meta_data
 {
    char title[64] ;
 
