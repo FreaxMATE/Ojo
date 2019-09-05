@@ -43,8 +43,8 @@ void open_media(const char* uri)
       fprintf (stderr, "error\n") ;
    libvlc_media_player_set_media(vlc.media_player, vlc.media) ;
    libvlc_audio_set_volume(vlc.media_player, 100) ;
-   start_seek_bar() ;
    play_player() ;
+   start_seek_bar() ;
    strncpy(meta_data.title, libvlc_media_get_meta(vlc.media, libvlc_meta_Title), 57) ;
    set_title(meta_data.title) ;
    libvlc_media_release(vlc.media) ;
