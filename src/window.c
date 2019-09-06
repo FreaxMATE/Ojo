@@ -118,6 +118,9 @@ gboolean update_bar()
    double current_time = (double)get_current_time() ; // in ms
    double duration = (double)get_duration() ;         // in ms
 
+   if (libvlc_media_player_get_state(vlc.media_player) == libvlc_Ended)
+      reload_media() ;
+
    gtk_label_set_text(GTK_LABEL(time_label), time_to_string(current_time, duration)) ;
 
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, duration) ;
@@ -128,7 +131,7 @@ gboolean update_bar()
 
 void start_seek_bar()
 {
-   g_timeout_add_seconds(1, update_bar, NULL) ;
+   g_timeout_add(100, update_bar, NULL) ;
 }
 
 void on_ojo_seek_bar_value_changed()

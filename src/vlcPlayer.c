@@ -23,6 +23,11 @@
 
 #include "vlcPlayer.h"
 
+void reload_media()
+{
+   libvlc_media_player_set_media(vlc.media_player, vlc.media) ;pause_player() ;
+}
+
 void init_vlc()
 {
    vlc.inst = libvlc_new(0, NULL) ;
@@ -40,14 +45,13 @@ void open_media(const char* uri)
 {
    libvlc_media_player_set_xwindow(vlc.media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
    if ((vlc.media = libvlc_media_new_path(vlc.inst, uri)) == NULL)
-      fprintf (stderr, "error\n") ;
+      fprintf (stderr, "Error: in open_media() vlcPlayer.c: invalid file path\n") ;
    libvlc_media_player_set_media(vlc.media_player, vlc.media) ;
    libvlc_audio_set_volume(vlc.media_player, 100) ;
    play_player() ;
    start_seek_bar() ;
    strncpy(meta_data.title, libvlc_media_get_meta(vlc.media, libvlc_meta_Title), 57) ;
    set_title(meta_data.title) ;
-   libvlc_media_release(vlc.media) ;
 }
 
 void play_player()
