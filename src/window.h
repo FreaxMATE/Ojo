@@ -40,6 +40,7 @@ GtkButton       *playpause_button,
                 *stop_button ,
                 *forw_button ,
                 *fullscreen_button ;
+GtkListBox      *playlist_box ;
 GtkDialog       *about ;
 GtkDialog       *preferences_dialog ;
 GtkDialog       *filechooser_dialog ;
@@ -51,11 +52,20 @@ typedef struct _settings
     gboolean border_style ;
 } Settings ;
 
+typedef struct _playlist
+{
+   int n_items ;
+   char **uri ;
+   GtkWidget **playlist_item_info ;
+} Playlist ;
+
 Settings *settings ;
+Playlist playlist ;
 
 int about_dialog_response ;
 char time_string[32] ;
 
+void set_playlist_item_title() ;
 void set_dark_mode (gboolean dark_mode) ;
 void set_border_style (gboolean border_style) ;
 void set_title(char *trackName) ;

@@ -25,7 +25,8 @@
 
 void reload_media()
 {
-   libvlc_media_player_set_media(vlc.media_player, vlc.media) ;pause_player() ;
+   libvlc_media_player_set_media(vlc.media_player, vlc.media[0]) ;
+   pause_player() ;
 }
 
 void init_vlc()
@@ -41,17 +42,43 @@ void quit_vlc()
    libvlc_release(vlc.inst) ;
 }
 
-void open_media(const char* uri)
+void open_media(Playlist playlist)
 {
+   int i ;
+   char meta_data_buffer[1024] ;
+   vlc.media_index = 0 ;
+
    libvlc_media_player_set_xwindow(vlc.media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
-   if ((vlc.media = libvlc_media_new_path(vlc.inst, uri)) == NULL)
-      fprintf (stderr, "Error: in open_media() vlcPlayer.c: invalid file path\n") ;
-   libvlc_media_player_set_media(vlc.media_player, vlc.media) ;
+   vlc.media_list = libvlc_media_list_new(vlc.inst) ;
+
+   vlc.media = calloc(playlist.n_items, sizeof(libvlc_media_t *)) ;
+   meta_data.title = calloc(playlist.n_items, sizeof(char *)) ;
+   for (i = 0; i < playlist.n_items; ++i)
+   {
+      vlc.media[i] = libvlc_media_new_path(vlc.inst, playlist.uri[i]) ;
+      libvlc_media_list_add_media(vlc.media_list, vlc.media[i]) ;
+   }
+   libvlc_media_player_set_media(vlc.media_player, vlc.media[0]) ;
    libvlc_audio_set_volume(vlc.media_player, 100) ;
    play_player() ;
+   for (i = 0; i < playlist.n_items; ++i)
+   {
+      strcpy(meta_data_buffer, libvlc_media_get_meta(vlc.media[i], libvlc_meta_Title)) ;
+      meta_data.title[i] = calloc(playlist.n_items, strlen(meta_data_buffer)*sizeof(char)) ;
+      strncpy(meta_data.title[i], meta_data_buffer, 57) ;
+   }
+   set_playlist_item_title() ;
    start_seek_bar() ;
-   strncpy(meta_data.title, libvlc_media_get_meta(vlc.media, libvlc_meta_Title), 57) ;
-   set_title(meta_data.title) ;
+   set_title(meta_data.title[0]) ;
+}
+
+void play_media(int index)
+{
+   vlc.media_index = index ;
+   libvlc_media_player_set_media(vlc.media_player, vlc.media[index]) ;
+   gtk_list_box_select_row(playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc.media_index)) ;
+   play_player() ;
+   set_title(meta_data.title[vlc.media_index]) ;
 }
 
 void play_player()
@@ -68,7 +95,7 @@ void pause_player()
 
 int64_t get_duration()
 {
-   return libvlc_media_get_duration(vlc.media) ;
+   return libvlc_media_get_duration(vlc.media[vlc.media_index]) ;
 }
 
 int64_t get_current_time()

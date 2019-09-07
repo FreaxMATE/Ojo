@@ -204,9 +204,32 @@
           </packing>
         </child>
         <child>
-          <object class="GtkDrawingArea" id="ojo_drawing_area">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <child>
+              <object class="GtkListBox" id="ojo_playlist_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <signal name="row-activated" handler="on_ojo_playlist_box_row_activated" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkDrawingArea" id="ojo_drawing_area">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -378,6 +401,7 @@ audio-volume-medium-symbolic</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">window_main</property>
+    <property name="select_multiple">True</property>
     <child>
       <placeholder/>
     </child>
