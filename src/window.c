@@ -392,7 +392,8 @@ void setup_window()
 
 void set_title(char *track_name)
 {
-   char title[64] ;
+   char *title ;
+   title = calloc(strlen(track_name)+6, sizeof(char)) ;
    sprintf(title, "Ojo - %s", track_name) ;
    gtk_window_set_title(GTK_WINDOW(window), title) ;
    return ;
