@@ -38,6 +38,8 @@ void init_vlc()
 void quit_vlc()
 {
    free(settings) ;
+   for (int i = 0; i < playlist.n_items; ++i)
+      libvlc_media_release(vlc.media[i]) ;
    libvlc_media_player_release(vlc.media_player) ;
    libvlc_release(vlc.inst) ;
 }
@@ -50,7 +52,6 @@ void open_media(Playlist playlist)
 
    libvlc_media_player_set_xwindow(vlc.media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
    vlc.media_list = libvlc_media_list_new(vlc.inst) ;
-
    vlc.media = calloc(playlist.n_items, sizeof(libvlc_media_t *)) ;
    meta_data.title = calloc(playlist.n_items, sizeof(char *)) ;
    for (i = 0; i < playlist.n_items; ++i)
@@ -72,13 +73,22 @@ void open_media(Playlist playlist)
    set_title(meta_data.title[0]) ;
 }
 
-void play_media(int index)
+int play_media(int index)
 {
-   vlc.media_index = index ;
-   libvlc_media_player_set_media(vlc.media_player, vlc.media[index]) ;
-   gtk_list_box_select_row(playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc.media_index)) ;
-   play_player() ;
-   set_title(meta_data.title[vlc.media_index]) ;
+   if (index < playlist.n_items && index >= 0)
+   {
+      vlc.media_index = index ;
+      libvlc_media_player_set_media(vlc.media_player, vlc.media[index]) ;
+      gtk_list_box_select_row(playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc.media_index)) ;
+      play_player() ;
+      set_title(meta_data.title[vlc.media_index]) ;
+   }
+   else
+   {
+      fprintf (stderr, "ERROR: play_media() in vlcPlayer.c: invalid index\n")  ;
+      return FALSE ;
+   }
+   return TRUE ;
 }
 
 void play_player()

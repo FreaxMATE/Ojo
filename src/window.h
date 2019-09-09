@@ -22,34 +22,40 @@
 
 #include "vlcPlayer.h"
 
-GtkBuilder      *builder; 
-GtkWindow       *window ;
-GtkDrawingArea  *player_widget ;
-GtkMenuBar      *menu_bar ;
-GtkMenuItem     *file_menu,
-                *file_submenu ;
-GtkWidget       *file_menu_open,
-                *view_menu_fullscreen ;
-GtkToggleButton *preferences_dark_mode ,
-                *preferences_border_style ;
-GtkScale        *seek_bar ;
-GtkLabel        *time_label ;
-GtkVolumeButton *volume_button ;
-GtkButton       *playpause_button,
-                *prev_button ,
-                *stop_button ,
-                *forw_button ,
-                *fullscreen_button ;
-GtkListBox      *playlist_box ;
-GtkDialog       *about ;
-GtkDialog       *preferences_dialog ;
-GtkDialog       *filechooser_dialog ;
+GtkBuilder        *builder; 
+GtkWindow         *window ;
+GtkDrawingArea    *player_widget ;
+GtkMenuBar        *menu_bar ;
+GtkMenuItem       *file_menu,
+                  *file_submenu ;
+GtkWidget         *file_menu_open,
+                  *view_menu_fullscreen,
+                  *view_menu_showplaylist ;
+GtkToggleButton   *preferences_dark_mode ,
+                  *preferences_border_style,
+                  *preferences_view_playlist ;
+GtkScale          *seek_bar ;
+GtkLabel          *time_label ;
+GtkVolumeButton   *volume_button ;
+GtkButton         *playpause_button,
+                  *prev_track_button,
+                  *prev_button,
+                  *stop_button,
+                  *forw_button,
+                  *next_track_button,
+                  *fullscreen_button ;
+GtkListBox        *playlist_box ;
+GtkScrolledWindow *scrolled_window_playlist ;
+GtkDialog         *about ;
+GtkDialog         *preferences_dialog ;
+GtkDialog         *filechooser_dialog ;
 
 typedef struct _settings
 {
-    gboolean fullscreen ;
-    gboolean dark_mode ;
-    gboolean border_style ;
+   int fullscreen ;
+   int dark_mode ;
+   int border_style ;
+   int view_playlist ;
 } Settings ;
 
 typedef struct _playlist
@@ -64,10 +70,14 @@ Playlist playlist ;
 
 int about_dialog_response ;
 char time_string[32] ;
+int timeout ;
 
+int update_bar(int stop) ;
+void start_seek_bar() ;
 void set_playlist_item_title() ;
-void set_dark_mode (gboolean dark_mode) ;
-void set_border_style (gboolean border_style) ;
+void set_dark_mode (int dark_mode) ;
+void set_border_style (int border_style) ;
+void set_view_playlist(int view_playlist) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
 char *time_to_string(double current_time, double duration) ;
