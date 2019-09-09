@@ -72,7 +72,7 @@ int about_dialog_response ;
 char time_string[32] ;
 int timeout ;
 
-int update_bar(int stop) ;
+int update_bar() ;
 void start_seek_bar() ;
 void set_playlist_item_title() ;
 void set_dark_mode (int dark_mode) ;

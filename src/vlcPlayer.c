@@ -23,12 +23,6 @@
 
 #include "vlcPlayer.h"
 
-void reload_media()
-{
-   libvlc_media_player_set_media(vlc.media_player, vlc.media[0]) ;
-   pause_player() ;
-}
-
 void init_vlc()
 {
    vlc.inst = libvlc_new(0, NULL) ;
@@ -66,7 +60,7 @@ void open_media(Playlist playlist)
    {
       strcpy(meta_data_buffer, libvlc_media_get_meta(vlc.media[i], libvlc_meta_Title)) ;
       meta_data.title[i] = calloc(playlist.n_items, strlen(meta_data_buffer)*sizeof(char)) ;
-      strncpy(meta_data.title[i], meta_data_buffer, 57) ;
+      strcpy(meta_data.title[i], meta_data_buffer) ;
    }
    set_playlist_item_title() ;
    start_seek_bar() ;
@@ -77,6 +71,7 @@ int play_media(int index)
 {
    if (index < playlist.n_items && index >= 0)
    {
+      set_title(meta_data.title[index]) ;
       vlc.media_index = index ;
       libvlc_media_player_set_media(vlc.media_player, vlc.media[index]) ;
       gtk_list_box_select_row(playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc.media_index)) ;

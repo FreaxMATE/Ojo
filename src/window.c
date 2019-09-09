@@ -29,7 +29,7 @@ void set_playlist_item_title()
    int i ;
 
    for (i = 0; i < playlist.n_items; ++i)
-   {printf ("%s\n", meta_data.title[i]) ;
+   {
       gtk_label_set_text(GTK_LABEL(playlist.playlist_item_info[i]), meta_data.title[i]) ;
    }
 }
@@ -120,7 +120,7 @@ void on_ojo_play_pause_clicked()
 
 void on_ojo_prev_track_clicked()
 {
-   update_bar(FALSE) ;
+   g_source_remove(timeout) ;
    vlc.media_index-1 < 0 ? play_media(0) : play_media(vlc.media_index-1) ;
    start_seek_bar() ;
 }
@@ -186,23 +186,20 @@ void on_ojo_menu_fullscreen_toggled()
 }
 
 // SEEKBAR
-int update_bar(int stop)
+int update_bar()
 {
-   if (stop == TRUE)
-      return FALSE ;
-
    double current_time = (double)get_current_time() ; // in ms
    double duration = (double)get_duration() ;         // in ms
 
    if (libvlc_media_player_get_state(vlc.media_player) == libvlc_Ended)
    {
-      if (vlc.media_index < playlist.n_items)
+      if (vlc.media_index < playlist.n_items-1)
       {
          play_media(vlc.media_index+1) ;
       }
       else
       {
-         reload_media() ;
+         play_media(0) ;
       }
    }
 
@@ -216,7 +213,7 @@ int update_bar(int stop)
 
 void start_seek_bar()
 {
-   timeout = g_timeout_add(100, G_SOURCE_FUNC(update_bar), FALSE) ;
+   timeout = g_timeout_add(100, update_bar, FALSE) ;
 }
 
 void on_ojo_seek_bar_value_changed()

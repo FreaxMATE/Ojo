@@ -44,7 +44,6 @@ typedef struct _meta_data
 
 Meta_data meta_data ;
 
-void reload_media(void) ;
 void init_vlc(void) ;
 void quit_vlc(void) ;
 void open_media(Playlist playlist) ;
