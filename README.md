@@ -14,13 +14,13 @@ make
 ```
 
 
-## install (experimental)
+## install (experimental, not working properly yet)
 
 ```bash
 make
 sudo make install
 ```
-## uninstall (experimental)
+## uninstall (experimental, not working properly yet)
 
 ```bash
 make
