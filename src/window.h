@@ -68,7 +68,7 @@ typedef struct _playlist
 Settings *settings ;
 Playlist playlist ;
 
-int about_dialog_response ;
+int about_dialog_response, media_already_opened ;
 char time_string[32] ;
 int timeout ;
 
