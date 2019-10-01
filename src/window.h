@@ -24,6 +24,7 @@
 
 GtkBuilder        *builder; 
 GtkWindow         *window ;
+GtkPaned          *paned ;
 GtkDrawingArea    *player_widget ;
 GtkMenuBar        *menu_bar ;
 GtkMenuItem       *file_menu,
@@ -49,6 +50,7 @@ GtkScrolledWindow *scrolled_window_playlist ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
+GtkWidget         **playlist_widgets ;
 
 typedef struct _settings
 {
@@ -58,20 +60,16 @@ typedef struct _settings
    int view_playlist ;
 } Settings ;
 
-typedef struct _playlist
-{
-   int n_items ;
-   char **uri ;
-   GtkWidget **playlist_item_info ;
-} Playlist ;
-
 Settings *settings ;
-Playlist playlist ;
 
+GSList *list ;
+int n_tracks ;
 int about_dialog_response, media_already_opened ;
 char time_string[32] ;
 int timeout ;
 
+void on_ojo_filechooser_add_clicked(void) ;
+void on_ojo_filechooser_open_clicked(void) ;
 int update_bar() ;
 void start_seek_bar() ;
 void set_playlist_item_title() ;
@@ -80,7 +78,11 @@ void set_border_style (int border_style) ;
 void set_view_playlist(int view_playlist) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
+void initialize_gtk_playlist(void) ;
+int window_get_width(void) ;
+int window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
+int get_number_of_tracks(GSList *list) ;
 
 #endif /* _window_h_ */
 

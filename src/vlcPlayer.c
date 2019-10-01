@@ -23,94 +23,117 @@
 
 #include "vlcPlayer.h"
 
+Vlc *vlc_instance_new()
+{
+   return malloc (sizeof(Vlc)) ;
+}
+
 void init_vlc()
 {
-   vlc.inst = libvlc_new(0, NULL) ;
-   vlc.media_player = libvlc_media_player_new(vlc.inst) ;
+   vlc = vlc_instance_new() ;
+   vlc->inst = libvlc_new(0, NULL) ;
+   vlc->media_player = libvlc_media_player_new(vlc->inst) ;
 }
 
 void quit_vlc()
 {
    free(settings) ;
-   for (int i = 0; i < playlist.n_items; ++i)
-      libvlc_media_release(vlc.media[i]) ;
-   libvlc_media_player_release(vlc.media_player) ;
-   libvlc_release(vlc.inst) ;
+   libvlc_media_player_release(vlc->media_player) ;
+   libvlc_release(vlc->inst) ;
 }
 
-void open_media(Playlist playlist)
+Track *track_new()
 {
-   int i ;
-   char meta_data_buffer[1024] ;
-   vlc.media_index = 0 ;
+   return malloc(sizeof(Track)) ;
+}
 
-   libvlc_media_player_set_xwindow(vlc.media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
-   vlc.media_list = libvlc_media_list_new(vlc.inst) ;
-   vlc.media = calloc(playlist.n_items, sizeof(libvlc_media_t *)) ;
-   meta_data.title = calloc(playlist.n_items, sizeof(char *)) ;
-   for (i = 0; i < playlist.n_items; ++i)
+void open_media(GSList *list, int n_tracks, int add)
+{
+   int i = 0 ;
+   if (add == FALSE)
    {
-      vlc.media[i] = libvlc_media_new_path(vlc.inst, playlist.uri[i]) ;
-      libvlc_media_list_add_media(vlc.media_list, vlc.media[i]) ;
+      vlc->tracks = calloc(n_tracks, sizeof(Track **)) ;
    }
-   libvlc_media_player_set_media(vlc.media_player, vlc.media[0]) ;
-   libvlc_audio_set_volume(vlc.media_player, 100) ;
-   play_player() ;
-   for (i = 0; i < playlist.n_items; ++i)
+   else
    {
-      strcpy(meta_data_buffer, libvlc_media_get_meta(vlc.media[i], libvlc_meta_Title)) ;
-      meta_data.title[i] = calloc(playlist.n_items, strlen(meta_data_buffer)*sizeof(char)) ;
-      strcpy(meta_data.title[i], meta_data_buffer) ;
+      vlc->tracks = realloc(vlc->tracks, (vlc->n_tracks+n_tracks)*sizeof(Track **)) ;
+      i = vlc->n_tracks ;
    }
-   set_playlist_item_title() ;
-   start_seek_bar() ;
-   set_title(meta_data.title[0]) ;
+
+   if (vlc->tracks == NULL)
+   {
+      fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: vlc->tracks calloc/realloc returned NULL\n") ;
+      return ;
+   }
+
+   libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
+   // initalize every track
+   while (list != NULL)
+   {
+      vlc->tracks[i] = track_new() ;
+      strcpy(vlc->tracks[i]->uri, list->data) ;printf ("URI: %s\n", vlc->tracks[i]->uri) ;
+      vlc->tracks[i]->media = libvlc_media_new_path(vlc->inst, vlc->tracks[i]->uri) ;
+      if (vlc->tracks[i]->media == NULL)
+      {
+         fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: on opening media check uri\n") ;
+         return ;
+      }
+      vlc->tracks[i]->title = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Title) ;
+      printf ("Title: %s\n", vlc->tracks[i]->title) ;
+      i++ ;
+      list = list->next ;
+   }
+   vlc->n_tracks = i ;
+
+   initialize_gtk_playlist() ;
+   play_media(0) ;
 }
 
 int play_media(int index)
 {
-   if (index < playlist.n_items && index >= 0)
+   if (index < vlc->n_tracks && index >= 0)
    {
-      set_title(meta_data.title[index]) ;
-      vlc.media_index = index ;
-      libvlc_media_player_set_media(vlc.media_player, vlc.media[index]) ;
-      gtk_list_box_select_row(playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc.media_index)) ;
+      vlc->media_index = index ;
+      libvlc_media_player_set_media(vlc->media_player, vlc->tracks[vlc->media_index]->media) ;
+      gtk_list_box_select_row (playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc->media_index)) ;
       play_player() ;
-      set_title(meta_data.title[vlc.media_index]) ;
+      set_title(vlc->tracks[vlc->media_index]->title) ;
    }
    else
    {
-      fprintf (stderr, "ERROR: play_media() in vlcPlayer.c: invalid index\n")  ;
-      return FALSE ;
+      fprintf (stderr, "WARNING: play_media() in vlcPlayer.c: index out of track range\n") ;
+      return -1 ;
    }
-   return TRUE ;
+   start_seek_bar() ;
+
+   return 0 ;
 }
 
 void play_player()
 {
-   libvlc_media_player_play(vlc.media_player) ;
+   libvlc_media_player_play(vlc->media_player) ;
    gtk_button_set_image (GTK_BUTTON(playpause_button), gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 void pause_player()
 {
-   libvlc_media_player_pause(vlc.media_player) ;
+   libvlc_media_player_pause(vlc->media_player) ;
    gtk_button_set_image (GTK_BUTTON(playpause_button), gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 int64_t get_duration()
 {
-   return libvlc_media_get_duration(vlc.media[vlc.media_index]) ;
+   return  libvlc_media_get_duration(libvlc_media_player_get_media(vlc->media_player)) ;
 }
 
 int64_t get_current_time()
 {
-   return libvlc_media_player_get_time(vlc.media_player) ;
+   return libvlc_media_player_get_time(vlc->media_player) ;
 }
 
 void set_current_time(double time)
 {
-   libvlc_media_player_set_time(vlc.media_player, time) ;
+   libvlc_media_player_set_time(vlc->media_player, time) ;
 }
 
 

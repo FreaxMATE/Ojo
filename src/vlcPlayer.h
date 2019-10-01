@@ -24,29 +24,28 @@
 
 #include "window.h"
 
-typedef struct _playlist Playlist ;
+typedef struct _track
+{
+   libvlc_media_t *media ;
+   char uri[1024] ;
+   char *title ;
+} Track ;
 
-struct vlc
+typedef struct _vlc
 {
    libvlc_instance_t *inst ;
-   libvlc_media_list_t *media_list ;
-   libvlc_media_t **media ;
    libvlc_media_player_t *media_player ;
-   int media_index ;
+   Track **tracks ;
+   int n_tracks ;
    int64_t duration ;
-} vlc ;
+   int media_index ;
+} Vlc ;
 
-typedef struct _meta_data
-{
-   char **title ;
-
-} Meta_data ;
-
-Meta_data meta_data ;
+Vlc *vlc ;
 
 void init_vlc(void) ;
 void quit_vlc(void) ;
-void open_media(Playlist playlist) ;
+void open_media(GSList *list, int n_tracks, int add) ;
 int play_media(int index) ;
 void play_player(void) ;
 void pause_player(void) ;

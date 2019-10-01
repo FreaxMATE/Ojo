@@ -60,8 +60,8 @@
   </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
-    <property name="default_width">440</property>
-    <property name="default_height">250</property>
+    <property name="default_width">960</property>
+    <property name="default_height">540</property>
     <signal name="destroy" handler="on_window_main_destroy" swapped="no"/>
     <child>
       <placeholder/>
@@ -230,40 +230,48 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkScrolledWindow" id="ojo_scrolled_window_playlist">
+              <object class="GtkPaned" id="ojo_paned">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkViewport">
+                  <object class="GtkScrolledWindow" id="ojo_scrolled_window_playlist">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="shadow_type">none</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
                     <child>
-                      <object class="GtkListBox" id="ojo_playlist_box">
+                      <object class="GtkViewport">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <signal name="row-activated" handler="on_ojo_playlist_box_row_activated" swapped="no"/>
+                        <child>
+                          <object class="GtkListBox" id="ojo_playlist_box">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <signal name="row-activated" handler="on_ojo_playlist_box_row_activated" swapped="no"/>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
+                  <packing>
+                    <property name="resize">False</property>
+                    <property name="shrink">False</property>
+                  </packing>
                 </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkDrawingArea" id="ojo_drawing_area">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkDrawingArea" id="ojo_drawing_area">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="resize">True</property>
+                    <property name="shrink">False</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
           </object>
