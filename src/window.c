@@ -117,6 +117,12 @@ void on_ojo_filechooser_open_clicked()
       gtk_widget_show(GTK_WIDGET(next_track_button)) ;
       set_view_playlist(TRUE) ;
    }
+   else
+   {
+      gtk_widget_hide(GTK_WIDGET(prev_track_button)) ;
+      gtk_widget_hide(GTK_WIDGET(next_track_button)) ;
+      set_view_playlist(FALSE) ;
+   }
    media_already_opened = TRUE ;
    open_media(list, n_tracks, FALSE) ;
 }
