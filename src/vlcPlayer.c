@@ -71,7 +71,7 @@ void open_media(GSList *list, int n_tracks, int add)
    while (list != NULL)
    {
       vlc->tracks[i] = track_new() ;
-      strcpy(vlc->tracks[i]->uri, list->data) ;printf ("URI: %s\n", vlc->tracks[i]->uri) ;
+      strcpy(vlc->tracks[i]->uri, list->data) ;
       vlc->tracks[i]->media = libvlc_media_new_path(vlc->inst, vlc->tracks[i]->uri) ;
       if (vlc->tracks[i]->media == NULL)
       {
