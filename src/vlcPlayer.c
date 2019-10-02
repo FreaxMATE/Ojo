@@ -79,7 +79,6 @@ void open_media(GSList *list, int n_tracks, int add)
          return ;
       }
       vlc->tracks[i]->title = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Title) ;
-      printf ("Title: %s\n", vlc->tracks[i]->title) ;
       i++ ;
       list = list->next ;
    }

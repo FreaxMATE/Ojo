@@ -470,7 +470,6 @@ int get_number_of_tracks(GSList *list)
       ++i ;
       list = list->next ;
    }
-   printf ("Number of Tracks = %d\n", i) ;
    return i ;
 }
 
