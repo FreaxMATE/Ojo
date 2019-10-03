@@ -101,7 +101,10 @@ void on_ojo_filechooser_add_clicked()
 void on_ojo_filechooser_open_clicked()
 {
    if (media_already_opened == TRUE)
+   {
       remove_playlist_entries() ;
+      free_tracks() ;
+   }
    gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
    gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
 
@@ -436,6 +439,7 @@ void set_title(char *track_name)
    title = calloc(strlen(track_name)+6, sizeof(char)) ;
    sprintf(title, "Ojo - %s", track_name) ;
    gtk_window_set_title(GTK_WINDOW(window), title) ;
+   free(title) ;
    return ;
 }
 

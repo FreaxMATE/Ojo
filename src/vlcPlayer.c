@@ -47,6 +47,16 @@ Track *track_new()
    return malloc(sizeof(Track)) ;
 }
 
+void free_tracks()
+{
+   int i ;
+   while(i < vlc->n_tracks)
+   {
+      free(vlc->tracks[i++]) ;
+   }
+   free(vlc->tracks) ;
+}
+
 void open_media(GSList *list, int n_tracks, int add)
 {
    int i = 0 ;
@@ -80,9 +90,11 @@ void open_media(GSList *list, int n_tracks, int add)
       }
       vlc->tracks[i]->title = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Title) ;
       i++ ;
+      g_free(list->data) ;
       list = list->next ;
    }
    vlc->n_tracks = i ;
+   g_slist_free(list) ;
 
    initialize_gtk_playlist() ;
    play_media(0) ;

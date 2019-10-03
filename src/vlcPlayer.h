@@ -45,6 +45,7 @@ Vlc *vlc ;
 
 void init_vlc(void) ;
 void quit_vlc(void) ;
+void free_tracks(void) ;
 void open_media(GSList *list, int n_tracks, int add) ;
 int play_media(int index) ;
 void play_player(void) ;
