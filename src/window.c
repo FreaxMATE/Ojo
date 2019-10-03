@@ -89,7 +89,7 @@ void on_ojo_filechooser_add_clicked()
       fprintf (stderr, "WARNING: on_ojo_filechooser_add_clicked() in window.c: no files specified\n") ;
       return ;
    }
-   n_tracks = get_number_of_tracks(list) ;
+   n_tracks = g_slist_length(list) ;
    gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
    gtk_widget_show(GTK_WIDGET(next_track_button)) ;
    set_view_playlist(TRUE) ;
@@ -111,7 +111,7 @@ void on_ojo_filechooser_open_clicked()
       fprintf (stderr, "WARNING: on_ojo_filechooser_open_clicked() in window.c: no files specified\n") ;
       return ;
    }
-   n_tracks = get_number_of_tracks(list) ;
+   n_tracks = g_slist_length(list) ;
    if (n_tracks > 1)
    {
       gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
@@ -468,17 +468,4 @@ char *time_to_string(double current_time, double duration)
 
    return time_string ;
 }
-
-int get_number_of_tracks(GSList *list)
-{
-   int i = 1 ;
-
-   while (list->next != NULL)
-   {
-      ++i ;
-      list = list->next ;
-   }
-   return i ;
-}
-
 

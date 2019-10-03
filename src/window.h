@@ -82,7 +82,6 @@ void initialize_gtk_playlist(void) ;
 int window_get_width(void) ;
 int window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
-int get_number_of_tracks(GSList *list) ;
 
 #endif /* _window_h_ */
 
