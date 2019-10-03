@@ -24,15 +24,6 @@
 /*
  *   PLAYLIST
  */
-void set_playlist_item_title()
-{
-
-/*   for (i = 0; i < playlist.n_items; ++i)
-   {
-      gtk_label_set_text(GTK_LABEL(playlist.playlist_item_info[i]), meta_data.title[i]) ;
-   }
-*/
-}
 
 void on_ojo_playlist_box_row_activated(GtkListBox *box, GtkListBoxRow *row, gpointer user_data)
 {
@@ -93,6 +84,11 @@ void on_ojo_filechooser_add_clicked()
    gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
 
    list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(filechooser_dialog)) ;
+   if (list == NULL)
+   {
+      fprintf (stderr, "WARNING: on_ojo_filechooser_add_clicked() in window.c: no files specified\n") ;
+      return ;
+   }
    n_tracks = get_number_of_tracks(list) ;
    gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
    gtk_widget_show(GTK_WIDGET(next_track_button)) ;
@@ -110,6 +106,11 @@ void on_ojo_filechooser_open_clicked()
    gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
 
    list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(filechooser_dialog)) ;
+   if (list == NULL)
+   {
+      fprintf (stderr, "WARNING: on_ojo_filechooser_open_clicked() in window.c: no files specified\n") ;
+      return ;
+   }
    n_tracks = get_number_of_tracks(list) ;
    if (n_tracks > 1)
    {
@@ -471,6 +472,7 @@ char *time_to_string(double current_time, double duration)
 int get_number_of_tracks(GSList *list)
 {
    int i = 1 ;
+
    while (list->next != NULL)
    {
       ++i ;
