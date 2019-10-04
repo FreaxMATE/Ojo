@@ -49,7 +49,7 @@ Track *track_new()
 
 void free_tracks()
 {
-   int i ;
+   int i = 0 ;
    while(i < vlc->n_tracks)
    {
       free(vlc->tracks[i++]) ;
