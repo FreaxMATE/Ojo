@@ -57,7 +57,7 @@ void free_tracks()
    free(vlc->tracks) ;
 }
 
-void open_media(GSList *list, int n_tracks, int add)
+void open_media(GSList *list, int n_tracks, gboolean add)
 {
    int i = 0 ;
    if (add == FALSE)

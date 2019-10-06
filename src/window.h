@@ -54,28 +54,28 @@ GtkWidget         **playlist_widgets ;
 
 typedef struct _settings
 {
-   int fullscreen ;
-   int dark_mode ;
-   int border_style ;
-   int view_playlist ;
+   gboolean fullscreen ;
+   gboolean dark_mode ;
+   gboolean border_style ;
+   gboolean view_playlist ;
 } Settings ;
 
 Settings *settings ;
 
 GSList *list ;
 int n_tracks ;
-int about_dialog_response, media_already_opened ;
+gboolean about_dialog_response, media_already_opened ;
 char time_string[32] ;
 int timeout ;
 
 void on_ojo_filechooser_add_clicked(void) ;
 void on_ojo_filechooser_open_clicked(void) ;
-int update_bar() ;
+gboolean update_bar() ;
 void start_seek_bar() ;
 void set_playlist_item_title() ;
-void set_dark_mode (int dark_mode) ;
-void set_border_style (int border_style) ;
-void set_view_playlist(int view_playlist) ;
+void set_dark_mode (gboolean dark_mode) ;
+void set_border_style (gboolean border_style) ;
+void set_view_playlist(gboolean view_playlist) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
 void initialize_gtk_playlist(void) ;
