@@ -44,6 +44,7 @@ GtkButton         *playpause_button,
                   *forw_button,
                   *next_track_button,
                   *fullscreen_button ;
+                  *playlist_button ;
 GtkBox            *main_box ;
 GtkListBox        *playlist_box ;
 GtkDialog         *about ;
@@ -81,7 +82,6 @@ void initialize_gtk_playlist(void) ;
 int window_get_width(void) ;
 int window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
-void show_playlist (gboolean state) ;
 
 #endif /* _window_h_ */
 

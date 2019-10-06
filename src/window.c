@@ -330,6 +330,7 @@ void set_border_style (int border_style)
                 gtk_button_set_relief (forw_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (playlist_button, GTK_RELIEF_NORMAL) ;
                 settings->border_style = border_style ;
         }
         else
@@ -340,6 +341,7 @@ void set_border_style (int border_style)
                 gtk_button_set_relief (forw_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (playlist_button, GTK_RELIEF_NONE) ;
                 settings->border_style = border_style ;
         }
     }
@@ -399,6 +401,7 @@ void setup_window()
    next_track_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_next_track")) ;
    volume_button = GTK_VOLUME_BUTTON(gtk_builder_get_object(builder, "ojo_volume")) ;
    fullscreen_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_fullscreen")) ;
+   playlist_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_playlist")) ;
    preferences_dark_mode = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_dark_mode")) ;
    preferences_border_style = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_border_style")) ;
    preferences_view_playlist = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_view_playlist")) ;
