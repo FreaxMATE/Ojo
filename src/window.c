@@ -30,9 +30,12 @@ void on_ojo_playlist_box_row_activated(GtkListBox *box, GtkListBoxRow *row, gpoi
    play_media(gtk_list_box_row_get_index(row)) ;
 }
 
-void on_ojo_menu_showplaylist_toggled()
-{
-   set_view_playlist(gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist))) ;
+void on_ojo_menu_showplaylist_toggled() {
+   set_view_playlist(!settings->view_playlist) ;
+}
+
+void on_ojo_playlist_clicked() {
+   set_view_playlist(!settings->view_playlist) ;
 }
 
 void initialize_gtk_playlist()
@@ -46,7 +49,6 @@ void initialize_gtk_playlist()
       gtk_widget_show(playlist_widgets[i]) ;
       gtk_list_box_insert(playlist_box, playlist_widgets[i], i) ;
    }
-   gtk_paned_set_position (paned, window_get_width()/2) ;
 }
 
 void remove_playlist_entries()
@@ -81,7 +83,6 @@ void on_ojo_filechooser_add_clicked()
    }
    remove_playlist_entries() ;
    gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
-   gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
 
    list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(filechooser_dialog)) ;
    if (list == NULL)
@@ -92,7 +93,6 @@ void on_ojo_filechooser_add_clicked()
    n_tracks = g_slist_length(list) ;
    gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
    gtk_widget_show(GTK_WIDGET(next_track_button)) ;
-   set_view_playlist(TRUE) ;
 
    media_already_opened = TRUE ;
    open_media(list, n_tracks, TRUE) ;
@@ -106,7 +106,6 @@ void on_ojo_filechooser_open_clicked()
       free_tracks() ;
    }
    gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
-   gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
 
    list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(filechooser_dialog)) ;
    if (list == NULL)
@@ -119,13 +118,11 @@ void on_ojo_filechooser_open_clicked()
    {
       gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
       gtk_widget_show(GTK_WIDGET(next_track_button)) ;
-      set_view_playlist(TRUE) ;
    }
    else
    {
       gtk_widget_hide(GTK_WIDGET(prev_track_button)) ;
       gtk_widget_hide(GTK_WIDGET(next_track_button)) ;
-      set_view_playlist(FALSE) ;
    }
    media_already_opened = TRUE ;
    open_media(list, n_tracks, FALSE) ;
@@ -348,19 +345,23 @@ void set_border_style (int border_style)
     }
 }
 
-void set_view_playlist(int view_playlist)
+void set_view_playlist (int view_playlist)
 {
-   if (view_playlist)
-   {
-      gtk_widget_show(GTK_WIDGET(scrolled_window_playlist)) ;
-      settings->view_playlist = view_playlist ;
-      gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), TRUE) ;
-   }
-   else
-   {
-      gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
-      settings->view_playlist = view_playlist ;
-      gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), FALSE) ;
+   if (settings->view_playlist != view_playlist) {
+      if (view_playlist)
+      {
+         gtk_widget_hide(GTK_WIDGET(player_widget)) ;
+         gtk_widget_show(GTK_WIDGET(playlist_box)) ;
+         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
+         settings->view_playlist = view_playlist ;
+      }
+      else
+      {
+         gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
+         gtk_widget_show(GTK_WIDGET(player_widget)) ;
+         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
+         settings->view_playlist = view_playlist ;
+      }
    }
 }
 
@@ -379,8 +380,6 @@ void setup_window()
    gtk_builder_connect_signals(builder, NULL);
 
    player_widget = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
-
-   playlist_box = GTK_LIST_BOX(gtk_builder_get_object(builder, "ojo_playlist_box")) ;
 
    menu_bar = GTK_MENU_BAR(gtk_builder_get_object(builder, "ojo_menu")) ;
    file_menu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_menu_item")) ;
@@ -405,16 +404,21 @@ void setup_window()
    preferences_view_playlist = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_view_playlist")) ;
 
    time_label = GTK_LABEL(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
-   scrolled_window_playlist = GTK_SCROLLED_WINDOW(gtk_builder_get_object(builder, "ojo_scrolled_window_playlist")) ;
-   paned = GTK_PANED(gtk_builder_get_object(builder, "ojo_paned")) ;
 
    about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_on_about")) ;
    preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
    filechooser_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_filechooser_dialog")) ;
 
+   main_box = GTK_BOX(gtk_builder_get_object(builder, "ojo_box")) ;
+   playlist_box = GTK_LIST_BOX(gtk_list_box_new ()) ;
+   g_signal_connect(playlist_box, "row_activated", G_CALLBACK(on_ojo_playlist_box_row_activated), NULL);
+
+
+   gtk_box_pack_start (GTK_BOX(main_box), GTK_WIDGET(playlist_box), TRUE, TRUE, 0) ;
+   gtk_box_reorder_child (GTK_BOX(main_box), GTK_WIDGET(playlist_box), 1) ;
+
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, 60.0) ;
    gtk_range_set_value(GTK_RANGE(seek_bar), 0.0) ;
-   gtk_widget_hide(GTK_WIDGET(scrolled_window_playlist)) ;
    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(view_menu_showplaylist), settings->view_playlist) ;
    g_object_unref(builder) ;
 }

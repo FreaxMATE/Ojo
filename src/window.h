@@ -24,7 +24,6 @@
 
 GtkBuilder        *builder; 
 GtkWindow         *window ;
-GtkPaned          *paned ;
 GtkDrawingArea    *player_widget ;
 GtkMenuBar        *menu_bar ;
 GtkMenuItem       *file_menu,
@@ -45,8 +44,8 @@ GtkButton         *playpause_button,
                   *forw_button,
                   *next_track_button,
                   *fullscreen_button ;
+GtkBox            *main_box ;
 GtkListBox        *playlist_box ;
-GtkScrolledWindow *scrolled_window_playlist ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
@@ -82,6 +81,7 @@ void initialize_gtk_playlist(void) ;
 int window_get_width(void) ;
 int window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
+void show_playlist (gboolean state) ;
 
 #endif /* _window_h_ */
 
