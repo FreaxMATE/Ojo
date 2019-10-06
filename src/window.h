@@ -43,7 +43,7 @@ GtkButton         *playpause_button,
                   *stop_button,
                   *forw_button,
                   *next_track_button,
-                  *fullscreen_button ;
+                  *fullscreen_button,
                   *playlist_button ;
 GtkBox            *main_box ;
 GtkListBox        *playlist_box ;
