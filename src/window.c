@@ -210,7 +210,7 @@ void on_ojo_menu_fullscreen_toggled()
 }
 
 // SEEKBAR
-int update_bar()
+gboolean update_bar()
 {
    double current_time = (double)get_current_time() ; // in ms
    double duration = (double)get_duration() ;         // in ms
@@ -308,7 +308,7 @@ void on_ojo_preferences_close_clicked()
     gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
-void set_dark_mode (int dark_mode)
+void set_dark_mode (gboolean dark_mode)
 {
     if (settings->dark_mode != dark_mode)
     {
@@ -318,7 +318,7 @@ void set_dark_mode (int dark_mode)
     }
 }
 
-void set_border_style (int border_style)
+void set_border_style (gboolean border_style)
 {
     if (settings->border_style != border_style)
     {
@@ -347,7 +347,7 @@ void set_border_style (int border_style)
     }
 }
 
-void set_view_playlist (int view_playlist)
+void set_view_playlist (gboolean view_playlist)
 {
    if (settings->view_playlist != view_playlist) {
       if (view_playlist)
