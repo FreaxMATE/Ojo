@@ -262,6 +262,22 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+              <object class="GtkButton" id="ojo_fullscreen">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">img_ojo_fullscreen</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_ojo_fullscreen_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkVolumeButton" id="ojo_volume">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -293,22 +309,6 @@ audio-volume-medium-symbolic</property>
                     <property name="relief">none</property>
                   </object>
                 </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="ojo_fullscreen">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">img_ojo_fullscreen</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="on_ojo_fullscreen_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
