@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<schemalist>
+
+  <schema path="/org/ojo-project/ojo/gschema" id="org.ojo-project.ojo.gschema">
+
+    <key name='dark-mode' type='b'>
+      <default>false</default>
+      <summary>If enabled, dark theme is used if there is one defined by the theme</summary>
+      <description>Toggle fullscreen</description>
+    </key>
+    <key name='border-style' type='b'>
+      <default>false</default>
+      <summary>If enabled, border arounds buttons will be drawn</summary>
+      <description>Toggle fullscreen</description>
+    </key>
+
+  </schema>
+
+</schemalist>
