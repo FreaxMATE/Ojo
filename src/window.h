@@ -24,7 +24,7 @@
 
 GtkBuilder        *builder; 
 GtkWindow         *window ;
-GtkDrawingArea    *player_widget ;
+GtkDrawingArea    *drawing_area ;
 GtkMenuBar        *menu_bar ;
 GtkMenuItem       *file_menu,
                   *file_submenu ;
@@ -80,6 +80,7 @@ void set_view_playlist(gboolean view_playlist) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
 void initialize_gtk_playlist(void) ;
+void format_display_for_media(void)  ;
 int window_get_width(void) ;
 int window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;

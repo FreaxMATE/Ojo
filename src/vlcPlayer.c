@@ -77,7 +77,7 @@ void open_media(GSList *list, int n_tracks, gboolean add)
       fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: vlc->tracks calloc/realloc returned NULL\n") ;
       return ;
    }
-   libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
+   libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
    // initalize every track
    while (list != NULL)
    {
@@ -123,10 +123,7 @@ void open_media(GSList *list, int n_tracks, gboolean add)
    g_slist_free(list) ;
 
    initialize_gtk_playlist() ;
-   if (vlc->tracks[0]->type == AUDIO) {
-      gtk_widget_show(GTK_WIDGET(background_image)) ;
-      gtk_widget_hide(GTK_WIDGET(player_widget)) ;
-   }
+
    play_media(0) ;
 }
 
@@ -146,6 +143,7 @@ int play_media(int index)
       return -1 ;
    }
    start_seek_bar() ;
+   format_display_for_media() ;
 
    return 0 ;
 }

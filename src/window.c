@@ -25,12 +25,9 @@
  *   PLAYLIST
  */
 
-int current_index;
-
 void on_ojo_playlist_box_row_activated(GtkListBox *box, GtkListBoxRow *row, gpointer user_data)
 {
    play_media(gtk_list_box_row_get_index(row)) ;
-   current_index = gtk_list_box_row_get_index(row) ;
 }
 
 void on_ojo_menu_showplaylist_toggled() {
@@ -131,6 +128,31 @@ void on_ojo_filechooser_open_clicked()
    open_media(list, n_tracks, FALSE) ;
 }
 
+void format_display_for_media () //FIXME: only hide currently-shown widgets
+{
+   if (settings->view_playlist)
+   {
+         gtk_widget_hide(GTK_WIDGET(background_image)) ;
+         gtk_widget_hide(GTK_WIDGET(drawing_area)) ;
+         gtk_widget_show(GTK_WIDGET(playlist_box )) ;
+   }
+   else
+   {
+      if (vlc->tracks[vlc->media_index]->type == AUDIO)
+      {
+         gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
+         gtk_widget_hide(GTK_WIDGET(drawing_area)) ;
+         gtk_widget_show(GTK_WIDGET(background_image)) ;
+      }
+      else if (vlc->tracks[vlc->media_index]->type == VIDEO)
+      {
+         gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
+         gtk_widget_hide(GTK_WIDGET(background_image)) ;
+         gtk_widget_show(GTK_WIDGET(drawing_area)) ;
+      }
+   }
+
+}
 
 /*
  *   PLAYBACK CONTROL
@@ -355,21 +377,15 @@ void set_view_playlist (gboolean view_playlist)
    if (settings->view_playlist != view_playlist) {
       if (view_playlist)
       {
-         gtk_widget_hide(GTK_WIDGET(background_image)) ;
-         gtk_widget_hide(GTK_WIDGET(player_widget)) ;
-         gtk_widget_show(GTK_WIDGET(playlist_box)) ;
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
          settings->view_playlist = view_playlist ;
+         format_display_for_media() ;
       }
       else
       {
-         if (vlc->tracks[current_index]->type == AUDIO)
-            gtk_widget_show(GTK_WIDGET(background_image)) ;
-         else
-            gtk_widget_show(GTK_WIDGET(player_widget)) ;
-         gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
          settings->view_playlist = view_playlist ;
+         format_display_for_media() ;
       }
    }
 }
@@ -388,7 +404,7 @@ void setup_window()
    window = GTK_WINDOW(gtk_builder_get_object(builder, "window_main"));
    gtk_builder_connect_signals(builder, NULL);
 
-   player_widget = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
+   drawing_area = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
 
    menu_bar = GTK_MENU_BAR(gtk_builder_get_object(builder, "ojo_menu")) ;
    file_menu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_menu_item")) ;
