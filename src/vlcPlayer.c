@@ -77,9 +77,7 @@ void open_media(GSList *list, int n_tracks, gboolean add)
       fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: vlc->tracks calloc/realloc returned NULL\n") ;
       return ;
    }
-   gtk_widget_show(GTK_WIDGET(player_widget)) ;
    libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
-   gtk_widget_hide(GTK_WIDGET(player_widget)) ;
    // initalize every track
    while (list != NULL)
    {
@@ -107,9 +105,9 @@ void open_media(GSList *list, int n_tracks, gboolean add)
          return ;
       }
       if (tracks[0][0]->i_type == libvlc_track_audio)
-         vlc->tracks[i]->type = 1 ;
+         vlc->tracks[i]->type = AUDIO ;
       else if (tracks[0][0]->i_type == libvlc_track_video)
-         vlc->tracks[i]->type = 2 ;
+         vlc->tracks[i]->type = VIDEO ;
       else
       {
          vlc->tracks[i]->type = -1 ;
@@ -125,6 +123,10 @@ void open_media(GSList *list, int n_tracks, gboolean add)
    g_slist_free(list) ;
 
    initialize_gtk_playlist() ;
+   if (vlc->tracks[0]->type == AUDIO) {
+      gtk_widget_show(GTK_WIDGET(background_image)) ;
+      gtk_widget_hide(GTK_WIDGET(player_widget)) ;
+   }
    play_media(0) ;
 }
 
@@ -135,16 +137,6 @@ int play_media(int index)
       vlc->media_index = index ;
       libvlc_media_player_set_media(vlc->media_player, vlc->tracks[vlc->media_index]->media) ;
       gtk_list_box_select_row (playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc->media_index)) ;
-      if (vlc->tracks[index]->type == 1)
-      {
-         gtk_widget_hide(GTK_WIDGET(player_widget)) ;
-         gtk_widget_show(GTK_WIDGET(cover_art)) ;
-      }
-      else
-      {
-         gtk_widget_show(GTK_WIDGET(player_widget)) ;
-         gtk_widget_hide(GTK_WIDGET(cover_art)) ;
-      }
       play_player() ;
       set_title(vlc->tracks[vlc->media_index]->title) ;
    }

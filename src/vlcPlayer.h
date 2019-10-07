@@ -24,10 +24,15 @@
 
 #include "window.h"
 
+typedef enum {
+   AUDIO,
+   VIDEO,
+} FileType ; 
+
 typedef struct _track
 {
    libvlc_media_t *media ;
-   int type ;
+   FileType type ;
    char uri[1024] ;
    char *title ;
    char *artist ;
