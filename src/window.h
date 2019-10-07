@@ -25,6 +25,7 @@
 GtkBuilder        *builder; 
 GtkWindow         *window ;
 GtkDrawingArea    *player_widget ;
+GtkImage          *cover_art ;
 GtkMenuBar        *menu_bar ;
 GtkMenuItem       *file_menu,
                   *file_submenu ;

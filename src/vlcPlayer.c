@@ -59,7 +59,9 @@ void free_tracks()
 
 void open_media(GSList *list, int n_tracks, gboolean add)
 {
-   int i = 0 ;
+   libvlc_media_track_t ***tracks ;
+   tracks = malloc(sizeof(libvlc_media_track_t ***)) ;
+   int n_streams, i = 0 ;
    if (add == FALSE)
    {
       vlc->tracks = calloc(n_tracks, sizeof(Track **)) ;
@@ -75,8 +77,9 @@ void open_media(GSList *list, int n_tracks, gboolean add)
       fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: vlc->tracks calloc/realloc returned NULL\n") ;
       return ;
    }
-
+   gtk_widget_show(GTK_WIDGET(player_widget)) ;
    libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(player_widget)))) ;
+   gtk_widget_hide(GTK_WIDGET(player_widget)) ;
    // initalize every track
    while (list != NULL)
    {
@@ -88,9 +91,34 @@ void open_media(GSList *list, int n_tracks, gboolean add)
          fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: on opening media check uri\n") ;
          return ;
       }
+      if (libvlc_media_parse_with_options(vlc->tracks[i]->media, libvlc_media_fetch_local, 0) == -1)
+      {
+         fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: media_parse returned -1\n") ;
+         return ;
+      }
+      while (libvlc_media_get_parsed_status(vlc->tracks[i]->media) != libvlc_media_parsed_status_done)
+         ;
       vlc->tracks[i]->title = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Title) ;
-      i++ ;
+      vlc->tracks[i]->artist = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Artist) ;
+      vlc->tracks[i]->album = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Album) ;
+      if ((n_streams = libvlc_media_tracks_get(vlc->tracks[i]->media, tracks)) == 0)
+      {
+         fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: could not get track description\n") ;
+         return ;
+      }
+      if (tracks[0][0]->i_type == libvlc_track_audio)
+         vlc->tracks[i]->type = 1 ;
+      else if (tracks[0][0]->i_type == libvlc_track_video)
+         vlc->tracks[i]->type = 2 ;
+      else
+      {
+         vlc->tracks[i]->type = -1 ;
+         fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: media type neither audio nor video\n") ;
+         return ;
+      }
+      libvlc_media_tracks_release(tracks[0], n_streams) ;
       g_free(list->data) ;
+      i++ ;
       list = list->next ;
    }
    vlc->n_tracks = i ;
@@ -107,6 +135,16 @@ int play_media(int index)
       vlc->media_index = index ;
       libvlc_media_player_set_media(vlc->media_player, vlc->tracks[vlc->media_index]->media) ;
       gtk_list_box_select_row (playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc->media_index)) ;
+      if (vlc->tracks[index]->type == 1)
+      {
+         gtk_widget_hide(GTK_WIDGET(player_widget)) ;
+         gtk_widget_show(GTK_WIDGET(cover_art)) ;
+      }
+      else
+      {
+         gtk_widget_show(GTK_WIDGET(player_widget)) ;
+         gtk_widget_hide(GTK_WIDGET(cover_art)) ;
+      }
       play_player() ;
       set_title(vlc->tracks[vlc->media_index]->title) ;
    }

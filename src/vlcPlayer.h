@@ -27,8 +27,11 @@
 typedef struct _track
 {
    libvlc_media_t *media ;
+   int type ;
    char uri[1024] ;
    char *title ;
+   char *artist ;
+   char *album ;
 } Track ;
 
 typedef struct _vlc

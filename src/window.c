@@ -382,6 +382,8 @@ void setup_window()
    gtk_builder_connect_signals(builder, NULL);
 
    player_widget = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
+   gtk_widget_hide(GTK_WIDGET(player_widget)) ;
+   cover_art = GTK_IMAGE(gtk_builder_get_object(builder, "img_ojo_cover_art")) ;
 
    menu_bar = GTK_MENU_BAR(gtk_builder_get_object(builder, "ojo_menu")) ;
    file_menu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_menu_item")) ;
