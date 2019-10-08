@@ -430,6 +430,7 @@ void setup_window()
 
    window = GTK_WINDOW(gtk_builder_get_object(builder, "window_main"));
    gtk_builder_connect_signals(builder, NULL);
+   gtk_window_set_title(window, "Ojo") ;
 
    drawing_area = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
 
