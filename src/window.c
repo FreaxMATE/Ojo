@@ -40,7 +40,7 @@ void on_ojo_playlist_clicked() {
 
 void initialize_gtk_playlist()
 {
-   playlist_widgets = calloc (vlc->n_tracks, sizeof(GtkLabel *)) ;
+   GtkWidget *playlist_widgets[vlc->n_tracks] ;
 
    for (int i = 0; i < vlc->n_tracks; ++i)
    {
@@ -53,12 +53,14 @@ void initialize_gtk_playlist()
 
 void remove_playlist_entries()
 {
-   for (int i = 0; i < vlc->n_tracks; ++i)
-   {
-      gtk_widget_destroy(playlist_widgets[i]) ;
-   }
-   free(playlist_widgets) ;
+   GList *children, *iter;
+
+   children = gtk_container_get_children(GTK_CONTAINER(playlist_box)) ;
+   for (iter = children; iter != NULL; iter = g_list_next(iter))
+      gtk_widget_destroy(GTK_WIDGET(iter->data)) ;
+   g_list_free(children) ;
 }
+
 
 void set_art_cover_image(char *artist, char *album)
 {

@@ -52,7 +52,6 @@ GtkListBox        *playlist_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
-GtkWidget         **playlist_widgets ;
 
 typedef struct _settings
 {
