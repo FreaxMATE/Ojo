@@ -33,6 +33,7 @@ void init_vlc()
    vlc = vlc_instance_new() ;
    vlc->inst = libvlc_new(0, NULL) ;
    vlc->media_player = libvlc_media_player_new(vlc->inst) ;
+   vlc->n_tracks = 0 ;
 }
 
 void quit_vlc()
@@ -177,12 +178,12 @@ void set_current_time(double time)
 
 char *get_album()
 {
-   return vlc->tracks[vlc->media_index]->album ;
+   return vlc->n_tracks > 0 ? vlc->tracks[vlc->media_index]->album : NULL ;
 }
 
 char *get_artist()
 {
-   return vlc->tracks[vlc->media_index]->artist ;
+   return vlc->n_tracks > 0 ? vlc->tracks[vlc->media_index]->artist : NULL ;
 }
 
 
