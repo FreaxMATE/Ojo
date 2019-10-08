@@ -367,9 +367,11 @@ void set_border_style (gboolean border_style)
         if (border_style) 
         {
                 gtk_button_set_relief (playpause_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (prev_track_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (prev_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (stop_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (forw_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (next_track_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (playlist_button, GTK_RELIEF_NORMAL) ;
@@ -378,9 +380,11 @@ void set_border_style (gboolean border_style)
         else
         {
                 gtk_button_set_relief (playpause_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (prev_track_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (prev_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (stop_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (forw_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (next_track_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (playlist_button, GTK_RELIEF_NONE) ;
