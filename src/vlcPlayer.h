@@ -51,7 +51,7 @@ typedef struct _vlc
 
 Vlc *vlc ;
 
-void init_vlc(void) ;
+Vlc *initialise_vlc(void) ;
 void quit_vlc(void) ;
 void free_tracks(void) ;
 void open_media(GSList *list, int n_tracks, int add) ;

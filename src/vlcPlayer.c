@@ -23,17 +23,17 @@
 
 #include "vlcPlayer.h"
 
-Vlc *vlc_instance_new()
+Vlc *initialise_vlc()
 {
-   return malloc (sizeof(Vlc)) ;
-}
-
-void init_vlc()
-{
-   vlc = vlc_instance_new() ;
-   vlc->inst = libvlc_new(0, NULL) ;
-   vlc->media_player = libvlc_media_player_new(vlc->inst) ;
-   vlc->n_tracks = 0 ;
+   Vlc *new ;
+   new = malloc (sizeof(Vlc)) ;
+   new->inst = libvlc_new(0, NULL) ;
+   new->media_player = libvlc_media_player_new(new->inst) ;
+   // tracks get initialised as they are opened
+   new->n_tracks = 0 ;
+   new->duration = 0 ;
+   new->media_index = 0 ;
+   return new ;
 }
 
 void quit_vlc()
@@ -41,11 +41,6 @@ void quit_vlc()
    free(settings) ;
    libvlc_media_player_release(vlc->media_player) ;
    libvlc_release(vlc->inst) ;
-}
-
-Track *track_new()
-{
-   return malloc(sizeof(Track)) ;
 }
 
 void free_tracks()
@@ -58,19 +53,19 @@ void free_tracks()
    free(vlc->tracks) ;
 }
 
-void open_media(GSList *list, int n_tracks, gboolean add)
+void initialise_tracks (GSList *list, int n_tracks, gboolean add)
 {
-   libvlc_media_track_t ***tracks ;
-   tracks = malloc(sizeof(libvlc_media_track_t ***)) ;
+   libvlc_media_track_t ***libvlc_tracks ;
+   libvlc_tracks = malloc(sizeof(libvlc_media_track_t ***)) ;
    int n_streams, i = 0 ;
-   if (add == FALSE)
+   if (add == TRUE)
    {
-      vlc->tracks = calloc(n_tracks, sizeof(Track **)) ;
+      vlc->tracks = realloc(vlc->tracks, ((vlc->n_tracks)+n_tracks)*sizeof(Track **)) ;
+      i = vlc->n_tracks ;
    }
    else
    {
-      vlc->tracks = realloc(vlc->tracks, (vlc->n_tracks+n_tracks)*sizeof(Track **)) ;
-      i = vlc->n_tracks ;
+      vlc->tracks = calloc(n_tracks, sizeof(Track **)) ;
    }
 
    if (vlc->tracks == NULL)
@@ -78,12 +73,12 @@ void open_media(GSList *list, int n_tracks, gboolean add)
       fprintf (stderr, "ERROR: open_media() in vlcPlayer.c: vlc->tracks calloc/realloc returned NULL\n") ;
       return ;
    }
-   libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
    // initalize every track
    while (list != NULL)
    {
-      vlc->tracks[i] = track_new() ;
+      vlc->tracks[i] = malloc(sizeof(Track)) ;
       strcpy(vlc->tracks[i]->uri, list->data) ;
+
       vlc->tracks[i]->media = libvlc_media_new_path(vlc->inst, vlc->tracks[i]->uri) ;
       if (vlc->tracks[i]->media == NULL)
       {
@@ -100,14 +95,14 @@ void open_media(GSList *list, int n_tracks, gboolean add)
       vlc->tracks[i]->title = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Title) ;
       vlc->tracks[i]->artist = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Artist) ;
       vlc->tracks[i]->album = libvlc_media_get_meta(vlc->tracks[i]->media, libvlc_meta_Album) ;
-      if ((n_streams = libvlc_media_tracks_get(vlc->tracks[i]->media, tracks)) == 0)
+      if ((n_streams = libvlc_media_tracks_get(vlc->tracks[i]->media, libvlc_tracks)) == 0)
       {
          fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: could not get track description\n") ;
          return ;
       }
-      if (tracks[0][0]->i_type == libvlc_track_audio)
+      if (libvlc_tracks[0][0]->i_type == libvlc_track_audio)
          vlc->tracks[i]->type = AUDIO ;
-      else if (tracks[0][0]->i_type == libvlc_track_video)
+      else if (libvlc_tracks[0][0]->i_type == libvlc_track_video)
          vlc->tracks[i]->type = VIDEO ;
       else
       {
@@ -115,14 +110,19 @@ void open_media(GSList *list, int n_tracks, gboolean add)
          fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: media type neither audio nor video\n") ;
          return ;
       }
-      libvlc_media_tracks_release(tracks[0], n_streams) ;
+      libvlc_media_tracks_release(libvlc_tracks[0], n_streams) ;
       g_free(list->data) ;
       i++ ;
       list = list->next ;
    }
    vlc->n_tracks = i ;
    g_slist_free(list) ;
+}
 
+void open_media (GSList *list, int n_tracks, gboolean add)
+{
+   initialise_tracks(list, n_tracks, add) ;
+   libvlc_media_player_set_xwindow(vlc->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
    initialize_gtk_playlist() ;
 
    play_media(0) ;
