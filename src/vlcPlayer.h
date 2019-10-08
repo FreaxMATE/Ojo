@@ -24,30 +24,46 @@
 
 #include "window.h"
 
-struct vlc
+typedef enum {
+   AUDIO,
+   VIDEO,
+} FileType ; 
+
+typedef struct _track
+{
+   libvlc_media_t *media ;
+   FileType type ;
+   char uri[1024] ;
+   char *title ;
+   char *artist ;
+   char *album ;
+} Track ;
+
+typedef struct _vlc
 {
    libvlc_instance_t *inst ;
-   libvlc_media_t *media ;
    libvlc_media_player_t *media_player ;
+   Track **tracks ;
+   int n_tracks ;
    int64_t duration ;
-} vlc ;
+   int media_index ;
+} Vlc ;
 
-struct _meta_data
-{
-   char title[64] ;
+Vlc *vlc ;
 
-} meta_data ;
-
-void reload_media(void) ;
-void init_vlc(void) ;
+Vlc *initialise_vlc(void) ;
 void quit_vlc(void) ;
-void open_media(const char* uri) ;
+void free_tracks(void) ;
+void open_media(GSList *list, int n_tracks, int add) ;
+int play_media(int index) ;
 void play_player(void) ;
 void pause_player(void) ;
 int64_t get_duration(void) ;
 int64_t get_current_time(void) ;
 void start_seek_bar(void) ;
 void set_current_time(double time) ;
+char *get_album() ;
+char *get_artist() ;
 
 #endif /* _vlc_player_h_ */
 

@@ -22,44 +22,71 @@
 
 #include "vlcPlayer.h"
 
-GtkBuilder      *builder; 
-GtkWindow       *window ;
-GtkDrawingArea  *player_widget ;
-GtkMenuBar      *menu_bar ;
-GtkMenuItem     *file_menu,
-                *file_submenu ;
-GtkWidget       *file_menu_open,
-                *view_menu_fullscreen ;
-GtkToggleButton *preferences_dark_mode ,
-                *preferences_border_style ;
-GtkScale        *seek_bar ;
-GtkLabel        *time_label ;
-GtkVolumeButton *volume_button ;
-GtkButton       *playpause_button,
-                *prev_button ,
-                *stop_button ,
-                *forw_button ,
-                *fullscreen_button ;
-GtkDialog       *about ;
-GtkDialog       *preferences_dialog ;
-GtkDialog       *filechooser_dialog ;
+GtkBuilder        *builder; 
+GtkWindow         *window ;
+GtkDrawingArea    *drawing_area ;
+GtkMenuBar        *menu_bar ;
+GtkMenuItem       *file_menu,
+                  *file_submenu ;
+GtkWidget         *file_menu_open,
+                  *view_menu_fullscreen,
+                  *view_menu_showplaylist ;
+GtkImage          *background_image ;
+GtkToggleButton   *preferences_dark_mode ,
+                  *preferences_border_style,
+                  *preferences_view_playlist ,
+                  *preferences_view_coverart ;
+GtkScale          *seek_bar ;
+GtkLabel          *time_label ;
+GtkVolumeButton   *volume_button ;
+GtkButton         *playpause_button,
+                  *prev_track_button,
+                  *prev_button,
+                  *stop_button,
+                  *forw_button,
+                  *next_track_button,
+                  *fullscreen_button,
+                  *playlist_button ;
+GtkBox            *main_box ;
+GtkListBox        *playlist_box ;
+GtkDialog         *about ;
+GtkDialog         *preferences_dialog ;
+GtkDialog         *filechooser_dialog ;
+GtkWidget         **playlist_widgets ;
 
 typedef struct _settings
 {
-    gboolean fullscreen ;
-    gboolean dark_mode ;
-    gboolean border_style ;
+   gboolean fullscreen ;
+   gboolean dark_mode ;
+   gboolean border_style ;
+   gboolean view_playlist ;
+   gboolean view_coverart ;
 } Settings ;
 
 Settings *settings ;
 
-int about_dialog_response ;
+GSList *list ;
+int n_tracks ;
+gboolean about_dialog_response, media_already_opened ;
 char time_string[32] ;
+int timeout ;
 
+void on_ojo_filechooser_add_clicked(void) ;
+void on_ojo_filechooser_open_clicked(void) ;
+gboolean update_bar() ;
+void start_seek_bar() ;
+void set_playlist_item_title() ;
+void set_art_cover_image(char *artist, char *album) ;
 void set_dark_mode (gboolean dark_mode) ;
 void set_border_style (gboolean border_style) ;
+void set_view_playlist(gboolean view_playlist) ;
+void set_view_coverart (gboolean view_coverart) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
+void initialize_gtk_playlist(void) ;
+void format_display_for_media(void)  ;
+int window_get_width(void) ;
+int window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
 
 #endif /* _window_h_ */
