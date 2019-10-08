@@ -242,6 +242,28 @@
           </packing>
         </child>
         <child>
+          <object class="GtkImage" id="img_ojo_background_image">
+            <property name="can_focus">False</property>
+            <property name="pixbuf">../data/Gnome-audio-x-generic.svg</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkListBox" id="ojo_playlist_box">
+            <property name="can_focus">False</property>
+            <signal name="row-activated" handler="on_ojo_playlist_box_row_activated" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkScale" id="ojo_seek_bar">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -254,7 +276,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
@@ -438,7 +460,7 @@ audio-volume-medium-symbolic</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>

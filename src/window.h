@@ -30,8 +30,8 @@ GtkMenuItem       *file_menu,
                   *file_submenu ;
 GtkWidget         *file_menu_open,
                   *view_menu_fullscreen,
-                  *view_menu_showplaylist,
-                  *background_image ;
+                  *view_menu_showplaylist ;
+GtkImage          *background_image ;
 GtkToggleButton   *preferences_dark_mode ,
                   *preferences_border_style,
                   *preferences_view_playlist ;

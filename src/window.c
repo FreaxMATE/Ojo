@@ -430,22 +430,13 @@ void setup_window()
    preferences_view_playlist = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_view_playlist")) ;
 
    time_label = GTK_LABEL(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
-   background_image = gtk_image_new_from_file ("data/Gnome-audio-x-generic.svg") ;
+   background_image = GTK_IMAGE(gtk_builder_get_object(builder, "img_ojo_background_image")) ;
 
    about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_on_about")) ;
    preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
    filechooser_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_filechooser_dialog")) ;
 
-   main_box = GTK_BOX(gtk_builder_get_object(builder, "ojo_box")) ;
-
-   playlist_box = GTK_LIST_BOX(gtk_list_box_new ()) ;
-   g_signal_connect(playlist_box, "row_activated", G_CALLBACK(on_ojo_playlist_box_row_activated), NULL);
-
-
-   gtk_box_pack_start (GTK_BOX(main_box), GTK_WIDGET(playlist_box), TRUE, TRUE, 0) ;
-   gtk_box_reorder_child (GTK_BOX(main_box), GTK_WIDGET(playlist_box), 1) ;
-   gtk_box_pack_start (GTK_BOX(main_box), GTK_WIDGET(background_image), TRUE, TRUE, 0) ;
-   gtk_box_reorder_child (GTK_BOX(main_box), GTK_WIDGET(background_image), 1) ;
+   playlist_box = GTK_LIST_BOX(gtk_builder_get_object(builder, "ojo_playlist_box")) ;
 
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, 60.0) ;
    gtk_range_set_value(GTK_RANGE(seek_bar), 0.0) ;
