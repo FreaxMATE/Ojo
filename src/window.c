@@ -106,6 +106,7 @@ void on_ojo_filechooser_add_clicked()
    gtk_widget_show(GTK_WIDGET(next_track_button)) ;
 
    media_already_opened = TRUE ;
+   
    open_media(list, n_tracks, TRUE) ;
 }
 

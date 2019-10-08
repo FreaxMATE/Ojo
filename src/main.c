@@ -32,7 +32,7 @@ int main(int argc, char **argv)
    gtk_init (&argc, &argv) ;
 
    setup_window() ;
-   init_vlc() ;
+   vlc = initialise_vlc() ;
    gtk_widget_show(GTK_WIDGET(window)) ;
    gtk_main() ;
    quit_vlc() ;
