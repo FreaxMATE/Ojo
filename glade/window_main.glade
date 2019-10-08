@@ -244,7 +244,8 @@
         <child>
           <object class="GtkImage" id="img_ojo_background_image">
             <property name="can_focus">False</property>
-            <property name="pixbuf">../data/Gnome-audio-x-generic.svg</property>
+            <property name="icon_name">audio-x-generic</property>
+            <property name="icon_size">6</property>
           </object>
           <packing>
             <property name="expand">True</property>

@@ -68,7 +68,7 @@ void set_art_cover_image(char *artist, char *album)
    if(g_file_test(uri, G_FILE_TEST_EXISTS) && settings->view_coverart)
       gtk_image_set_from_file(background_image, uri) ;
    else
-      gtk_image_set_from_file(background_image, "data/Gnome-audio-x-generic.svg") ;
+      gtk_image_set_from_icon_name(background_image, "audio-x-generic", GTK_ICON_SIZE_DIALOG) ;
 }
 
 
