@@ -489,7 +489,7 @@ int window_get_height()
 void set_title(char *track_name)
 {
    char *title ;
-   title = calloc(strlen(track_name)+6, sizeof(char)) ;
+   title = calloc(strlen(track_name)+7, sizeof(char)) ;
    sprintf(title, "Ojo - %s", track_name) ;
    gtk_window_set_title(GTK_WINDOW(window), title) ;
    free(title) ;
