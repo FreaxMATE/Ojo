@@ -30,11 +30,13 @@ void on_ojo_playlist_box_row_activated(GtkListBox *box, GtkListBoxRow *row, gpoi
    play_media(gtk_list_box_row_get_index(row)) ;
 }
 
-void on_ojo_menu_showplaylist_toggled() {
+void on_ojo_menu_showplaylist_toggled()
+{
    set_view_playlist(!settings->view_playlist) ;
 }
 
-void on_ojo_playlist_clicked() {
+void on_ojo_playlist_clicked()
+{
    set_view_playlist(!settings->view_playlist) ;
 }
 
