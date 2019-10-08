@@ -151,6 +151,7 @@ void format_display_for_media () //FIXME: only hide currently-shown widgets
    {
       if (vlc->tracks[vlc->media_index]->type == AUDIO)
       {
+         set_art_cover_image(vlc->tracks[vlc->media_index]->artist, vlc->tracks[vlc->media_index]->album) ;
          gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
          gtk_widget_hide(GTK_WIDGET(drawing_area)) ;
          gtk_widget_show(GTK_WIDGET(background_image)) ;
