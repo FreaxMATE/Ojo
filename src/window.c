@@ -60,6 +60,17 @@ void remove_playlist_entries()
    free(playlist_widgets) ;
 }
 
+void set_art_cover_image(char *artist, char *album)
+{
+   char uri[1024] ;
+
+   sprintf (uri, "/home/%s/.cache/vlc/art/artistalbum/%s/%s/art.jpg", getenv("USER"), artist, album) ;
+   if(g_file_test(uri, G_FILE_TEST_EXISTS) && settings->view_coverart)
+      gtk_image_set_from_file(background_image, uri) ;
+   else
+      gtk_image_set_from_file(background_image, "data/Gnome-audio-x-generic.svg") ;
+}
+
 
 /*
  *   FILECHOOSER dialog
@@ -288,6 +299,7 @@ Settings *initialise_settings()
    new->dark_mode = FALSE ;
    new->border_style = FALSE ;
    new->view_playlist = FALSE ;
+   new->view_coverart = FALSE ;
    return new ;
 }
 
@@ -314,6 +326,7 @@ void on_ojo_menu_preferences_activate()
    gtk_toggle_button_set_active (preferences_dark_mode, settings->dark_mode) ;
    gtk_toggle_button_set_active (preferences_border_style, settings->border_style) ;
    gtk_toggle_button_set_active (preferences_view_playlist, settings->view_playlist) ;
+   gtk_toggle_button_set_active (preferences_view_coverart, settings->view_coverart) ;
    gtk_dialog_run(GTK_DIALOG(preferences_dialog)) ;
 }
 
@@ -322,6 +335,7 @@ void on_ojo_preferences_apply_clicked()
    set_dark_mode (gtk_toggle_button_get_active(preferences_dark_mode)) ;
    set_border_style (gtk_toggle_button_get_active(preferences_border_style)) ;
    set_view_playlist (gtk_toggle_button_get_active(preferences_view_playlist)) ;
+   set_view_coverart (gtk_toggle_button_get_active(preferences_view_coverart)) ;
    gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
@@ -330,6 +344,7 @@ void on_ojo_preferences_close_clicked()
     gtk_toggle_button_set_active (preferences_dark_mode, settings->dark_mode) ;
     gtk_toggle_button_set_active (preferences_border_style, settings->border_style) ;
     gtk_toggle_button_set_active (preferences_view_playlist, settings->view_playlist) ;
+    gtk_toggle_button_set_active (preferences_view_coverart, settings->view_coverart) ;
     gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
@@ -390,6 +405,16 @@ void set_view_playlist (gboolean view_playlist)
    }
 }
 
+void set_view_coverart (gboolean view_coverart)
+{
+   if (settings->view_coverart != view_coverart)
+   {
+      settings->view_coverart = view_coverart ;
+      set_art_cover_image(get_artist(), get_album()) ;
+   }
+
+}
+
 
 /*
  *   WINDOW SETUP
@@ -428,6 +453,7 @@ void setup_window()
    preferences_dark_mode = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_dark_mode")) ;
    preferences_border_style = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_border_style")) ;
    preferences_view_playlist = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_view_playlist")) ;
+   preferences_view_coverart = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_view_coverart")) ;
 
    time_label = GTK_LABEL(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
    background_image = GTK_IMAGE(gtk_builder_get_object(builder, "img_ojo_background_image")) ;

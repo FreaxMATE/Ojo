@@ -34,7 +34,8 @@ GtkWidget         *file_menu_open,
 GtkImage          *background_image ;
 GtkToggleButton   *preferences_dark_mode ,
                   *preferences_border_style,
-                  *preferences_view_playlist ;
+                  *preferences_view_playlist ,
+                  *preferences_view_coverart ;
 GtkScale          *seek_bar ;
 GtkLabel          *time_label ;
 GtkVolumeButton   *volume_button ;
@@ -59,6 +60,7 @@ typedef struct _settings
    gboolean dark_mode ;
    gboolean border_style ;
    gboolean view_playlist ;
+   gboolean view_coverart ;
 } Settings ;
 
 Settings *settings ;
@@ -74,9 +76,11 @@ void on_ojo_filechooser_open_clicked(void) ;
 gboolean update_bar() ;
 void start_seek_bar() ;
 void set_playlist_item_title() ;
+void set_art_cover_image(char *artist, char *album) ;
 void set_dark_mode (gboolean dark_mode) ;
 void set_border_style (gboolean border_style) ;
 void set_view_playlist(gboolean view_playlist) ;
+void set_view_coverart (gboolean view_coverart) ;
 void set_title(char *trackName) ;
 void setup_window(void) ;
 void initialize_gtk_playlist(void) ;

@@ -136,6 +136,7 @@ int play_media(int index)
       gtk_list_box_select_row (playlist_box, gtk_list_box_get_row_at_index(playlist_box, vlc->media_index)) ;
       play_player() ;
       set_title(vlc->tracks[vlc->media_index]->title) ;
+      set_art_cover_image(vlc->tracks[vlc->media_index]->artist, vlc->tracks[vlc->media_index]->album) ;
    }
    else
    {
@@ -173,6 +174,16 @@ int64_t get_current_time()
 void set_current_time(double time)
 {
    libvlc_media_player_set_time(vlc->media_player, time) ;
+}
+
+char *get_album()
+{
+   return vlc->tracks[vlc->media_index]->album ;
+}
+
+char *get_artist()
+{
+   return vlc->tracks[vlc->media_index]->artist ;
 }
 
 

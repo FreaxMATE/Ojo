@@ -62,6 +62,8 @@ int64_t get_duration(void) ;
 int64_t get_current_time(void) ;
 void start_seek_bar(void) ;
 void set_current_time(double time) ;
+char *get_album() ;
+char *get_artist() ;
 
 #endif /* _vlc_player_h_ */
 
