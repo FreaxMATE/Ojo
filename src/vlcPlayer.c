@@ -68,7 +68,7 @@ void initialise_tracks (GSList *list, int n_tracks, gboolean add)
    else
    {
       vlc->n_tracks = n_tracks ;
-      vlc->tracks = calloc(n_tracks, sizeof(Track **)) ;
+      vlc->tracks = calloc(vlc->n_tracks, sizeof(Track **)) ;
    }
 
    if (vlc->tracks == NULL)
