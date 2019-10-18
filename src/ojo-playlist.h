@@ -24,6 +24,7 @@
 
 #include "ojo.h"
 #include "ojo-player.h"
+#include "ojo-settings.h"
 
 typedef struct _OjoPlaylist
 {

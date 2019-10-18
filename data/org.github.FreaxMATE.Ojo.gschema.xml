@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<schemalist>
+
+  <schema path="/org/github/FreaxMATE/Ojo/" id="org.github.FreaxMATE.Ojo">
+
+    <key name='width' type='i'>
+      <default>960</default>
+      <summary>window width</summary>
+      <description>the width of the ojo window</description>
+    </key>
+    <key name='height' type='i'>
+      <default>540</default>
+      <summary>window height</summary>
+      <description>the height of the ojo window</description>
+    </key>
+    <key name='fullscreen' type='b'>
+      <default>false</default>
+      <summary>Enable fullscreen</summary>
+      <description>Toggle fullscreen</description>
+    </key>
+    <key name='dark-mode' type='b'>
+      <default>false</default>
+      <summary>If enabled, dark theme is used if there is one defined by the theme</summary>
+      <description>Toggle dark theme</description>
+    </key>
+    <key name='border-style' type='b'>
+      <default>false</default>
+      <summary>If enabled, border arounds buttons will be drawn</summary>
+      <description>Toggle borders</description>
+    </key>
+    <key name='view-playlist' type='b'>
+      <default>false</default>
+      <summary>If enabled, plalist will be visible</summary>
+      <description>Toggle borders</description>
+    </key>
+    <key name='view-coverart' type='b'>
+      <default>false</default>
+      <summary>If enabled, coverart will be drawn, when available</summary>
+      <description>Toggle borders</description>
+    </key>
+
+  </schema>
+
+</schemalist>

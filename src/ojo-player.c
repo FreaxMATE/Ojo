@@ -206,12 +206,12 @@ char *ojo_player_get_artist()
 
 FileType ojo_player_get_filetype_by_index(int index)
 {
-   return ojo_player->n_tracks > 0 ? ojo_player->tracks[index]->type : -1 ;
+   return ojo_player->n_tracks > 0 ? ojo_player->tracks[index]->type : UNKNOWN ;
 }
 
 FileType ojo_player_get_filetype()
 {
-   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->type : -1 ;
+   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->type : UNKNOWN ;
 }
 
 gboolean ojo_player_is_playing()
