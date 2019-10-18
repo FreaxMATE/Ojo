@@ -19,52 +19,10 @@
 
 #include <gtk/gtk.h>
 
-#include "window.h"
-
-/*
- *   PLAYLIST
- */
-
-void on_ojo_playlist_box_row_activated(GtkListBox *box, GtkListBoxRow *row, gpointer user_data)
-{
-   play_media(gtk_list_box_row_get_index(row)) ;
-}
-
-void on_ojo_menu_showplaylist_toggled()
-{
-   set_view_playlist(!settings->view_playlist) ;
-}
-
-void on_ojo_playlist_clicked()
-{
-   set_view_playlist(!settings->view_playlist) ;
-}
-
-void initialize_gtk_playlist()
-{
-   GtkWidget *playlist_widgets[vlc->n_tracks] ;
-
-   for (int i = 0; i < vlc->n_tracks; ++i)
-   {
-      playlist_widgets[i] = gtk_label_new(vlc->tracks[i]->title) ;
-      gtk_label_set_xalign(GTK_LABEL(playlist_widgets[i]), 0.0) ;
-      gtk_widget_show(playlist_widgets[i]) ;
-      gtk_list_box_insert(playlist_box, playlist_widgets[i], i) ;
-   }
-}
-
-void remove_playlist_entries()
-{
-   GList *children, *iter;
-
-   children = gtk_container_get_children(GTK_CONTAINER(playlist_box)) ;
-   for (iter = children; iter != NULL; iter = g_list_next(iter))
-      gtk_widget_destroy(GTK_WIDGET(iter->data)) ;
-   g_list_free(children) ;
-}
+#include "ojo-window.h"
 
 
-void set_art_cover_image(char *artist, char *album)
+void ojo_window_set_art_cover_image(char *artist, char *album)
 {
    char uri[1024] ;
 
@@ -96,7 +54,7 @@ void on_ojo_filechooser_add_clicked()
       on_ojo_filechooser_open_clicked() ;
       return ;
    }
-   remove_playlist_entries() ;
+   ojo_playlist_gtk_initialize() ;
    gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
 
    list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(filechooser_dialog)) ;
@@ -111,15 +69,15 @@ void on_ojo_filechooser_add_clicked()
 
    media_already_opened = TRUE ;
    
-   open_media(list, n_tracks, TRUE) ;
+   ojo_player_media_open(list, n_tracks, TRUE) ;
 }
 
 void on_ojo_filechooser_open_clicked()
 {
    if (media_already_opened == TRUE)
    {
-      remove_playlist_entries() ;
-      free_tracks() ;
+      ojo_playlist_entries_remove() ;
+      ojo_player_tracks_free() ;
    }
    gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
 
@@ -141,29 +99,29 @@ void on_ojo_filechooser_open_clicked()
       gtk_widget_hide(GTK_WIDGET(next_track_button)) ;
    }
    media_already_opened = TRUE ;
-   open_media(list, n_tracks, FALSE) ;
+   ojo_player_media_open(list, n_tracks, FALSE) ;
 }
 
-void format_display_for_media () //FIXME: only hide currently-shown widgets
+void ojo_window_format_display_for_media () //FIXME: only hide currently-shown widgets
 {
    if (settings->view_playlist)
    {
          gtk_widget_hide(GTK_WIDGET(background_image)) ;
          gtk_widget_hide(GTK_WIDGET(drawing_area)) ;
-         gtk_widget_show(GTK_WIDGET(playlist_box )) ;
+         ojo_playlist_show() ;
    }
    else
    {
-      if (vlc->tracks[vlc->media_index]->type == AUDIO)
+      if (ojo_player_get_filetype() == AUDIO)
       {
-         set_art_cover_image(vlc->tracks[vlc->media_index]->artist, vlc->tracks[vlc->media_index]->album) ;
-         gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
+         ojo_window_set_art_cover_image(ojo_player_get_artist(), ojo_player_get_album()) ;
+         ojo_playlist_hide() ;
          gtk_widget_hide(GTK_WIDGET(drawing_area)) ;
          gtk_widget_show(GTK_WIDGET(background_image)) ;
       }
-      else if (vlc->tracks[vlc->media_index]->type == VIDEO)
+      else if (ojo_player_get_filetype() == VIDEO)
       {
-         gtk_widget_hide(GTK_WIDGET(playlist_box)) ;
+         ojo_playlist_hide() ;
          gtk_widget_hide(GTK_WIDGET(background_image)) ;
          gtk_widget_show(GTK_WIDGET(drawing_area)) ;
       }
@@ -176,48 +134,48 @@ void format_display_for_media () //FIXME: only hide currently-shown widgets
  */
 void on_ojo_play_pause_clicked()
 {
-   if(libvlc_media_player_is_playing(vlc->media_player) == 1)
+   if(ojo_player_is_playing())
    {
-      pause_player() ;
+      ojo_player_pause() ;
    }
    else
    {
-      play_player() ;
+      ojo_player_play() ;
    }
 }
 
 void on_ojo_prev_track_clicked()
 {
    g_source_remove(timeout) ;
-   vlc->media_index-1 < 0 ? play_media(0) : play_media(vlc->media_index-1) ;
+   ojo_player_prev_track() ;
 }
 
-void on_ojo_forw_clicked()
+void on_ojo_forward_clicked()
 {
-   libvlc_media_player_set_position(vlc->media_player, libvlc_media_player_get_position(vlc->media_player)+0.05) ;
+   ojo_player_forward() ;
 }
 
 void on_ojo_stop_clicked()
 {
-   pause_player() ;
-   libvlc_media_player_stop(vlc->media_player) ;
+   ojo_player_pause() ;
+   ojo_player_stop() ;
 }
 
-void on_ojo_prev_clicked()
+void on_ojo_backward_clicked()
 {
-   libvlc_media_player_set_position(vlc->media_player, libvlc_media_player_get_position(vlc->media_player)-0.05) ;
+   ojo_player_backward() ;
 }
 
 void on_ojo_next_track_clicked()
 {
    g_source_remove(timeout) ;
-   vlc->media_index+1 < vlc->n_tracks ? play_media(vlc->media_index+1) : play_media(0) ;
+   ojo_player_next_track() ;
 }
 
 void on_ojo_volume_value_changed()
 {
     double volume = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volume_button));
-    libvlc_audio_set_volume(vlc->media_player, (int)(100*volume)) ;
+    libvlc_audio_set_volume(ojo_player_get_media_player(), (int)(100*volume)) ;
 }
 
 
@@ -252,20 +210,20 @@ void on_ojo_menu_fullscreen_toggled()
 }
 
 // SEEKBAR
-gboolean update_bar()
+gboolean ojo_window_seek_bar_update()
 {
-   double current_time = (double)get_current_time() ; // in ms
-   double duration = (double)get_duration() ;         // in ms
+   double current_time = (double)ojo_player_get_current_time() ; // in ms
+   double duration = (double)ojo_player_get_duration() ;         // in ms
 
-   if (libvlc_media_player_get_state(vlc->media_player) == libvlc_Ended)
+   if (ojo_player_end_reached())
    {
-      if (vlc->media_index < vlc->n_tracks-1)
+      if (ojo_player_get_media_index() < ojo_player_get_n_tracks()-1)
       {
-         play_media(vlc->media_index+1) ;
+         ojo_player_media_play(ojo_player_get_media_index()+1) ;
       }
       else
       {
-         play_media(0) ;
+         ojo_player_media_play(0) ;
       }
    }
 
@@ -276,28 +234,28 @@ gboolean update_bar()
    return TRUE ;
 }
 
-void start_seek_bar()
+void ojo_window_seek_bar_start()
 {
-   timeout = g_timeout_add(100, update_bar, FALSE) ;
+   timeout = g_timeout_add(100, ojo_window_seek_bar_update, FALSE) ;
 }
 
 void on_ojo_seek_bar_value_changed()
 {
-   if (gtk_range_get_value(GTK_RANGE(seek_bar)) != (double)get_current_time())
-      set_current_time(gtk_range_get_value(GTK_RANGE(seek_bar))) ;
+   if (gtk_range_get_value(GTK_RANGE(seek_bar)) != (double)ojo_player_get_current_time())
+      ojo_player_set_current_time(gtk_range_get_value(GTK_RANGE(seek_bar))) ;
 }
 
 void on_ojo_seek_bar_button_press_event()
 {
-   pause_player() ;
+   ojo_player_pause() ;
 }
 
 void on_ojo_seek_bar_button_release_event()
 {
-   play_player() ;
+   ojo_player_play() ;
 }
 
-Settings *initialise_settings()
+Settings *ojo_window_settings_initialize() // TODO move to new file settings- or preferences.c
 {
    Settings *new ;
    new = (Settings*) malloc(sizeof(Settings)) ;
@@ -338,10 +296,10 @@ void on_ojo_menu_preferences_activate()
 
 void on_ojo_preferences_apply_clicked()
 {
-   set_dark_mode (gtk_toggle_button_get_active(preferences_dark_mode)) ;
-   set_border_style (gtk_toggle_button_get_active(preferences_border_style)) ;
-   set_view_playlist (gtk_toggle_button_get_active(preferences_view_playlist)) ;
-   set_view_coverart (gtk_toggle_button_get_active(preferences_view_coverart)) ;
+   ojo_window_set_dark_mode (gtk_toggle_button_get_active(preferences_dark_mode)) ;
+   ojo_window_set_border_style (gtk_toggle_button_get_active(preferences_border_style)) ;
+   ojo_window_set_view_playlist (gtk_toggle_button_get_active(preferences_view_playlist)) ;
+   ojo_window_set_view_coverart (gtk_toggle_button_get_active(preferences_view_coverart)) ;
    gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
@@ -354,7 +312,7 @@ void on_ojo_preferences_close_clicked()
     gtk_widget_hide (GTK_WIDGET(preferences_dialog)) ;
 }
 
-void set_dark_mode (gboolean dark_mode)
+void ojo_window_set_dark_mode (gboolean dark_mode)
 {
     if (settings->dark_mode != dark_mode)
     {
@@ -364,7 +322,7 @@ void set_dark_mode (gboolean dark_mode)
     }
 }
 
-void set_border_style (gboolean border_style)
+void ojo_window_set_border_style (gboolean border_style)
 {
     if (settings->border_style != border_style)
     {
@@ -372,9 +330,9 @@ void set_border_style (gboolean border_style)
         {
                 gtk_button_set_relief (playpause_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (prev_track_button, GTK_RELIEF_NORMAL) ;
-                gtk_button_set_relief (prev_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (backward_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (stop_button, GTK_RELIEF_NORMAL) ;
-                gtk_button_set_relief (forw_button, GTK_RELIEF_NORMAL) ;
+                gtk_button_set_relief (forward_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (next_track_button, GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NORMAL) ;
                 gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NORMAL) ;
@@ -385,9 +343,9 @@ void set_border_style (gboolean border_style)
         {
                 gtk_button_set_relief (playpause_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (prev_track_button, GTK_RELIEF_NONE) ;
-                gtk_button_set_relief (prev_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (backward_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (stop_button, GTK_RELIEF_NONE) ;
-                gtk_button_set_relief (forw_button, GTK_RELIEF_NONE) ;
+                gtk_button_set_relief (forward_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (next_track_button, GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (GTK_BUTTON(volume_button), GTK_RELIEF_NONE) ;
                 gtk_button_set_relief (fullscreen_button, GTK_RELIEF_NONE) ;
@@ -397,30 +355,30 @@ void set_border_style (gboolean border_style)
     }
 }
 
-void set_view_playlist (gboolean view_playlist)
+void ojo_window_set_view_playlist (gboolean view_playlist)
 {
    if (settings->view_playlist != view_playlist) {
       if (view_playlist)
       {
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
          settings->view_playlist = view_playlist ;
-         format_display_for_media() ;
+         ojo_window_format_display_for_media() ;
       }
       else
       {
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
          settings->view_playlist = view_playlist ;
-         format_display_for_media() ;
+         ojo_window_format_display_for_media() ;
       }
    }
 }
 
-void set_view_coverart (gboolean view_coverart)
+void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to settings.h
 {
    if (settings->view_coverart != view_coverart)
    {
       settings->view_coverart = view_coverart ;
-      set_art_cover_image(get_artist(), get_album()) ;
+      ojo_window_set_art_cover_image(ojo_player_get_artist(), ojo_player_get_album()) ;
    }
 
 }
@@ -429,15 +387,16 @@ void set_view_coverart (gboolean view_coverart)
 /*
  *   WINDOW SETUP
  */
-void setup_window()
+void ojo_window_setup()
 {
    media_already_opened = FALSE ;
-   settings = initialise_settings();
-   builder = gtk_builder_new();
-   gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL);
+   settings = ojo_window_settings_initialize () ;
+   builder = gtk_builder_new () ;
+   gtk_builder_add_from_file (builder, "glade/window_main.glade", NULL) ;
 
-   window = GTK_WINDOW(gtk_builder_get_object(builder, "window_main"));
-   gtk_builder_connect_signals(builder, NULL);
+   ojo_playlist = ojo_playlist_initialize () ;
+   window = GTK_WINDOW(gtk_builder_get_object(builder, "window_main")) ;
+   gtk_builder_connect_signals(builder, NULL) ;
    gtk_window_set_title(window, "Ojo") ;
 
    drawing_area = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
@@ -454,9 +413,9 @@ void setup_window()
 
    playpause_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
    prev_track_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_prev_track")) ;
-   prev_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_prev")) ;
+   backward_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_backward")) ;
    stop_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_stop")) ;
-   forw_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_forw")) ;
+   forward_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_forward")) ;
    next_track_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_next_track")) ;
    volume_button = GTK_VOLUME_BUTTON(gtk_builder_get_object(builder, "ojo_volume")) ;
    fullscreen_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_fullscreen")) ;
@@ -473,29 +432,27 @@ void setup_window()
    preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
    filechooser_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_filechooser_dialog")) ;
 
-   playlist_box = GTK_LIST_BOX(gtk_builder_get_object(builder, "ojo_playlist_box")) ;
-
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, 60.0) ;
    gtk_range_set_value(GTK_RANGE(seek_bar), 0.0) ;
    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(view_menu_showplaylist), settings->view_playlist) ;
    g_object_unref(builder) ;
 }
 
-int window_get_width()
+int ojo_window_get_width()
 {
    int width ;
    gtk_window_get_size(window, &width, NULL) ;
    return width ;
 }
 
-int window_get_height()
+int ojo_window_get_height()
 {
    int height ;
    gtk_window_get_size(window, &height, NULL) ;
    return height ;
 }
 
-void set_title(char *track_name)
+void ojo_window_set_title(char *track_name)
 {
    char *title ;
    title = calloc(strlen(track_name)+7, sizeof(char)) ;
@@ -512,7 +469,7 @@ void on_window_main_destroy()
 
 
 /*
- *   Other
+ *   Other // TODO move to new file helperfunctions.c
  */
 char *time_to_string(double current_time, double duration)
 {

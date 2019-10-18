@@ -17,27 +17,7 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
-#include <vlc/vlc.h>
-
-#include "ojo.h"
-#include "ojo-player.h"
-#include "ojo-playlist.h"
-#include "ojo-window.h"
-
-int main(int argc, char **argv)
-{
-   XInitThreads() ;
-   gtk_init (&argc, &argv) ;
-
-   ojo_window_setup() ;
-   ojo_player = ojo_player_initialize() ;
-   gtk_widget_show(GTK_WIDGET(window)) ;
-   gtk_main() ;
-   ojo_player_quit() ;
-
-   return 0 ;
-}
+typedef struct _OjoPlayer OjoPlayer ;
+typedef struct _OjoPlaylist OjoPlaylist ;
+OjoPlayer   *ojo_player ;
+OjoPlaylist *ojo_playlist ;
