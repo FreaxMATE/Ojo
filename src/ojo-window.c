@@ -54,7 +54,7 @@ void on_ojo_filechooser_add_clicked()
       on_ojo_filechooser_open_clicked() ;
       return ;
    }
-   ojo_playlist_gtk_initialize() ;
+   ojo_playlist_entries_remove() ;
    gtk_widget_hide(GTK_WIDGET(filechooser_dialog)) ;
 
    list = gtk_file_chooser_get_filenames(GTK_FILE_CHOOSER(filechooser_dialog)) ;
