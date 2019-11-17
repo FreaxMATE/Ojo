@@ -387,13 +387,13 @@ audio-volume-medium-symbolic</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="ojo_prev">
+              <object class="GtkButton" id="ojo_backward">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">img_ojo_prev</property>
                 <property name="relief">none</property>
-                <signal name="clicked" handler="on_ojo_prev_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ojo_backward_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -417,13 +417,13 @@ audio-volume-medium-symbolic</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="ojo_forw">
+              <object class="GtkButton" id="ojo_forward">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">img_ojo_forw</property>
                 <property name="relief">none</property>
-                <signal name="clicked" handler="on_ojo_forw_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ojo_forward_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

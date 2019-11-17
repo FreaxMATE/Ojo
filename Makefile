@@ -3,21 +3,25 @@ GTKVLCFLAGS = `pkg-config --libs --cflags gtk+-3.0 libvlc`
 XFLAGS = -lX11
 CFLAGS = -rdynamic -Wall
 
-ojo: main.o vlcPlayer.o window.o
+ojo: main.o ojo-player.o ojo-window.o ojo-playlist.o
 
-	$(CC) -o ojo main.o vlcPlayer.o window.o $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -o ojo main.o ojo-player.o ojo-window.o ojo-playlist.o $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
 main.o: src/main.c
 
 	$(CC) -c src/main.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
-vlcPlayer.o: src/vlcPlayer.c src/vlcPlayer.h
+ojo-player.o: src/ojo-player.c src/ojo-player.h
 
-	$(CC) -c src/vlcPlayer.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -c src/ojo-player.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
-window.o: src/window.c src/window.h
+ojo-window.o: src/ojo-window.c src/ojo-window.h
 
-	$(CC) -c src/window.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+	$(CC) -c src/ojo-window.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
+
+ojo-playlist.o: src/ojo-playlist.c src/ojo-playlist.h
+
+	$(CC) -c src/ojo-playlist.c $(GTKVLCFLAGS) $(CFLAGS) $(XFLAGS)
 
 clean:
 

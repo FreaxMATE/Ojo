@@ -22,14 +22,15 @@
 
 #include <vlc/vlc.h>
 
-#include "window.h"
+#include "ojo.h"
+#include "ojo-window.h"
 
 typedef enum {
    AUDIO,
    VIDEO,
 } FileType ; 
 
-typedef struct _track
+typedef struct _OjoTrack
 {
    libvlc_media_t *media ;
    FileType type ;
@@ -37,33 +38,44 @@ typedef struct _track
    char *title ;
    char *artist ;
    char *album ;
-} Track ;
+} OjoTrack ;
 
-typedef struct _vlc
+typedef struct _OjoPlayer
 {
    libvlc_instance_t *inst ;
    libvlc_media_player_t *media_player ;
-   Track **tracks ;
+   OjoTrack **tracks ;
    int n_tracks ;
    int64_t duration ;
    int media_index ;
-} Vlc ;
+} OjoPlayer ;
 
-Vlc *vlc ;
+OjoPlayer *ojo_player_initialize(void) ;
+void ojo_player_quit(void) ;
+void ojo_player_tracks_free(void) ;
+void ojo_player_media_open(GSList *list, int n_tracks, int add) ;
+int ojo_player_media_play(int index) ;
 
-Vlc *initialise_vlc(void) ;
-void quit_vlc(void) ;
-void free_tracks(void) ;
-void open_media(GSList *list, int n_tracks, int add) ;
-int play_media(int index) ;
-void play_player(void) ;
-void pause_player(void) ;
-int64_t get_duration(void) ;
-int64_t get_current_time(void) ;
-void start_seek_bar(void) ;
-void set_current_time(double time) ;
-char *get_album() ;
-char *get_artist() ;
+void ojo_player_play(void) ;
+void ojo_player_pause(void) ;
+void ojo_player_stop(void) ;
+int64_t ojo_player_get_duration(void) ;
+int64_t ojo_player_get_current_time(void) ;
+void ojo_player_set_current_time(double time) ;
+int ojo_player_get_n_tracks(void) ;
+char *ojo_player_get_title(int index) ;
+char *ojo_player_get_album(void) ;
+char *ojo_player_get_artist(void) ;
+FileType ojo_player_get_filetype_by_index(int index) ;
+FileType ojo_player_get_filetype() ;
+gboolean ojo_player_is_playing() ;
+void ojo_player_prev_track() ;
+void ojo_player_next_track() ;
+void ojo_player_backward() ;
+void ojo_player_forward() ;
+gboolean ojo_player_end_reached() ;
+int ojo_player_get_media_index() ;
+libvlc_media_player_t *ojo_player_get_media_player() ;
 
 #endif /* _vlc_player_h_ */
 

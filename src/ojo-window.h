@@ -20,7 +20,9 @@
 #ifndef _window_h_
 #define _window_h_
 
-#include "vlcPlayer.h"
+#include "ojo.h"
+#include "ojo-player.h"
+#include "ojo-playlist.h"
 
 GtkBuilder        *builder; 
 GtkWindow         *window ;
@@ -41,14 +43,13 @@ GtkLabel          *time_label ;
 GtkVolumeButton   *volume_button ;
 GtkButton         *playpause_button,
                   *prev_track_button,
-                  *prev_button,
+                  *backward_button,
                   *stop_button,
-                  *forw_button,
+                  *forward_button,
                   *next_track_button,
                   *fullscreen_button,
                   *playlist_button ;
 GtkBox            *main_box ;
-GtkListBox        *playlist_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
@@ -72,20 +73,20 @@ int timeout ;
 
 void on_ojo_filechooser_add_clicked(void) ;
 void on_ojo_filechooser_open_clicked(void) ;
-gboolean update_bar() ;
-void start_seek_bar() ;
-void set_playlist_item_title() ;
-void set_art_cover_image(char *artist, char *album) ;
-void set_dark_mode (gboolean dark_mode) ;
-void set_border_style (gboolean border_style) ;
-void set_view_playlist(gboolean view_playlist) ;
-void set_view_coverart (gboolean view_coverart) ;
-void set_title(char *trackName) ;
-void setup_window(void) ;
-void initialize_gtk_playlist(void) ;
-void format_display_for_media(void)  ;
-int window_get_width(void) ;
-int window_get_height(void) ;
+void ojo_window_gtk_playlist_initialize(void) ;
+gboolean ojo_window_seek_bar_update(void) ;
+void ojo_window_seek_bar_start() ;
+void ojo_window_set_playlist_item_title() ;
+void ojo_window_set_art_cover_image(char *artist, char *album) ;
+void ojo_window_set_dark_mode (gboolean dark_mode) ;
+void ojo_window_set_border_style (gboolean border_style) ;
+void ojo_window_set_view_playlist(gboolean view_playlist) ;
+void ojo_window_set_view_coverart (gboolean view_coverart) ;
+void ojo_window_set_title(char *trackName) ;
+void ojo_window_setup(void) ;
+void ojo_window_format_display_for_media(void)  ;
+int ojo_window_get_width(void) ;
+int ojo_window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
 
 #endif /* _window_h_ */
