@@ -236,7 +236,7 @@ gboolean ojo_window_seek_bar_update()
 
 void ojo_window_seek_bar_start()
 {
-   timeout = g_timeout_add(100, ojo_window_seek_bar_update, FALSE) ;
+   timeout = g_timeout_add(100, G_SOURCE_FUNC(ojo_window_seek_bar_update), FALSE) ;
 }
 
 void on_ojo_seek_bar_value_changed()
