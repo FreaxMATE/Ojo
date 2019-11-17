@@ -345,7 +345,7 @@ void ojo_window_set_view_playlist (gboolean view_playlist)
       gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), view_playlist) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "view-playlist", view_playlist) ;
       ojo_window_format_display_for_media() ;
-s   }
+   }
 }
 
 void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to settings.h

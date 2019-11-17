@@ -28,7 +28,8 @@
 typedef enum {
    AUDIO,
    VIDEO,
-} FileType ; 
+   UNKNOWN,
+} FileType ;
 
 typedef struct _OjoTrack
 {

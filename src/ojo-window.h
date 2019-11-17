@@ -67,17 +67,10 @@ gboolean ojo_window_seek_bar_update(void) ;
 void ojo_window_seek_bar_start() ;
 void ojo_window_set_playlist_item_title() ;
 void ojo_window_set_art_cover_image(char *artist, char *album) ;
-<<<<<<< HEAD:src/ojo-window.h
-void ojo_window_set_dark_mode (gboolean dark_mode) ;
-void ojo_window_set_border_style (gboolean border_style) ;
-void ojo_window_set_view_playlist(gboolean view_playlist) ;
-void ojo_window_set_view_coverart (gboolean view_coverart) ;
-=======
 void ojo_window_set_dark_mode(gboolean dark_mode) ;
 void ojo_window_set_border_style(gboolean border_style) ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
 void ojo_window_set_view_coverart(gboolean view_coverart) ;
->>>>>>> seperate playlist, rename files and functions:src/window.h
 void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void)  ;
