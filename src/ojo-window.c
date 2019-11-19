@@ -414,6 +414,7 @@ void ojo_window_setup()
    ojo_window_set_view_playlist(ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
    ojo_window_set_view_coverart(ojo_settings_get_boolean(ojo_settings->gsettings, "view-coverart")) ;
 
+   gtk_widget_realize(GTK_WIDGET(drawing_area)) ;
    g_object_unref(builder) ;
 }
 
