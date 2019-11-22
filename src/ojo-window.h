@@ -54,22 +54,11 @@ GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
 
-typedef struct _settings
-{
-   gboolean fullscreen ;
-   gboolean dark_mode ;
-   gboolean border_style ;
-   gboolean view_playlist ;
-   gboolean view_coverart ;
-} Settings ;
-
-Settings *settings ;
-
 GSList *list ;
 int n_tracks ;
 gboolean about_dialog_response, media_already_opened ;
 char time_string[32] ;
-int timeout ;
+int timeout, window_width, window_height ;
 
 void on_ojo_filechooser_add_clicked(void) ;
 void on_ojo_filechooser_open_clicked(void) ;
@@ -78,10 +67,10 @@ gboolean ojo_window_seek_bar_update(void) ;
 void ojo_window_seek_bar_start() ;
 void ojo_window_set_playlist_item_title() ;
 void ojo_window_set_art_cover_image(char *artist, char *album) ;
-void ojo_window_set_dark_mode (gboolean dark_mode) ;
-void ojo_window_set_border_style (gboolean border_style) ;
+void ojo_window_set_dark_mode(gboolean dark_mode) ;
+void ojo_window_set_border_style(gboolean border_style) ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
-void ojo_window_set_view_coverart (gboolean view_coverart) ;
+void ojo_window_set_view_coverart(gboolean view_coverart) ;
 void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void)  ;

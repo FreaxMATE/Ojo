@@ -38,12 +38,12 @@ void on_ojo_playlist_box_row_activated(GtkListBox *box, GtkListBoxRow *row, gpoi
 
 void on_ojo_menu_showplaylist_toggled()
 {
-   ojo_window_set_view_playlist(!settings->view_playlist) ;
+   ojo_window_set_view_playlist(!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
 }
 
 void on_ojo_playlist_clicked()
 {
-   ojo_window_set_view_playlist(!settings->view_playlist) ;
+   ojo_window_set_view_playlist(!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
 }
 
 void ojo_playlist_gtk_initialize()

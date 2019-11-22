@@ -17,31 +17,35 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <X11/Xlib.h>
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
-#include <vlc/vlc.h>
 
-#include "ojo.h"
 #include "ojo-settings.h"
-#include "ojo-player.h"
-#include "ojo-playlist.h"
-#include "ojo-window.h"
 
-int main(int argc, char **argv)
+OjoSettings* ojo_settings_initialize()
 {
-   XInitThreads() ;
-   gtk_init (&argc, &argv) ;
-
-   ojo_settings = ojo_settings_initialize() ;
-   ojo_player = ojo_player_initialize() ;
-   ojo_window_setup() ;
-   gtk_widget_show(GTK_WIDGET(window)) ;
-   gtk_main() ;
-   g_settings_sync() ;
-   ojo_player_quit() ;
-
-   return 0 ;
+   OjoSettings *new ;
+   new = malloc (sizeof(OjoSettings)) ;
+   new->gsettings = g_settings_new ("org.github.FreaxMATE.Ojo") ;
+   return new ;
 }
+
+int ojo_settings_get_int(GSettings *gsettings, const gchar *key)
+{
+   return g_settings_get_int(gsettings, key) ;
+}
+
+gboolean ojo_settings_get_boolean(GSettings *gsettings, const gchar *key)
+{
+   return g_settings_get_boolean(gsettings, key) ;
+}
+
+void ojo_settings_set_int(GSettings *gsettings, const gchar *key, int value)
+{
+   g_settings_set_int(gsettings, key, value) ;
+}
+
+void ojo_settings_set_boolean(GSettings *gsettings, const gchar *key, gboolean value)
+{
+   g_settings_set_boolean(gsettings, key, value) ;
+}
+
+
