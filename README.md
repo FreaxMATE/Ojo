@@ -1,28 +1,15 @@
 # Ojo
 
-an open soure gtk media player for the MATE desktop
+Ojo is an open soure gtk media player for linux.
 
 ![Ojo](/data/OjoScreenshot.png)
 
-## compile
-
+## Installation
+### Install from source
 ```bash
 git clone https://github.com/FreaxMATE/Ojo.git
 cd Ojo/
-make
-./ojo
-```
-
-
-## install (experimental, not working properly yet)
-
-```bash
-make
-sudo make install
-```
-## uninstall (experimental, not working properly yet)
-
-```bash
-make
-sudo make uninstall
+meson build && cd build
+ninja
+sudo ninja install
 ```
