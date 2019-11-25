@@ -20,6 +20,8 @@
 #ifndef _window_h_
 #define _window_h_
 
+#include <unistd.h>
+
 #include "ojo.h"
 #include "ojo-player.h"
 #include "ojo-playlist.h"
