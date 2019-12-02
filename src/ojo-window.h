@@ -17,8 +17,8 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _window_h_
-#define _window_h_
+#ifndef _ojo_window_h_
+#define _ojo_window_h_
 
 #include <unistd.h>
 
@@ -80,5 +80,5 @@ int ojo_window_get_width(void) ;
 int ojo_window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
 
-#endif /* _window_h_ */
+#endif /* _ojo_window_h_ */
 

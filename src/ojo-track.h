@@ -17,27 +17,33 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ojo_playlist_h_
-#define _ojo_playlist_h_
+#ifndef _ojo_track_h_
+#define _ojo_track_h_
 
-#include <gtk/gtk.h>
+#include <stdlib.h>
+#include <string.h>
+#include <vlc/vlc.h>
 
 #include "ojo.h"
 #include "ojo-player.h"
-#include "ojo-settings.h"
 
-typedef struct _OjoPlaylist
+typedef struct _OjoTrack
 {
-   GtkListBox *playlist_box ;
+   libvlc_media_t *media ;
+   FileType type ;
+   char *uri ;
+   char *title ;
+   char *artist ;
+   char *album ;
+} OjoTrack ;
 
-} OjoPlaylist ;
+OjoTrack *ojo_track_initialize() ;
+void ojo_track_set_media(OjoTrack *track, libvlc_media_t *new_media) ;
+void ojo_track_set_type(OjoTrack *track, FileType new_type) ;
+void ojo_track_set_uri(OjoTrack *track, char *new_uri) ;
+void ojo_track_set_title(OjoTrack *track, char *new_title) ;
+void ojo_track_set_artist(OjoTrack *track, char *new_artist) ;
+void ojo_track_set_album(OjoTrack *track, char *new_album) ;
 
-OjoPlaylist *ojo_playlist_initialize() ;
-void ojo_playlist_gtk_initialize() ;
-void ojo_playlist_entries_remove() ;
-void ojo_playlist_show() ;
-void ojo_playlist_hide() ;
-void ojo_playlist_select_row(int index) ;
-
-#endif /* _ojo_playlist_h_ */
+#endif /* _ojo_track_h_ */
 

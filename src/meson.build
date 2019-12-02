@@ -4,6 +4,7 @@ sources = [
   'ojo-playlist.c',
   'ojo-settings.c',
   'ojo-window.c',
+  'ojo-track.c',
 ]
 
 add_project_arguments('-rdynamic', '-Wl,--export-dynamic', language : 'c')
