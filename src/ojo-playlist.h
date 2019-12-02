@@ -28,7 +28,8 @@
 
 typedef struct _OjoPlaylist
 {
-   GtkListBox *playlist_box ;
+   GtkBox     *playlist_box ;
+   GtkListBox *playlist_listbox ;
 
 } OjoPlaylist ;
 
