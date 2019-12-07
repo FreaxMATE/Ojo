@@ -62,6 +62,7 @@ gboolean about_dialog_response, media_already_opened ;
 char time_string[32] ;
 int timeout, window_width, window_height ;
 
+void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
 void on_ojo_filechooser_add_clicked(void) ;
 void on_ojo_filechooser_open_clicked(void) ;
 void ojo_window_gtk_playlist_initialize(void) ;
@@ -75,7 +76,8 @@ void ojo_window_set_view_playlist(gboolean view_playlist) ;
 void ojo_window_set_view_coverart(gboolean view_coverart) ;
 void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
-void ojo_window_format_display_for_media(void)  ;
+void ojo_window_format_display_for_media(void) ;
+void ojo_window_set_track_control_visibility(int n_tracks) ;
 int ojo_window_get_width(void) ;
 int ojo_window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;

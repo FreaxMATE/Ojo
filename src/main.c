@@ -61,7 +61,7 @@ int main(int argc, char **argv)
       {
          list = g_slist_append(list, argv[i]) ;
       }
-      ojo_player_media_open(list, argc-1, FALSE) ;
+      ojo_window_media_open_prepare(list, FALSE) ;
    }
    gtk_main() ;
    g_settings_sync() ;
