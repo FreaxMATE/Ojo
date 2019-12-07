@@ -22,6 +22,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <libgen.h>
 #include <vlc/vlc.h>
 
 #include "ojo.h"

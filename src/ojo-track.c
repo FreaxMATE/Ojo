@@ -61,7 +61,12 @@ void ojo_track_set_title(OjoTrack *track, char *new_title)
    if (new_title != NULL)
    {
       track->title = calloc (strlen(new_title), sizeof (char)) ;
-      track->title = new_title ;
+      strcpy (track->title, new_title) ;
+   }
+   else if (track->uri != NULL)
+   {
+      track->title = calloc (strlen(basename(track->uri)), sizeof (char)) ;
+      strcpy (track->title, basename(track->uri)) ;
    }
    else
    {
@@ -79,8 +84,8 @@ void ojo_track_set_artist(OjoTrack *track, char *new_artist)
    }
    else
    {
-      track->title = calloc (strlen("<Unknown>"), sizeof (char)) ;
-      strcpy (track->title, "<Unknown>") ;
+      track->artist = calloc (strlen("<Unknown>"), sizeof (char)) ;
+      strcpy (track->artist, "<Unknown>") ;
    }
 }
 
@@ -93,8 +98,8 @@ void ojo_track_set_album(OjoTrack *track, char *new_album)
    }
    else
    {
-      track->title = calloc (strlen("<Unknown>"), sizeof (char)) ;
-      strcpy (track->title, "<Unknown>") ;
+      track->album = calloc (strlen("<Unknown>"), sizeof (char)) ;
+      strcpy (track->album, "<Unknown>") ;
    }
 }
 
