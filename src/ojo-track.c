@@ -51,8 +51,8 @@ void ojo_track_set_uri(OjoTrack *track, char *new_uri)
    }
    else
    {
-      track->uri = calloc (strlen("<Unknown>"), sizeof (char)) ;
-      strcpy (track->uri, "<Unknown>") ;
+      track->uri = NULL ;
+      fprintf(stderr, "SERIOUS ERROR: ojo_track_set_uri() in  ojo-track.c: uri is NULL\n") ;
    }
 }
 

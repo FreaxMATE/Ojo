@@ -119,10 +119,9 @@ void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add)
       }
       libvlc_media_tracks_release(libvlc_tracks[0], n_streams) ;
       track_index++ ;
-      // g_free(list->data) ; TODO: free uris; causes errors
       list = list->next ;
    }
-   g_slist_free(list) ;
+   g_slist_free_full(list, g_free) ;
 }
 
 void ojo_player_tracks_free()
