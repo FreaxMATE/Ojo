@@ -93,6 +93,7 @@ void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add)
              parsed_status == libvlc_media_parsed_status_timeout)
          {
             fprintf (stderr, "WARNING: ojo_player_tracks_initialize() in ojo-player.c: failed to fetch metadata\n") ;
+            break ;
          }
       }
       ojo_track_set_title(ojo_player->tracks[track_index],
