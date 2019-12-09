@@ -46,7 +46,7 @@ void ojo_track_set_uri(OjoTrack *track, char *new_uri)
 {
    if (new_uri != NULL)
    {
-      track->uri = calloc (strlen(new_uri), sizeof (char)) ;
+      track->uri = calloc (strlen(new_uri)+1, sizeof (char)) ;
       strcpy (track->uri, new_uri) ;
    }
    else
@@ -60,17 +60,17 @@ void ojo_track_set_title(OjoTrack *track, char *new_title)
 {
    if (new_title != NULL)
    {
-      track->title = calloc (strlen(new_title), sizeof (char)) ;
+      track->title = calloc (strlen(new_title)+1, sizeof (char)) ;
       strcpy (track->title, new_title) ;
    }
    else if (track->uri != NULL)
    {
-      track->title = calloc (strlen(basename(track->uri)), sizeof (char)) ;
+      track->title = calloc (strlen(basename(track->uri))+1, sizeof (char)) ;
       strcpy (track->title, basename(track->uri)) ;
    }
    else
    {
-      track->title = calloc (strlen("<Unknown>"), sizeof (char)) ;
+      track->title = calloc (strlen("<Unknown>")+1, sizeof (char)) ;
       strcpy (track->title, "<Unknown>") ;
    }
 }
@@ -79,12 +79,12 @@ void ojo_track_set_artist(OjoTrack *track, char *new_artist)
 {
    if (new_artist != NULL)
    {
-      track->artist = calloc (strlen(new_artist), sizeof (char)) ;
+      track->artist = calloc (strlen(new_artist)+1, sizeof (char)) ;
       strcpy (track->artist, new_artist) ;
    }
    else
    {
-      track->artist = calloc (strlen("<Unknown>"), sizeof (char)) ;
+      track->artist = calloc (strlen("<Unknown>")+1, sizeof (char)) ;
       strcpy (track->artist, "<Unknown>") ;
    }
 }
@@ -93,12 +93,12 @@ void ojo_track_set_album(OjoTrack *track, char *new_album)
 {
    if (new_album != NULL)
    {
-      track->album = calloc (strlen(new_album), sizeof (char)) ;
+      track->album = calloc (strlen(new_album)+1, sizeof (char)) ;
       strcpy (track->album, new_album) ;
    }
    else
    {
-      track->album = calloc (strlen("<Unknown>"), sizeof (char)) ;
+      track->album = calloc (strlen("<Unknown>")+1, sizeof (char)) ;
       strcpy (track->album, "<Unknown>") ;
    }
 }
