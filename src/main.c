@@ -29,9 +29,25 @@
 #include "ojo-player.h"
 #include "ojo-playlist.h"
 #include "ojo-window.h"
+#include "ojo-track.h"
+
+void ojo_main_print_usage()
+{
+   printf ("Ojo Usage:\n") ;
+   printf ("ojo [FILEPATH]\n") ;
+}
 
 int main(int argc, char **argv)
 {
+   GSList *list = NULL ;
+   if (argc > 1)
+   {
+      if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)
+      {
+         ojo_main_print_usage() ;
+         return 0 ;
+      }
+   }
    XInitThreads() ;
    gtk_init (&argc, &argv) ;
 
@@ -39,6 +55,14 @@ int main(int argc, char **argv)
    ojo_player = ojo_player_initialize() ;
    ojo_window_setup() ;
    gtk_widget_show(GTK_WIDGET(window)) ;
+   if (argc > 1)
+   {
+      for (int i = 1; i < argc; ++i)
+      {
+         list = g_slist_append(list, argv[i]) ;
+      }
+      ojo_window_media_open_prepare(list, FALSE) ;
+   }
    gtk_main() ;
    g_settings_sync() ;
    ojo_player_quit() ;

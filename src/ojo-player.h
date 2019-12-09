@@ -17,29 +17,14 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _vlc_player_h_
-#define _vlc_player_h_
+#ifndef _ojo_player_h_
+#define _ojo_player_h_
 
 #include <vlc/vlc.h>
 
 #include "ojo.h"
+#include "ojo-track.h"
 #include "ojo-window.h"
-
-typedef enum {
-   AUDIO,
-   VIDEO,
-   UNKNOWN,
-} FileType ;
-
-typedef struct _OjoTrack
-{
-   libvlc_media_t *media ;
-   FileType type ;
-   char uri[1024] ;
-   char *title ;
-   char *artist ;
-   char *album ;
-} OjoTrack ;
 
 typedef struct _OjoPlayer
 {
@@ -78,5 +63,5 @@ gboolean ojo_player_end_reached() ;
 int ojo_player_get_media_index() ;
 libvlc_media_player_t *ojo_player_get_media_player() ;
 
-#endif /* _vlc_player_h_ */
+#endif /* _ojo_player_h_ */
 

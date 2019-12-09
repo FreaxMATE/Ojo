@@ -33,6 +33,13 @@ void ojo_window_set_art_cover_image(char *artist, char *album)
       gtk_image_set_from_icon_name(background_image, "audio-x-generic", GTK_ICON_SIZE_DIALOG) ;
 }
 
+void ojo_window_media_open_prepare(GSList *uri_list, gboolean add)
+{
+   n_tracks = g_slist_length(uri_list) ;
+   ojo_window_set_track_control_visibility(n_tracks) ;
+   media_already_opened = TRUE ;
+   ojo_player_media_open(uri_list, n_tracks, add) ;
+}
 
 /*
  *   FILECHOOSER dialog
@@ -63,13 +70,7 @@ void on_ojo_filechooser_add_clicked()
       fprintf (stderr, "WARNING: on_ojo_filechooser_add_clicked() in window.c: no files specified\n") ;
       return ;
    }
-   n_tracks = g_slist_length(list) ;
-   gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
-   gtk_widget_show(GTK_WIDGET(next_track_button)) ;
-
-   media_already_opened = TRUE ;
-   
-   ojo_player_media_open(list, n_tracks, TRUE) ;
+   ojo_window_media_open_prepare(list, TRUE) ;
 }
 
 void on_ojo_filechooser_open_clicked()
@@ -87,19 +88,7 @@ void on_ojo_filechooser_open_clicked()
       fprintf (stderr, "WARNING: on_ojo_filechooser_open_clicked() in window.c: no files specified\n") ;
       return ;
    }
-   n_tracks = g_slist_length(list) ;
-   if (n_tracks > 1)
-   {
-      gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
-      gtk_widget_show(GTK_WIDGET(next_track_button)) ;
-   }
-   else
-   {
-      gtk_widget_hide(GTK_WIDGET(prev_track_button)) ;
-      gtk_widget_hide(GTK_WIDGET(next_track_button)) ;
-   }
-   media_already_opened = TRUE ;
-   ojo_player_media_open(list, n_tracks, FALSE) ;
+   ojo_window_media_open_prepare(list, FALSE) ;
 }
 
 void ojo_window_format_display_for_media () //FIXME: only hide currently-shown widgets
@@ -456,6 +445,20 @@ void on_window_main_destroy()
    ojo_settings_set_int(ojo_settings->gsettings, "width", window_width) ;
    ojo_settings_set_int(ojo_settings->gsettings, "height", window_height) ;
    gtk_main_quit() ;
+}
+
+void ojo_window_set_track_control_visibility(int n_tracks)
+{
+   if (n_tracks > 1)
+   {
+      gtk_widget_show(GTK_WIDGET(prev_track_button)) ;
+      gtk_widget_show(GTK_WIDGET(next_track_button)) ;
+   }
+   else
+   {
+      gtk_widget_hide(GTK_WIDGET(prev_track_button)) ;
+      gtk_widget_hide(GTK_WIDGET(next_track_button)) ;
+   }
 }
 
 

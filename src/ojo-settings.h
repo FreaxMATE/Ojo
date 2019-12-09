@@ -17,8 +17,8 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _settings_h_
-#define _settings_h_
+#ifndef _ojo_settings_h_
+#define _ojo_settings_h_
 
 #include <gio/gio.h>
 
@@ -37,5 +37,5 @@ gboolean ojo_settings_get_boolean(GSettings *gsettings, const gchar *key) ;
 void ojo_settings_set_int(GSettings *gsettings, const gchar *key, int value) ;
 void ojo_settings_set_boolean(GSettings *gsettings, const gchar *key, gboolean value) ;
 
-#endif /* _settings_h_ */
+#endif /* _ojo_settings_h_ */
 

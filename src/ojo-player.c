@@ -40,7 +40,6 @@ OjoPlayer *ojo_player_initialize()
 
 void ojo_player_quit()
 {
-   //free(settings) ; // TODO: needs to be freed somewhere else.
    libvlc_media_player_release(ojo_player->media_player) ;
    libvlc_release(ojo_player->inst) ;
 }
@@ -49,6 +48,7 @@ void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add)
 {
    libvlc_media_track_t ***libvlc_tracks ;
    libvlc_tracks = malloc(sizeof(libvlc_media_track_t ***)) ;
+   libvlc_media_parsed_status_t parsed_status ;
    int n_streams = 0, track_index = 0 ;
 
    if (add == TRUE)
@@ -71,10 +71,10 @@ void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add)
    // initalize every track
    while (list != NULL)
    {
-      ojo_player->tracks[track_index] = malloc(sizeof(OjoTrack)) ;
-      strcpy(ojo_player->tracks[track_index]->uri, list->data) ;
-
-      ojo_player->tracks[track_index]->media = libvlc_media_new_path(ojo_player->inst, ojo_player->tracks[track_index]->uri) ;
+      ojo_player->tracks[track_index] = ojo_track_initialize() ;
+      ojo_track_set_uri(ojo_player->tracks[track_index], list->data) ;
+      ojo_track_set_media(ojo_player->tracks[track_index], libvlc_media_new_path(ojo_player->inst,
+                          ojo_player->tracks[track_index]->uri)) ;
       if (ojo_player->tracks[track_index]->media == NULL)
       {
          fprintf (stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: on opening media check uri\n") ;
@@ -85,32 +85,44 @@ void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add)
          fprintf (stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: media_parse returned -1\n") ;
          return ;
       }
-      while (libvlc_media_get_parsed_status(ojo_player->tracks[track_index]->media) != libvlc_media_parsed_status_done)
-         ;
-      ojo_player->tracks[track_index]->title  = libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Title) ;
-      ojo_player->tracks[track_index]->artist = libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Artist) ;
-      ojo_player->tracks[track_index]->album  = libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Album) ;
+      while ((parsed_status=libvlc_media_get_parsed_status(ojo_player->tracks[track_index]->media))
+             != libvlc_media_parsed_status_done)
+      {
+         if (parsed_status == libvlc_media_parsed_status_skipped ||
+             parsed_status == libvlc_media_parsed_status_failed  ||
+             parsed_status == libvlc_media_parsed_status_timeout)
+         {
+            fprintf (stderr, "WARNING: ojo_player_tracks_initialize() in ojo-player.c: failed to fetch metadata\n") ;
+            break ;
+         }
+      }
+      ojo_track_set_title(ojo_player->tracks[track_index],
+                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Title)) ;
+      ojo_track_set_artist(ojo_player->tracks[track_index],
+                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Artist)) ;
+      ojo_track_set_album(ojo_player->tracks[track_index],
+                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Album)) ;
+
       if ((n_streams = libvlc_media_tracks_get(ojo_player->tracks[track_index]->media, libvlc_tracks)) == 0)
       {
          fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: could not get track description\n") ;
          return ;
       }
       if (libvlc_tracks[0][0]->i_type == libvlc_track_audio)
-         ojo_player->tracks[track_index]->type = AUDIO ;
+         ojo_track_set_type(ojo_player->tracks[track_index], AUDIO) ;
       else if (libvlc_tracks[0][0]->i_type == libvlc_track_video)
-         ojo_player->tracks[track_index]->type = VIDEO ;
+         ojo_track_set_type(ojo_player->tracks[track_index], VIDEO) ;
       else
       {
-         ojo_player->tracks[track_index]->type = -1 ;
+         ojo_track_set_type(ojo_player->tracks[track_index], UNKNOWN) ;
          fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: media type neither audio nor video\n") ;
          return ;
       }
       libvlc_media_tracks_release(libvlc_tracks[0], n_streams) ;
-      g_free(list->data) ;
       track_index++ ;
       list = list->next ;
    }
-   g_slist_free(list) ;
+   g_slist_free_full(list, g_free) ;
 }
 
 void ojo_player_tracks_free()
