@@ -170,20 +170,11 @@ void on_ojo_volume_value_changed()
 void on_ojo_repeat_clicked()
 {
    if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 0)
-   {
-      gtk_button_set_image(repeat_button, gtk_image_new_from_icon_name("media-repeat-track-amarok", GTK_ICON_SIZE_BUTTON)) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 1) ;
-   }
+      ojo_window_set_repeat(1) ;
    else if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 1)
-   {
-      gtk_button_set_image(repeat_button, gtk_image_new_from_icon_name("media-repeat-all", GTK_ICON_SIZE_BUTTON)) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 2) ;
-   }
+      ojo_window_set_repeat(2) ;
    else
-   {
-      gtk_button_set_image(repeat_button, gtk_image_new_from_icon_name("media-repeat-none", GTK_ICON_SIZE_BUTTON)) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 0) ;
-   }
+      ojo_window_set_repeat(0) ;
 }
 
 /*
@@ -368,11 +359,20 @@ void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to sett
 void ojo_window_set_repeat(int repeat_mode)
 {
    if (repeat_mode == 0)
+   {
       gtk_button_set_image(repeat_button, gtk_image_new_from_icon_name("media-repeat-none", GTK_ICON_SIZE_BUTTON)) ;
-   else if (repeat_mode == 2)
+      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 0) ;
+   }
+   else if (repeat_mode == 1)
+   {
       gtk_button_set_image(repeat_button, gtk_image_new_from_icon_name("media-repeat-track-amarok", GTK_ICON_SIZE_BUTTON)) ;
+      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 1) ;
+   }
    else
+   {
       gtk_button_set_image(repeat_button, gtk_image_new_from_icon_name("media-repeat-all", GTK_ICON_SIZE_BUTTON)) ;
+      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 2) ;
+   }
 }
 
 

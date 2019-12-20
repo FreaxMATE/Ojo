@@ -261,7 +261,6 @@
         </child>
         <child>
           <object class="GtkBox" id="ojo_playlist_box">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>

@@ -75,6 +75,7 @@ void ojo_window_set_dark_mode(gboolean dark_mode) ;
 void ojo_window_set_border_style(gboolean border_style) ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
 void ojo_window_set_view_coverart(gboolean view_coverart) ;
+void ojo_window_set_repeat(int repeat_mode) ;
 void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
