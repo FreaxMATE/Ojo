@@ -50,7 +50,8 @@ GtkButton         *playpause_button,
                   *forward_button,
                   *next_track_button,
                   *fullscreen_button,
-                  *playlist_button ;
+                  *playlist_button,
+                  *repeat_button ;
 GtkBox            *main_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
