@@ -183,6 +183,9 @@ void on_ojo_fullscreen_clicked()
       gtk_window_unfullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image(GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON)) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", FALSE) ;
+      gtk_widget_show (GTK_WIDGET(play_box)) ;
+      gtk_widget_show (GTK_WIDGET(seek_bar)) ;
+      gtk_widget_show (GTK_WIDGET(menu_bar)) ;
    }
    else
    {
