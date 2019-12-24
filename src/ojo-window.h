@@ -59,9 +59,10 @@ GtkDialog         *filechooser_dialog ;
 
 GSList *list ;
 int n_tracks ;
-gboolean about_dialog_response, media_already_opened ;
+gboolean about_dialog_response, media_already_opened, user_input ;
 char time_string[32] ;
 int timeout, window_width, window_height ;
+int64_t duration ;
 
 void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
 void on_ojo_filechooser_add_clicked(void) ;

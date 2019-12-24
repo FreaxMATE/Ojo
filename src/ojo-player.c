@@ -184,7 +184,7 @@ void ojo_player_stop()
 
 int64_t ojo_player_get_duration()
 {
-   return  libvlc_media_get_duration(libvlc_media_player_get_media(ojo_player->media_player)) ;
+   return libvlc_media_get_duration(libvlc_media_player_get_media(ojo_player->media_player)) ;
 }
 
 int64_t ojo_player_get_current_time()
