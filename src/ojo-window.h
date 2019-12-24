@@ -34,7 +34,8 @@ GtkMenuItem       *file_menu,
                   *file_submenu ;
 GtkWidget         *file_menu_open,
                   *view_menu_fullscreen,
-                  *view_menu_showplaylist ;
+                  *view_menu_showplaylist,
+                  *play_box ;
 GtkImage          *background_image ;
 GtkToggleButton   *preferences_dark_mode ,
                   *preferences_border_style,
@@ -56,12 +57,19 @@ GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
 
+struct _area {
+	guint timeout_tag;
+   guint32 last_motion_time ;
+   double last_motion_x ;
+   double last_motion_y ;
+} area ;
+
 GSList *list ;
 int n_tracks ;
-gboolean about_dialog_response, media_already_opened ;
+gboolean about_dialog_response, media_already_opened, visible_controls ;
 char time_string[32] ;
 int timeout, window_width, window_height ;
-
+gboolean on_ojo_drawing_area_motion_notify_event( GtkWidget *widget, GdkEventMotion *event ) ;
 void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
 void on_ojo_filechooser_add_clicked(void) ;
 void on_ojo_filechooser_open_clicked(void) ;
@@ -78,6 +86,7 @@ void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
 void ojo_window_set_track_control_visibility(int n_tracks) ;
+void set_cursor_visible(gboolean visible) ;
 int ojo_window_get_width(void) ;
 int ojo_window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
