@@ -39,6 +39,11 @@
       <summary>If enabled, coverart will be drawn, when available</summary>
       <description>Toggle borders</description>
     </key>
+    <key name='repeat-mode' type='i'>
+      <default>0</default>
+      <summary>repeat mode - 0: none, 1: single, 2: all</summary>
+      <description>whether to stop playlist/track on end</description>
+    </key>
 
   </schema>
 

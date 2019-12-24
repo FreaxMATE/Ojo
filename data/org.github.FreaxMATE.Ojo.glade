@@ -58,6 +58,11 @@
     <property name="margin_bottom">1</property>
     <property name="stock">gtk-media-previous</property>
   </object>
+  <object class="GtkImage" id="img_ojo_repeat">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">media-repeat-none</property>
+  </object>
   <object class="GtkImage" id="img_ojo_stop">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -257,7 +262,6 @@
         </child>
         <child>
           <object class="GtkBox" id="ojo_playlist_box">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
@@ -385,6 +389,22 @@ audio-volume-medium-symbolic</property>
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="ojo_repeat">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">img_ojo_repeat</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_ojo_repeat_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="ojo_play_pause">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -397,7 +417,7 @@ audio-volume-medium-symbolic</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -411,7 +431,7 @@ audio-volume-medium-symbolic</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -426,7 +446,7 @@ audio-volume-medium-symbolic</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -441,7 +461,7 @@ audio-volume-medium-symbolic</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">6</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
@@ -456,7 +476,7 @@ audio-volume-medium-symbolic</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">7</property>
+                <property name="position">8</property>
               </packing>
             </child>
             <child>
@@ -470,7 +490,7 @@ audio-volume-medium-symbolic</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">8</property>
+                <property name="position">9</property>
               </packing>
             </child>
             <child>
@@ -482,7 +502,7 @@ audio-volume-medium-symbolic</property>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="pack_type">end</property>
-                <property name="position">9</property>
+                <property name="position">10</property>
               </packing>
             </child>
           </object>

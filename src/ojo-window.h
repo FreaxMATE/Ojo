@@ -51,7 +51,8 @@ GtkButton         *playpause_button,
                   *forward_button,
                   *next_track_button,
                   *fullscreen_button,
-                  *playlist_button ;
+                  *playlist_button,
+                  *repeat_button ;
 GtkBox            *main_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
@@ -66,9 +67,11 @@ struct _area {
 
 GSList *list ;
 int n_tracks ;
-gboolean about_dialog_response, media_already_opened, visible_controls ;
+gboolean about_dialog_response, media_already_opened, user_input ;
 char time_string[32] ;
 int timeout, window_width, window_height ;
+int64_t duration ;
+
 gboolean on_ojo_drawing_area_motion_notify_event( GtkWidget *widget, GdkEventMotion *event ) ;
 void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
 void on_ojo_filechooser_add_clicked(void) ;
@@ -82,6 +85,7 @@ void ojo_window_set_dark_mode(gboolean dark_mode) ;
 void ojo_window_set_border_style(gboolean border_style) ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
 void ojo_window_set_view_coverart(gboolean view_coverart) ;
+void ojo_window_set_repeat(int repeat_mode) ;
 void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
