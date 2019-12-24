@@ -18,6 +18,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <math.h>
 
 #include "ojo-window.h"
 
@@ -182,14 +183,21 @@ void on_ojo_fullscreen_clicked()
       gtk_window_unfullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image(GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON)) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", FALSE) ;
+      gtk_widget_show (GTK_WIDGET(play_box)) ;
+      gtk_widget_show (GTK_WIDGET(seek_bar)) ;
+      gtk_widget_show (GTK_WIDGET(menu_bar)) ;
    }
    else
    {
       if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(view_menu_fullscreen)) == FALSE)
          gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_fullscreen), TRUE) ;
       gtk_window_fullscreen(GTK_WINDOW(window)) ;
+      gtk_window_present(GTK_WINDOW(window)) ;
       gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", TRUE) ;
+      gtk_widget_hide (GTK_WIDGET(play_box)) ;
+      gtk_widget_hide (GTK_WIDGET(seek_bar)) ;
+      gtk_widget_hide (GTK_WIDGET(menu_bar)) ;
    }
 }
 
@@ -337,10 +345,64 @@ void ojo_window_set_view_playlist (gboolean view_playlist)
    }
 }
 
+void set_cursor_visible(gboolean visible)
+{
+	GdkWindow *window ;
+	GdkCursor *cursor ;
+
+	window = gtk_widget_get_window (GTK_WIDGET(drawing_area)) ;
+
+	if (visible)
+	{
+		cursor =	gdk_cursor_new_from_name (gdk_display_get_default(), "default") ;
+	}
+	else
+	{
+		cursor =	gdk_cursor_new_for_display (gdk_display_get_default(), GDK_BLANK_CURSOR) ;
+	}
+
+	gdk_window_set_cursor(window, cursor) ;
+	g_object_unref(cursor) ;
+}
+
 void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to settings.h
 {
    ojo_settings_set_boolean(ojo_settings->gsettings, "view-coverart", view_coverart) ;
    ojo_window_set_art_cover_image(ojo_player_get_artist(), ojo_player_get_album()) ;
+}
+
+gboolean timeout_handler(gpointer data)
+{
+	if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
+   {
+      set_cursor_visible(FALSE) ;
+      gtk_widget_hide (GTK_WIDGET(play_box)) ;
+      gtk_widget_hide (GTK_WIDGET(seek_bar)) ;
+      area.timeout_tag = 0 ;
+   }
+	return (area.timeout_tag != 0) ;
+}
+
+gboolean on_ojo_drawing_area_motion_notify_event(GtkWidget *widget, GdkEventMotion *event)
+{
+	const gdouble dist = sqrt(	pow(event->x - area.last_motion_x, 2) + pow(event->y - area.last_motion_y, 2) ) ;
+	const gdouble speed = dist / (event->time - area.last_motion_time) ;
+
+   area.last_motion_time = event->time ;
+   area.last_motion_x = event->x ;
+   area.last_motion_y = event->y ;
+
+	if (speed >= 0 && ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
+   {
+	   	GdkCursor *cursor =	gdk_cursor_new_from_name(gdk_display_get_default(), "default") ;
+   		gdk_window_set_cursor(gtk_widget_get_window(widget), cursor);
+
+         gtk_widget_show (GTK_WIDGET(play_box)) ;
+         gtk_widget_show (GTK_WIDGET(seek_bar)) ;
+   }
+   area.timeout_tag = g_timeout_add_seconds (3, timeout_handler, NULL) ;
+    
+   return TRUE;
 }
 
 
@@ -350,6 +412,9 @@ void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to sett
 void ojo_window_setup()
 {
    media_already_opened = FALSE ;
+   //TODO init area properly
+   area.timeout_tag = 0 ;
+   area.last_motion_time = 0 ;
 
    builder = gtk_builder_new () ;
    if (access("/usr/local/share/ojo/org.github.FreaxMATE.Ojo.glade", F_OK))
@@ -367,6 +432,7 @@ void ojo_window_setup()
    gtk_window_set_title(window, "Ojo") ;
 
    drawing_area = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
+   gtk_widget_set_events (GTK_WIDGET(drawing_area), GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK) ;
 
    menu_bar = GTK_MENU_BAR(gtk_builder_get_object(builder, "ojo_menu")) ;
    file_menu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_menu_item")) ;
@@ -375,6 +441,8 @@ void ojo_window_setup()
    view_menu_fullscreen = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_fullscreen")) ;
    view_menu_showplaylist = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_showplaylist")) ;
    file_menu_open = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
+
+   play_box = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_play_box")) ;
 
    seek_bar = GTK_SCALE(gtk_builder_get_object(builder, "ojo_seek_bar")) ;
 
