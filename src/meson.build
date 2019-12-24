@@ -13,4 +13,4 @@ libgtk = dependency('gtk+-3.0')
 libvlc = dependency('libvlc')
 gmoddep = dependency('gmodule-2.0')
 
-executable('ojo', sources, link_args : '-lX11', dependencies : [libgtk, libvlc, gmoddep], install: true)
+executable('ojo', sources, link_args : ['-lX11', '-lm'], dependencies : [libgtk, libvlc, gmoddep], install: true)

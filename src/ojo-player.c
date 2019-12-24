@@ -141,7 +141,9 @@ void ojo_player_media_open (GSList *list, int n_tracks, gboolean add)
    ojo_player_tracks_initialize(list, n_tracks, add) ;
    libvlc_media_player_set_xwindow(ojo_player->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
    ojo_playlist_gtk_initialize() ;
-   ojo_player_media_play(0) ;
+   if (!add)
+      ojo_player_media_play(0) ;
+   ojo_playlist_select_row(ojo_player->media_index) ;
 }
 
 int ojo_player_media_play(int index)
