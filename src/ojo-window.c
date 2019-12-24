@@ -379,7 +379,7 @@ gboolean timeout_handler(gpointer data)
       gtk_widget_hide (GTK_WIDGET(seek_bar)) ;
       area.timeout_tag = 0 ;
    }
-   return (area.timeout_tag != 0) ;
+	return (area.timeout_tag != 0) ;
 }
 
 gboolean on_ojo_drawing_area_motion_notify_event(GtkWidget *widget, GdkEventMotion *event)

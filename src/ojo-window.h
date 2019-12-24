@@ -66,7 +66,7 @@ struct _area {
 
 GSList *list ;
 int n_tracks ;
-gboolean about_dialog_response, media_already_opened ;
+gboolean about_dialog_response, media_already_opened, visible_controls ;
 char time_string[32] ;
 int timeout, window_width, window_height ;
 gboolean on_ojo_drawing_area_motion_notify_event( GtkWidget *widget, GdkEventMotion *event ) ;
