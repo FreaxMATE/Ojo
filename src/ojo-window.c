@@ -231,6 +231,7 @@ gboolean ojo_window_seek_bar_update()
 
    gtk_label_set_text(GTK_LABEL(time_label), time_to_string(current_time, duration)) ;
    gtk_range_set_range(GTK_RANGE(seek_bar), 0.0, duration) ;
+   user_input = FALSE ;
    gtk_range_set_value(GTK_RANGE(seek_bar), current_time) ;
 
    return TRUE ;
@@ -238,13 +239,17 @@ gboolean ojo_window_seek_bar_update()
 
 void ojo_window_seek_bar_start()
 {
-   timeout = g_timeout_add(100, G_SOURCE_FUNC(ojo_window_seek_bar_update), FALSE) ;
+   timeout = g_timeout_add(1000, G_SOURCE_FUNC(ojo_window_seek_bar_update), FALSE) ;
 }
 
 void on_ojo_seek_bar_value_changed()
 {
-   if (gtk_range_get_value(GTK_RANGE(seek_bar)) != (double)ojo_player_get_current_time())
-      ojo_player_set_current_time(gtk_range_get_value(GTK_RANGE(seek_bar))) ;
+   if (user_input)
+   {
+      if (gtk_range_get_value(GTK_RANGE(seek_bar)) != (double)ojo_player_get_current_time())
+         ojo_player_set_current_time(gtk_range_get_value(GTK_RANGE(seek_bar))) ;
+   }
+   user_input = TRUE ;
 }
 
 void on_ojo_seek_bar_button_press_event()
@@ -382,6 +387,7 @@ void ojo_window_set_repeat(int repeat_mode)
 void ojo_window_setup()
 {
    media_already_opened = FALSE ;
+   user_input = TRUE ;
 
    builder = gtk_builder_new () ;
    if (access("/usr/local/share/ojo/org.github.FreaxMATE.Ojo.glade", F_OK))
