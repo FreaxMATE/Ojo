@@ -345,24 +345,23 @@ void ojo_window_set_view_playlist (gboolean view_playlist)
    }
 }
 
-void set_cursor_visible(gboolean visible)
+void ojo_window_set_cursor_visible(gboolean visible)
 {
-	GdkWindow *window ;
-	GdkCursor *cursor ;
+   GdkWindow *window ;
+   GdkCursor *cursor ;
 
-	window = gtk_widget_get_window (GTK_WIDGET(drawing_area)) ;
+   window = gtk_widget_get_window (GTK_WIDGET(drawing_area)) ;
 
-	if (visible)
-	{
-		cursor =	gdk_cursor_new_from_name (gdk_display_get_default(), "default") ;
-	}
-	else
-	{
-		cursor =	gdk_cursor_new_for_display (gdk_display_get_default(), GDK_BLANK_CURSOR) ;
-	}
-
-	gdk_window_set_cursor(window, cursor) ;
-	g_object_unref(cursor) ;
+   if (visible)
+   {
+      cursor = gdk_cursor_new_from_name (gdk_display_get_default(), "default") ;
+   }
+   else
+   {
+      cursor = gdk_cursor_new_for_display (gdk_display_get_default(), GDK_BLANK_CURSOR) ;
+   }
+   gdk_window_set_cursor(window, cursor) ;
+   g_object_unref(cursor) ;
 }
 
 void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to settings.h
@@ -373,9 +372,9 @@ void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to sett
 
 gboolean timeout_handler(gpointer data)
 {
-	if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
+   if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
    {
-      set_cursor_visible(FALSE) ;
+      ojo_window_set_cursor_visible(FALSE) ;
       gtk_widget_hide (GTK_WIDGET(play_box)) ;
       gtk_widget_hide (GTK_WIDGET(seek_bar)) ;
       area.timeout_tag = 0 ;
@@ -385,24 +384,22 @@ gboolean timeout_handler(gpointer data)
 
 gboolean on_ojo_drawing_area_motion_notify_event(GtkWidget *widget, GdkEventMotion *event)
 {
-	const gdouble dist = sqrt(	pow(event->x - area.last_motion_x, 2) + pow(event->y - area.last_motion_y, 2) ) ;
-	const gdouble speed = dist / (event->time - area.last_motion_time) ;
+   const gdouble dist = sqrt(pow(event->x - area.last_motion_x, 2) + pow(event->y - area.last_motion_y, 2)) ;
+   const gdouble speed = dist / (event->time - area.last_motion_time) ;
 
    area.last_motion_time = event->time ;
    area.last_motion_x = event->x ;
    area.last_motion_y = event->y ;
 
-	if (speed >= 0 && ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
+   if (speed >= 0 && ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
    {
-	   	GdkCursor *cursor =	gdk_cursor_new_from_name(gdk_display_get_default(), "default") ;
-   		gdk_window_set_cursor(gtk_widget_get_window(widget), cursor);
-
-         gtk_widget_show (GTK_WIDGET(play_box)) ;
-         gtk_widget_show (GTK_WIDGET(seek_bar)) ;
+      ojo_window_set_cursor_visible(TRUE) ;
+      gtk_widget_show (GTK_WIDGET(play_box)) ;
+      gtk_widget_show (GTK_WIDGET(seek_bar)) ;
    }
    area.timeout_tag = g_timeout_add_seconds (3, timeout_handler, NULL) ;
-    
-   return TRUE;
+
+   return TRUE ;
 }
 
 

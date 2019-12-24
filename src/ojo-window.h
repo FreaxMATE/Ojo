@@ -86,7 +86,7 @@ void ojo_window_set_title(char *trackName) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
 void ojo_window_set_track_control_visibility(int n_tracks) ;
-void set_cursor_visible(gboolean visible) ;
+void ojo_window_set_cursor_visible(gboolean visible) ;
 int ojo_window_get_width(void) ;
 int ojo_window_get_height(void) ;
 char *time_to_string(double current_time, double duration) ;
