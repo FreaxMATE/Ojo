@@ -109,7 +109,7 @@ void ojo_window_format_display_for_media () //FIXME: only hide currently-shown w
          gtk_widget_hide(GTK_WIDGET(drawing_area)) ;
          gtk_widget_show(GTK_WIDGET(background_image)) ;
       }
-      else if (ojo_player_get_filetype() == VIDEO)
+      else
       {
          ojo_playlist_hide() ;
          gtk_widget_hide(GTK_WIDGET(background_image)) ;
