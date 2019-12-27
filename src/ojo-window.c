@@ -411,7 +411,6 @@ gboolean timeout_handler(gpointer data)
    {
       ojo_window_set_cursor_visible(FALSE) ;
       gtk_revealer_set_reveal_child(revealer_controls, FALSE) ;
-      gtk_widget_hide(GTK_WIDGET(menu_bar)) ;
       area.timeout_tag = 0 ;
    }
 	return (area.timeout_tag != 0) ;
@@ -430,7 +429,6 @@ gboolean on_ojo_drawing_area_motion_notify_event(GtkWidget *widget, GdkEventMoti
    {
       ojo_window_set_cursor_visible(TRUE) ;
       gtk_revealer_set_reveal_child(revealer_controls, TRUE) ;
-      gtk_widget_show_all(GTK_WIDGET(menu_bar)) ;
    }
    area.timeout_tag = g_timeout_add_seconds (3, timeout_handler, NULL) ;
 
