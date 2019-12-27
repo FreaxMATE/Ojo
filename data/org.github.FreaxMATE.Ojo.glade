@@ -240,7 +240,6 @@
           <object class="GtkDrawingArea" id="ojo_drawing_area">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <signal name="motion-notify-event" handler="on_ojo_drawing_area_motion_notify_event" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -349,6 +348,7 @@
                         <property name="receives_default">True</property>
                         <property name="relief">none</property>
                         <property name="orientation">vertical</property>
+                        <property name="value">1</property>
                         <property name="icons">audio-volume-muted-symbolic
 audio-volume-high-symbolic
 audio-volume-low-symbolic

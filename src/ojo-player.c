@@ -139,7 +139,7 @@ void ojo_player_tracks_free()
 void ojo_player_media_open (GSList *list, int n_tracks, gboolean add)
 {
    ojo_player_tracks_initialize(list, n_tracks, add) ;
-   libvlc_media_player_set_xwindow(ojo_player->media_player, GDK_WINDOW_XID(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
+   libvlc_media_player_set_xwindow(ojo_player->media_player, gdk_x11_window_get_xid(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
    ojo_playlist_gtk_initialize() ;
    if (!add)
       ojo_player_media_play(0) ;
@@ -273,4 +273,19 @@ libvlc_media_player_t *ojo_player_get_media_player()
    return ojo_player->media_player ;
 }
 
+int ojo_player_get_mousepos_x()
+{
+   int x = 0, y = 0 ;
+
+   libvlc_video_get_cursor(ojo_player->media_player, 0, &x, &y) ;
+   return x ;
+}
+
+int ojo_player_get_mousepos_y()
+{
+   int x = 0, y = 0 ;
+
+   libvlc_video_get_cursor(ojo_player->media_player, 0, &x, &y) ;
+   return y ;
+}
 

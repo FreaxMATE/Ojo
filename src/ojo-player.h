@@ -62,6 +62,8 @@ void ojo_player_forward() ;
 gboolean ojo_player_end_reached() ;
 int ojo_player_get_media_index() ;
 libvlc_media_player_t *ojo_player_get_media_player() ;
+int ojo_player_get_mousepos_x() ;
+int ojo_player_get_mousepos_y() ;
 
 #endif /* _ojo_player_h_ */
 

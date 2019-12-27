@@ -60,21 +60,14 @@ GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
 GtkRevealer       *revealer_controls ;
 
-struct _area {
-	guint timeout_tag;
-   guint32 last_motion_time ;
-   double last_motion_x ;
-   double last_motion_y ;
-} area ;
-
 GSList *list ;
 int n_tracks ;
 gboolean about_dialog_response, media_already_opened, user_input ;
 char time_string[32] ;
 int timeout, window_width, window_height ;
 int64_t duration ;
+int old_x, old_y, mouse_sensitivity ;
 
-gboolean on_ojo_drawing_area_motion_notify_event( GtkWidget *widget, GdkEventMotion *event ) ;
 void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
 void on_ojo_filechooser_add_clicked(void) ;
 void on_ojo_filechooser_open_clicked(void) ;

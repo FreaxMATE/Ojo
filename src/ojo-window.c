@@ -405,36 +405,42 @@ void ojo_window_set_repeat(int repeat_mode)
    }
 }
 
-gboolean timeout_handler(gpointer data)
+gboolean ojo_window_mouse_motion_handler()
 {
+   static int counter ;
    if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
    {
-      ojo_window_set_cursor_visible(FALSE) ;
-      gtk_revealer_set_reveal_child(revealer_controls, FALSE) ;
-      area.timeout_tag = 0 ;
+      int new_x = ojo_player_get_mousepos_x() ;
+      int new_y = ojo_player_get_mousepos_y() ;
+
+      if (abs(new_x-old_x) > mouse_sensitivity || abs(new_y-old_y) > mouse_sensitivity)
+      {
+         gtk_revealer_set_reveal_child(revealer_controls, TRUE) ;
+         counter = 0 ;
+      }
+      old_x = ojo_player_get_mousepos_x() ;
+      old_y = ojo_player_get_mousepos_y() ;
+      if (counter == 30)                            // 3 seconds of no motion
+      {
+         if (new_x == old_x && new_y == old_y && !ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist"))
+         {
+            gtk_revealer_set_reveal_child(revealer_controls, FALSE) ;
+         }
+         counter = 0 ;
+      }
+      counter++ ;
    }
-	return (area.timeout_tag != 0) ;
-}
-
-gboolean on_ojo_drawing_area_motion_notify_event(GtkWidget *widget, GdkEventMotion *event)
-{
-   const gdouble dist = sqrt(pow(event->x - area.last_motion_x, 2) + pow(event->y - area.last_motion_y, 2)) ;
-   const gdouble speed = dist / (event->time - area.last_motion_time) ;
-
-   area.last_motion_time = event->time ;
-   area.last_motion_x = event->x ;
-   area.last_motion_y = event->y ;
-
-   if (speed >= 0 && ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
-   {
-      ojo_window_set_cursor_visible(TRUE) ;
-      gtk_revealer_set_reveal_child(revealer_controls, TRUE) ;
-   }
-   area.timeout_tag = g_timeout_add_seconds (3, timeout_handler, NULL) ;
 
    return TRUE ;
 }
 
+void ojo_window_start_mouse_motion_handler()
+{
+   libvlc_video_set_mouse_input(ojo_player->media_player, TRUE) ;
+   old_x = ojo_player_get_mousepos_x() ;
+   old_y = ojo_player_get_mousepos_y() ;
+   timeout = g_timeout_add(100, G_SOURCE_FUNC(ojo_window_mouse_motion_handler), FALSE) ;
+}
 
 /*
  *   WINDOW SETUP
@@ -443,9 +449,7 @@ void ojo_window_setup()
 {
    media_already_opened = FALSE ;
    user_input = TRUE ;
-   //TODO init area properly
-   area.timeout_tag = 0 ;
-   area.last_motion_time = 0 ;
+   mouse_sensitivity = 50 ;
 
    builder = gtk_builder_new () ;
    if (access("/usr/local/share/ojo/org.github.FreaxMATE.Ojo.glade", F_OK))
@@ -463,7 +467,6 @@ void ojo_window_setup()
    gtk_window_set_title(window, "Ojo") ;
 
    drawing_area = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "ojo_drawing_area")) ;
-   gtk_widget_set_events (GTK_WIDGET(drawing_area), GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK) ;
 
    menu_bar = GTK_MENU_BAR(gtk_builder_get_object(builder, "ojo_menu")) ;
    file_menu = GTK_MENU_ITEM(gtk_builder_get_object(builder, "ojo_menu_item")) ;
@@ -508,7 +511,7 @@ void ojo_window_setup()
    ojo_window_set_view_coverart(ojo_settings_get_boolean(ojo_settings->gsettings, "view-coverart")) ;
    ojo_window_set_repeat(ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode")) ;
    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
-
+   ojo_window_start_mouse_motion_handler() ;
    gtk_widget_realize(GTK_WIDGET(drawing_area)) ;
    g_object_unref(builder) ;
 }
