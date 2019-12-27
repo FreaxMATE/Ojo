@@ -416,6 +416,7 @@ gboolean ojo_window_mouse_motion_handler()
       if (abs(new_x-old_x) > mouse_sensitivity || abs(new_y-old_y) > mouse_sensitivity)
       {
          gtk_revealer_set_reveal_child(revealer_controls, TRUE) ;
+         ojo_window_set_cursor_visible(TRUE) ;
          counter = 0 ;
       }
       old_x = ojo_player_get_mousepos_x() ;
@@ -425,6 +426,7 @@ gboolean ojo_window_mouse_motion_handler()
          if (new_x == old_x && new_y == old_y && !ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist"))
          {
             gtk_revealer_set_reveal_child(revealer_controls, FALSE) ;
+            ojo_window_set_cursor_visible(FALSE) ;
          }
          counter = 0 ;
       }
