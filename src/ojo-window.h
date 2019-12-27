@@ -35,7 +35,8 @@ GtkMenuItem       *file_menu,
 GtkWidget         *file_menu_open,
                   *view_menu_fullscreen,
                   *view_menu_showplaylist,
-                  *play_box ;
+                  *play_box,
+                  *controls ;
 GtkImage          *background_image ;
 GtkToggleButton   *preferences_dark_mode ,
                   *preferences_border_style,
@@ -57,6 +58,7 @@ GtkBox            *main_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
+GtkRevealer       *revealer_controls ;
 
 struct _area {
 	guint timeout_tag;

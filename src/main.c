@@ -64,6 +64,12 @@ int main(int argc, char **argv)
       ojo_window_media_open_prepare(list, FALSE) ;
    }
    gtk_main() ;
+   if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen") == TRUE)
+   {
+      ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", FALSE) ;
+      ojo_settings_set_int(ojo_settings->gsettings, "width", 960) ;
+      ojo_settings_set_int(ojo_settings->gsettings, "height", 540) ;
+   }
    g_settings_sync() ;
    ojo_player_quit() ;
 

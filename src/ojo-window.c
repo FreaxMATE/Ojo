@@ -192,9 +192,8 @@ void on_ojo_fullscreen_clicked()
       gtk_window_unfullscreen(GTK_WINDOW(window)) ;
       gtk_button_set_image(GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON)) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", FALSE) ;
-      gtk_widget_show (GTK_WIDGET(play_box)) ;
-      gtk_widget_show (GTK_WIDGET(seek_bar)) ;
-      gtk_widget_show (GTK_WIDGET(menu_bar)) ;
+      gtk_revealer_set_reveal_child(revealer_controls, TRUE) ;
+      gtk_widget_show_all (GTK_WIDGET(menu_bar)) ;
    }
    else
    {
@@ -204,8 +203,7 @@ void on_ojo_fullscreen_clicked()
       gtk_window_present(GTK_WINDOW(window)) ;
       gtk_button_set_image (GTK_BUTTON(fullscreen_button), gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", TRUE) ;
-      gtk_widget_hide (GTK_WIDGET(play_box)) ;
-      gtk_widget_hide (GTK_WIDGET(seek_bar)) ;
+      gtk_revealer_set_reveal_child(revealer_controls, FALSE) ;
       gtk_widget_hide (GTK_WIDGET(menu_bar)) ;
    }
 }
@@ -412,8 +410,7 @@ gboolean timeout_handler(gpointer data)
    if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
    {
       ojo_window_set_cursor_visible(FALSE) ;
-      gtk_widget_hide (GTK_WIDGET(play_box)) ;
-      gtk_widget_hide (GTK_WIDGET(seek_bar)) ;
+      gtk_revealer_set_reveal_child(revealer_controls, FALSE) ;
       area.timeout_tag = 0 ;
    }
 	return (area.timeout_tag != 0) ;
@@ -431,8 +428,7 @@ gboolean on_ojo_drawing_area_motion_notify_event(GtkWidget *widget, GdkEventMoti
    if (speed >= 0 && ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
    {
       ojo_window_set_cursor_visible(TRUE) ;
-      gtk_widget_show (GTK_WIDGET(play_box)) ;
-      gtk_widget_show (GTK_WIDGET(seek_bar)) ;
+      gtk_revealer_set_reveal_child(revealer_controls, TRUE) ;
    }
    area.timeout_tag = g_timeout_add_seconds (3, timeout_handler, NULL) ;
 
@@ -477,8 +473,8 @@ void ojo_window_setup()
    view_menu_showplaylist = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_menu_showplaylist")) ;
    file_menu_open = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
 
+   controls = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_controls")) ;
    play_box = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_play_box")) ;
-
    seek_bar = GTK_SCALE(gtk_builder_get_object(builder, "ojo_seek_bar")) ;
 
    playpause_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_play_pause")) ;
@@ -499,6 +495,7 @@ void ojo_window_setup()
    time_label = GTK_LABEL(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
    background_image = GTK_IMAGE(gtk_builder_get_object(builder, "img_ojo_background_image")) ;
 
+   revealer_controls = GTK_REVEALER(gtk_builder_get_object(builder, "ojo_revealer_controls")) ;
    about = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_on_about")) ;
    preferences_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_preferences_dialog")) ;
    filechooser_dialog = GTK_DIALOG(gtk_builder_get_object(builder, "ojo_filechooser_dialog")) ;
