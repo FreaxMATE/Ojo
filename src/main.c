@@ -33,8 +33,14 @@
 
 void ojo_main_print_usage()
 {
-   printf ("Ojo Usage:\n") ;
-   printf ("ojo [FILEPATH]\n") ;
+   printf ("\
+Usage:\n\
+  ojo [FILEPATH]\n\n\
+\
+Help Options:\n\
+  -h, --help                 Show help options\n\n\
+") ;
+   
 }
 
 int main(int argc, char **argv)

@@ -22,6 +22,20 @@
 
 #include "ojo-window.h"
 
+void on_ojo_filechooser_add_clicked(void) ;
+void on_ojo_filechooser_open_clicked(void) ;
+gboolean ojo_window_seek_bar_update(void) ;
+void ojo_window_set_art_cover_image(char *artist, char *album) ;
+void ojo_window_set_dark_mode(gboolean dark_mode) ;
+void ojo_window_set_border_style(gboolean border_style) ;
+void ojo_window_set_view_coverart(gboolean view_coverart) ;
+void ojo_window_set_repeat(int repeat_mode) ;
+void ojo_window_set_track_control_visibility(int n_tracks) ;
+void ojo_window_set_cursor_visible(gboolean visible) ;
+int ojo_window_get_width(void) ;
+int ojo_window_get_height(void) ;
+char *time_to_string(double current_time, double duration) ;
+
 
 void ojo_window_set_art_cover_image(char *artist, char *album)
 {
@@ -164,8 +178,7 @@ void on_ojo_next_track_clicked()
 
 void on_ojo_volume_value_changed()
 {
-    double volume = gtk_scale_button_get_value(GTK_SCALE_BUTTON(volume_button));
-    libvlc_audio_set_volume(ojo_player_get_media_player(), (int)(100*volume)) ;
+    ojo_player_set_volume(gtk_scale_button_get_value(GTK_SCALE_BUTTON(volume_button))) ;
 }
 
 void on_ojo_repeat_clicked()

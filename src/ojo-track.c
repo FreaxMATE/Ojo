@@ -103,5 +103,13 @@ void ojo_track_set_album(OjoTrack *track, char *new_album)
    }
 }
 
+void ojo_track_free(OjoTrack *track)
+{
+   libvlc_media_release(track->media) ;
+   free(track->uri) ;
+   free(track->title) ;
+   free(track->artist) ;
+   free(track->album) ;
+}
 
 

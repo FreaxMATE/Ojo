@@ -45,6 +45,7 @@ void ojo_track_set_uri(OjoTrack *track, char *new_uri) ;
 void ojo_track_set_title(OjoTrack *track, char *new_title) ;
 void ojo_track_set_artist(OjoTrack *track, char *new_artist) ;
 void ojo_track_set_album(OjoTrack *track, char *new_album) ;
+void ojo_track_free(OjoTrack *track) ;
 
 #endif /* _ojo_track_h_ */
 
