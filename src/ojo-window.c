@@ -245,7 +245,7 @@ gboolean ojo_window_seek_bar_update()
 
 void ojo_window_seek_bar_start()
 {
-   timeout = g_timeout_add(1000, G_SOURCE_FUNC(ojo_window_seek_bar_update), FALSE) ;
+   timeout = g_timeout_add(1000, ojo_window_seek_bar_update, FALSE) ;
 }
 
 void on_ojo_seek_bar_value_changed()
@@ -441,7 +441,7 @@ void ojo_window_start_mouse_motion_handler()
    libvlc_video_set_mouse_input(ojo_player->media_player, TRUE) ;
    old_x = ojo_player_get_mousepos_x() ;
    old_y = ojo_player_get_mousepos_y() ;
-   timeout = g_timeout_add(100, G_SOURCE_FUNC(ojo_window_mouse_motion_handler), FALSE) ;
+   timeout = g_timeout_add(100, ojo_window_mouse_motion_handler, FALSE) ;
 }
 
 /*
