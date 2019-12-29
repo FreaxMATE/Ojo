@@ -5,6 +5,7 @@ sources = [
   'ojo-settings.c',
   'ojo-window.c',
   'ojo-track.c',
+  'ojo-controlbox.c',
 ]
 
 add_project_arguments('-rdynamic', '-Wl,--export-dynamic', language : 'c')

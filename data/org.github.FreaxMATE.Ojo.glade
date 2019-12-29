@@ -301,7 +301,7 @@
             <property name="can_focus">False</property>
             <property name="reveal_child">True</property>
             <child>
-              <object class="GtkBox" id="ojo_controls">
+              <object class="GtkBox" id="ojo_controlbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
@@ -321,7 +321,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="ojo_play_box">
+                  <object class="GtkBox" id="ojo_controlbutton_box">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -628,20 +628,6 @@ audio-volume-medium-symbolic</property>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="ojo_preferences_view_playlist">
-                        <property name="label" translatable="yes">View playlist</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
                       </packing>
                     </child>
                     <child>

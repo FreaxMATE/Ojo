@@ -159,7 +159,7 @@ int ojo_player_media_play(int index)
       fprintf (stderr, "WARNING: play_media() in vlcPlayer.c: index out of track range\n") ;
       return -1 ;
    }
-   ojo_window_seek_bar_start() ;
+   ojo_controlbox_seek_bar_start() ;
    ojo_window_format_display_for_media() ;
 
    return 0 ;
@@ -169,14 +169,14 @@ int ojo_player_media_play(int index)
 void ojo_player_play()
 {
    libvlc_media_player_play(ojo_player->media_player) ;
-   gtk_button_set_image (GTK_BUTTON(playpause_button),
+   gtk_button_set_image (GTK_BUTTON(ojo_controlbox->playpause_button),
                          gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 void ojo_player_pause()
 {
    libvlc_media_player_pause(ojo_player->media_player) ;
-   gtk_button_set_image (GTK_BUTTON(playpause_button),
+   gtk_button_set_image (GTK_BUTTON(ojo_controlbox->playpause_button),
                          gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
 }
 

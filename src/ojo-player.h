@@ -25,6 +25,7 @@
 #include "ojo.h"
 #include "ojo-track.h"
 #include "ojo-window.h"
+#include "ojo-controlbox.h"
 
 typedef struct _OjoPlayer
 {

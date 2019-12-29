@@ -25,6 +25,7 @@
 #include "ojo.h"
 #include "ojo-player.h"
 #include "ojo-playlist.h"
+#include "ojo-controlbox.h"
 
 GtkBuilder        *builder; 
 GtkWindow         *window ;
@@ -35,30 +36,16 @@ GtkMenuItem       *file_menu,
 GtkWidget         *file_menu_open,
                   *view_menu_fullscreen,
                   *view_menu_showplaylist,
-                  *play_box,
-                  *controls ;
+                  *play_box ;
 GtkImage          *background_image ;
 GtkToggleButton   *preferences_dark_mode ,
                   *preferences_border_style,
-                  *preferences_view_playlist ,
                   *preferences_view_coverart ;
-GtkScale          *seek_bar ;
-GtkLabel          *time_label ;
-GtkVolumeButton   *volume_button ;
-GtkButton         *playpause_button,
-                  *prev_track_button,
-                  *backward_button,
-                  *stop_button,
-                  *forward_button,
-                  *next_track_button,
-                  *fullscreen_button,
-                  *playlist_button,
-                  *repeat_button ;
 GtkBox            *main_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
-GtkRevealer       *revealer_controls ;
+
 
 GSList *list ;
 int n_tracks ;
@@ -72,8 +59,10 @@ void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
 void ojo_window_seek_bar_start() ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
 void ojo_window_set_title(char *trackName) ;
+void ojo_window_set_repeat(int repeat_mode) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
+void ojo_window_set_prev_next_track_control_visibility(int n_tracks) ;
 
 #endif /* _ojo_window_h_ */
 

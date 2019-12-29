@@ -27,6 +27,7 @@
 #include "ojo.h"
 #include "ojo-settings.h"
 #include "ojo-player.h"
+#include "ojo-controlbox.h"
 #include "ojo-playlist.h"
 #include "ojo-window.h"
 #include "ojo-track.h"

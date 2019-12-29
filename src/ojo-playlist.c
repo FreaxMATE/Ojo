@@ -23,7 +23,7 @@
  *   PLAYLIST
  */
 
-OjoPlaylist *ojo_playlist_initialize()
+OjoPlaylist *ojo_playlist_initialize(GtkBuilder *builder)
 {
    OjoPlaylist *new ;
    new = malloc (sizeof(OjoPlaylist)) ;
