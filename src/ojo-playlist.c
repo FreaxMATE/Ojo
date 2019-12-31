@@ -84,7 +84,8 @@ void ojo_playlist_hide()
 
 void ojo_playlist_select_row(int index)
 {
-   gtk_list_box_select_row (ojo_playlist->playlist_listbox, gtk_list_box_get_row_at_index(ojo_playlist->playlist_listbox, index)) ;
+   gtk_list_box_select_row (ojo_playlist->playlist_listbox,
+                            gtk_list_box_get_row_at_index(ojo_playlist->playlist_listbox, index)) ;
 }
 
 

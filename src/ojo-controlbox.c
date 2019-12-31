@@ -253,7 +253,8 @@ char *time_to_string(double current_time, double duration)
    if (cur_minutes > 59 || all_minutes > 59)
    {
        int cur_hours = ((int)cur_minutes)/60 ; int all_hours = ((int)all_minutes)/60 ;
-       sprintf(time_string, "%02d:%02d:%02d / %02d:%02d:%02d  ", cur_hours, cur_minutes-(cur_hours*60), cur_seconds, all_hours, all_minutes-(all_hours*60), all_seconds) ;
+       sprintf(time_string, "%02d:%02d:%02d / %02d:%02d:%02d  ", cur_hours,
+               cur_minutes-(cur_hours*60), cur_seconds, all_hours, all_minutes-(all_hours*60), all_seconds) ;
    }
    else
    {

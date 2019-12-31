@@ -278,31 +278,38 @@ void ojo_window_set_repeat(int repeat_mode)
 gboolean ojo_window_mouse_motion_handler()
 {
    static int counter ;
-   if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
+   if (!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist"))
    {
-      int new_x = ojo_player_get_mousepos_x() ;
-      int new_y = ojo_player_get_mousepos_y() ;
+      if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
+      {
+         int new_x = ojo_player_get_mousepos_x() ;
+         int new_y = ojo_player_get_mousepos_y() ;
 
-      if (abs(new_x-old_x) > mouse_sensitivity || abs(new_y-old_y) > mouse_sensitivity)
-      {
-         ojo_controlbox_show() ;
-         ojo_window_set_cursor_visible(TRUE) ;
-         counter = 0 ;
-      }
-      old_x = ojo_player_get_mousepos_x() ;
-      old_y = ojo_player_get_mousepos_y() ;
-      if (counter == 30)                            // 3 seconds of no motion
-      {
-         if (new_x == old_x && new_y == old_y && !ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist"))
+         if (abs(new_x-old_x) > mouse_sensitivity || abs(new_y-old_y) > mouse_sensitivity)
          {
-            ojo_controlbox_hide() ;
-            ojo_window_set_cursor_visible(FALSE) ;
+            ojo_controlbox_show() ;
+            ojo_window_set_cursor_visible(TRUE) ;
+            counter = 0 ;
          }
-         counter = 0 ;
+         old_x = ojo_player_get_mousepos_x() ;
+         old_y = ojo_player_get_mousepos_y() ;
+         if (counter == 30)                            // 3 seconds of no motion
+         {
+            if (new_x == old_x && new_y == old_y)
+            {
+               ojo_controlbox_hide() ;
+               ojo_window_set_cursor_visible(FALSE) ;
+            }
+            counter = 0 ;
+         }
+         counter++ ;
       }
-      counter++ ;
    }
-
+   else
+   {
+      ojo_controlbox_show() ;
+      ojo_window_set_cursor_visible(TRUE) ;
+   }
    return TRUE ;
 }
 
@@ -362,11 +369,13 @@ void ojo_window_setup()
 
    ojo_window_set_dark_mode(ojo_settings_get_boolean(ojo_settings->gsettings, "dark-mode")) ;
    ojo_controlbox_set_border_style(ojo_settings_get_boolean(ojo_settings->gsettings, "border-style")) ;
-   ojo_window_set_view_playlist(ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
+   ojo_window_set_view_playlist(FALSE) ;
    ojo_window_set_view_coverart(ojo_settings_get_boolean(ojo_settings->gsettings, "view-coverart")) ;
    ojo_window_set_repeat(ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode")) ;
-   gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist), ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
+   gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist),
+                                  ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
 
+   ojo_window_start_mouse_motion_handler() ;
    gtk_widget_realize(GTK_WIDGET(drawing_area)) ;
    g_object_unref(builder) ;
 }
