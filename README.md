@@ -15,7 +15,7 @@ Ojo is an open soure gtk media player for linux.
  - vlc
  - libvlc
 
-#### Ubuntu (18.04.3)
+#### Debian 10.2.0/Ubuntu (18.04.3)
 ```bash
 sudo apt install gcc git meson pkg-config libgtk-3-dev vlc libvlc-dev
 ```
