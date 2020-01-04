@@ -278,7 +278,8 @@ void ojo_window_set_repeat(int repeat_mode)
 gboolean ojo_window_mouse_motion_handler()
 {
    static int counter ;
-   if (!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist"))
+
+   if (!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist") && ojo_player_get_filetype() != AUDIO)
    {
       if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
       {
