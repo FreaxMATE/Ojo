@@ -31,6 +31,7 @@ OjoPlayer *ojo_player_initialize()
    new = malloc (sizeof(OjoPlayer)) ;
    new->inst = libvlc_new(0, NULL) ;
    new->media_player = libvlc_media_player_new(new->inst) ;
+   // tracks get initialzed as they are opened 
    new->n_tracks = 0 ;
    new->duration = 0 ;
    new->media_index = 0 ;
