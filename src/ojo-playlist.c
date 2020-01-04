@@ -23,7 +23,7 @@
  *   PLAYLIST
  */
 
-OjoPlaylist *ojo_playlist_initialize()
+OjoPlaylist *ojo_playlist_initialize(GtkBuilder *builder)
 {
    OjoPlaylist *new ;
    new = malloc (sizeof(OjoPlaylist)) ;
@@ -53,7 +53,7 @@ void ojo_playlist_gtk_initialize()
 
    for (int i = 0; i < ojo_player_get_n_tracks(); ++i)
    {
-      playlist_widgets[i] = gtk_label_new(ojo_player_get_title(i)) ;
+      playlist_widgets[i] = gtk_label_new(ojo_player_get_title_by_index(i)) ;
       gtk_label_set_xalign(GTK_LABEL(playlist_widgets[i]), 0.0) ;
       gtk_widget_show(playlist_widgets[i]) ;
       gtk_list_box_insert(ojo_playlist->playlist_listbox, playlist_widgets[i], i) ;
@@ -84,7 +84,8 @@ void ojo_playlist_hide()
 
 void ojo_playlist_select_row(int index)
 {
-   gtk_list_box_select_row (ojo_playlist->playlist_listbox, gtk_list_box_get_row_at_index(ojo_playlist->playlist_listbox, index)) ;
+   gtk_list_box_select_row (ojo_playlist->playlist_listbox,
+                            gtk_list_box_get_row_at_index(ojo_playlist->playlist_listbox, index)) ;
 }
 
 

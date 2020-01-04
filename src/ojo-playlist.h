@@ -33,7 +33,7 @@ typedef struct _OjoPlaylist
 
 } OjoPlaylist ;
 
-OjoPlaylist *ojo_playlist_initialize() ;
+OjoPlaylist *ojo_playlist_initialize(GtkBuilder *builder) ;
 void ojo_playlist_gtk_initialize() ;
 void ojo_playlist_entries_remove() ;
 void ojo_playlist_show() ;

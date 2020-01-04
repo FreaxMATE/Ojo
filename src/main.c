@@ -27,14 +27,21 @@
 #include "ojo.h"
 #include "ojo-settings.h"
 #include "ojo-player.h"
+#include "ojo-controlbox.h"
 #include "ojo-playlist.h"
 #include "ojo-window.h"
 #include "ojo-track.h"
 
 void ojo_main_print_usage()
 {
-   printf ("Ojo Usage:\n") ;
-   printf ("ojo [FILEPATH]\n") ;
+   printf ("\
+Usage:\n\
+  ojo [FILEPATH]\n\n\
+\
+Help Options:\n\
+  -h, --help                 Show help options\n\n\
+") ;
+   
 }
 
 int main(int argc, char **argv)

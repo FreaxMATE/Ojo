@@ -25,6 +25,7 @@
 #include "ojo.h"
 #include "ojo-track.h"
 #include "ojo-window.h"
+#include "ojo-controlbox.h"
 
 typedef struct _OjoPlayer
 {
@@ -45,25 +46,26 @@ int ojo_player_media_play(int index) ;
 void ojo_player_play(void) ;
 void ojo_player_pause(void) ;
 void ojo_player_stop(void) ;
+void ojo_player_prev_track(void) ;
+void ojo_player_next_track(void) ;
+void ojo_player_backward(void) ;
+void ojo_player_forward(void) ;
+
+int ojo_player_get_n_tracks(void) ;
 int64_t ojo_player_get_duration(void) ;
 int64_t ojo_player_get_current_time(void) ;
 void ojo_player_set_current_time(double time) ;
-int ojo_player_get_n_tracks(void) ;
-char *ojo_player_get_title(int index) ;
+char *ojo_player_get_title_by_index(int index) ;
 char *ojo_player_get_album(void) ;
 char *ojo_player_get_artist(void) ;
-FileType ojo_player_get_filetype_by_index(int index) ;
-FileType ojo_player_get_filetype() ;
-gboolean ojo_player_is_playing() ;
-void ojo_player_prev_track() ;
-void ojo_player_next_track() ;
-void ojo_player_backward() ;
-void ojo_player_forward() ;
-gboolean ojo_player_end_reached() ;
-int ojo_player_get_media_index() ;
-libvlc_media_player_t *ojo_player_get_media_player() ;
-int ojo_player_get_mousepos_x() ;
-int ojo_player_get_mousepos_y() ;
+FileType ojo_player_get_filetype(void) ;
+gboolean ojo_player_is_playing(void) ;
+gboolean ojo_player_end_reached(void) ;
+int ojo_player_get_media_index(void) ;
+libvlc_media_player_t *ojo_player_get_media_player(void) ;
+int ojo_player_get_mousepos_x(void) ;
+int ojo_player_get_mousepos_y(void) ;
+void ojo_player_set_volume(double volume) ;
 
 #endif /* _ojo_player_h_ */
 

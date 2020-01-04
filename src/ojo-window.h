@@ -25,6 +25,7 @@
 #include "ojo.h"
 #include "ojo-player.h"
 #include "ojo-playlist.h"
+#include "ojo-controlbox.h"
 
 GtkBuilder        *builder; 
 GtkWindow         *window ;
@@ -35,30 +36,16 @@ GtkMenuItem       *file_menu,
 GtkWidget         *file_menu_open,
                   *view_menu_fullscreen,
                   *view_menu_showplaylist,
-                  *play_box,
-                  *controls ;
+                  *play_box ;
 GtkImage          *background_image ;
 GtkToggleButton   *preferences_dark_mode ,
                   *preferences_border_style,
-                  *preferences_view_playlist ,
                   *preferences_view_coverart ;
-GtkScale          *seek_bar ;
-GtkLabel          *time_label ;
-GtkVolumeButton   *volume_button ;
-GtkButton         *playpause_button,
-                  *prev_track_button,
-                  *backward_button,
-                  *stop_button,
-                  *forward_button,
-                  *next_track_button,
-                  *fullscreen_button,
-                  *playlist_button,
-                  *repeat_button ;
 GtkBox            *main_box ;
 GtkDialog         *about ;
 GtkDialog         *preferences_dialog ;
 GtkDialog         *filechooser_dialog ;
-GtkRevealer       *revealer_controls ;
+
 
 GSList *list ;
 int n_tracks ;
@@ -69,26 +56,13 @@ int64_t duration ;
 int old_x, old_y, mouse_sensitivity ;
 
 void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
-void on_ojo_filechooser_add_clicked(void) ;
-void on_ojo_filechooser_open_clicked(void) ;
-void ojo_window_gtk_playlist_initialize(void) ;
-gboolean ojo_window_seek_bar_update(void) ;
 void ojo_window_seek_bar_start() ;
-void ojo_window_set_playlist_item_title() ;
-void ojo_window_set_art_cover_image(char *artist, char *album) ;
-void ojo_window_set_dark_mode(gboolean dark_mode) ;
-void ojo_window_set_border_style(gboolean border_style) ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
-void ojo_window_set_view_coverart(gboolean view_coverart) ;
-void ojo_window_set_repeat(int repeat_mode) ;
 void ojo_window_set_title(char *trackName) ;
+void ojo_window_set_repeat(int repeat_mode) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
-void ojo_window_set_track_control_visibility(int n_tracks) ;
-void ojo_window_set_cursor_visible(gboolean visible) ;
-int ojo_window_get_width(void) ;
-int ojo_window_get_height(void) ;
-char *time_to_string(double current_time, double duration) ;
+void ojo_window_set_prev_next_track_control_visibility(int n_tracks) ;
 
 #endif /* _ojo_window_h_ */
 
