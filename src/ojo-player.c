@@ -208,7 +208,6 @@ void ojo_player_forward()
                                     libvlc_media_player_get_position(ojo_player->media_player)+0.05) ;
 }
 
-
 int ojo_player_get_n_tracks()
 {
    return ojo_player->n_tracks ;

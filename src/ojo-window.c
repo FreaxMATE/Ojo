@@ -250,7 +250,7 @@ void ojo_window_set_cursor_visible(gboolean visible)
    g_object_unref(cursor) ;
 }
 
-void ojo_window_set_view_coverart (gboolean view_coverart) // TODO: move to settings.h
+void ojo_window_set_view_coverart (gboolean view_coverart)
 {
    ojo_settings_set_boolean(ojo_settings->gsettings, "view-coverart", view_coverart) ;
    ojo_window_set_art_cover_image(ojo_player_get_artist(), ojo_player_get_album()) ;
@@ -279,7 +279,9 @@ gboolean ojo_window_mouse_motion_handler()
 {
    static int counter ;
 
-   if (!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist") && ojo_player_get_filetype() != AUDIO)
+   if (!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")
+       && ojo_player_get_filetype() != AUDIO
+       && ojo_player_get_n_tracks() >= 1)
    {
       if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen"))
       {
