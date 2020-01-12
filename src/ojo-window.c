@@ -59,7 +59,7 @@ void ojo_window_media_open_prepare(GSList *uri_list, gboolean add)
  */
 void on_ojo_menu_open_activate()
 {
-	gtk_dialog_run(GTK_DIALOG(filechooser_dialog)) ;
+   gtk_dialog_run(GTK_DIALOG(filechooser_dialog)) ;
 }
 
 void on_ojo_filechooser_cancel_clicked()
