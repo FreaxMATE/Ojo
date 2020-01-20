@@ -289,6 +289,22 @@ int ojo_player_get_mousepos_y()
    return y ;
 }
 
+int ojo_player_get_size_x()
+{
+   unsigned int x = 0, y = 0 ;
+
+   libvlc_video_get_size(ojo_player->media_player, 0, &x, &y) ;
+   return x ;
+}
+
+int ojo_player_get_size_y()
+{
+   unsigned int x = 0, y = 0 ;
+
+   libvlc_video_get_size(ojo_player->media_player, 0, &x, &y) ;
+   return y ;
+}
+
 void ojo_player_set_volume(double volume)
 {
    libvlc_audio_set_volume(ojo_player_get_media_player(), (int)(100*volume)) ;
