@@ -278,6 +278,7 @@ void ojo_window_set_repeat(int repeat_mode)
 gboolean ojo_window_mouse_motion_handler()
 {
    static int counter ;
+   double distance ;
 
    if (!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")
        && ojo_player_get_filetype() != AUDIO
@@ -287,8 +288,8 @@ gboolean ojo_window_mouse_motion_handler()
       {
          int new_x = ojo_player_get_mousepos_x() ;
          int new_y = ojo_player_get_mousepos_y() ;
-
-         if (abs(new_x-old_x) > mouse_sensitivity || abs(new_y-old_y) > mouse_sensitivity)
+         distance = sqrt(pow(abs(new_x-old_x), 2) + pow(abs(new_y-old_y), 2)) ;
+         if (distance > mouse_sensitivity)
          {
             ojo_controlbox_show() ;
             ojo_window_set_cursor_visible(TRUE) ;
@@ -300,8 +301,11 @@ gboolean ojo_window_mouse_motion_handler()
          {
             if (new_x == old_x && new_y == old_y)
             {
-               ojo_controlbox_hide() ;
-               ojo_window_set_cursor_visible(FALSE) ;
+               if (new_y < ojo_player_get_size_y()-4)
+               {
+                  ojo_controlbox_hide() ;
+                  ojo_window_set_cursor_visible(FALSE) ;
+               }
             }
             counter = 0 ;
          }

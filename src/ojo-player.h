@@ -65,6 +65,8 @@ int ojo_player_get_media_index(void) ;
 libvlc_media_player_t *ojo_player_get_media_player(void) ;
 int ojo_player_get_mousepos_x(void) ;
 int ojo_player_get_mousepos_y(void) ;
+int ojo_player_get_size_x(void) ;
+int ojo_player_get_size_y(void) ;
 void ojo_player_set_volume(double volume) ;
 
 #endif /* _ojo_player_h_ */
