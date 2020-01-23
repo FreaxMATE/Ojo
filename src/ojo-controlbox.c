@@ -40,6 +40,7 @@ OjoControlBox *ojo_controlbox_initialize(GtkBuilder *builder)
    new->fullscreen_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_fullscreen")) ;
    new->playlist_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_playlist")) ;
    new->repeat_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_repeat")) ;
+   new->random_button = GTK_BUTTON(gtk_builder_get_object(builder, "ojo_random")) ;
 
    new->time_label = GTK_LABEL(gtk_builder_get_object(builder, "ojo_time_lbl")) ;
    gtk_range_set_range(GTK_RANGE(new->seek_bar), 0.0, 60.0) ;
@@ -50,7 +51,7 @@ OjoControlBox *ojo_controlbox_initialize(GtkBuilder *builder)
 void ojo_controlbox_show()
 {
    gtk_revealer_set_reveal_child(ojo_controlbox->revealer_controls, TRUE) ;
-   ojo_controlbox_set_prev_next_track_control_visibility(ojo_player_get_n_tracks()) ;
+   ojo_controlbox_set_playlist_control_visibility(ojo_player_get_n_tracks()) ;
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->controlbox)) ;
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->controlbutton_box)) ;
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->seek_bar)) ;
@@ -99,6 +100,10 @@ void on_ojo_backward_clicked()
 void on_ojo_next_track_clicked()
 {
    g_source_remove(timeout) ;
+
+   ojo_settings_get_boolean(ojo_settings->gsettings, "random-playback") ?
+   ojo_player_random_track()
+   :
    ojo_player_next_track() ;
 }
 
@@ -117,6 +122,11 @@ void on_ojo_repeat_clicked()
       ojo_window_set_repeat(0) ;
 }
 
+void on_ojo_random_clicked()
+{
+   ojo_window_set_random(!ojo_settings_get_boolean(ojo_settings->gsettings, "random-playback")) ;
+}
+
 // SEEKBAR
 gboolean ojo_controlbox_seek_bar_update()
 {
@@ -127,6 +137,10 @@ gboolean ojo_controlbox_seek_bar_update()
    {
       if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 1)
          ojo_player_media_play(ojo_player_get_media_index()) ;
+      else if (ojo_settings_get_boolean(ojo_settings->gsettings, "random-playback"))
+      {
+         ojo_player_random_track() ;
+      }
       else if (ojo_player_get_media_index() < ojo_player_get_n_tracks()-1)
       {
          ojo_player_media_play(ojo_player_get_media_index()+1) ;
@@ -186,6 +200,7 @@ void ojo_controlbox_set_border_style (gboolean border_style)
       gtk_button_set_relief (ojo_controlbox->fullscreen_button, GTK_RELIEF_NORMAL) ;
       gtk_button_set_relief (ojo_controlbox->playlist_button, GTK_RELIEF_NORMAL) ;
       gtk_button_set_relief (ojo_controlbox->repeat_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief (ojo_controlbox->random_button, GTK_RELIEF_NORMAL) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "border-style", border_style) ;
    }
    else
@@ -200,22 +215,25 @@ void ojo_controlbox_set_border_style (gboolean border_style)
       gtk_button_set_relief (ojo_controlbox->fullscreen_button, GTK_RELIEF_NONE) ;
       gtk_button_set_relief (ojo_controlbox->playlist_button, GTK_RELIEF_NONE) ;
       gtk_button_set_relief (ojo_controlbox->repeat_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief (ojo_controlbox->random_button, GTK_RELIEF_NONE) ;
       ojo_settings_set_boolean(ojo_settings->gsettings, "border-style", border_style) ;
    }
 }
 
 
-void ojo_controlbox_set_prev_next_track_control_visibility(int n_tracks)
+void ojo_controlbox_set_playlist_control_visibility(int n_tracks)
 {
    if (n_tracks > 1)
    {
       gtk_widget_show(GTK_WIDGET(ojo_controlbox->prev_track_button)) ;
       gtk_widget_show(GTK_WIDGET(ojo_controlbox->next_track_button)) ;
+      gtk_widget_show(GTK_WIDGET(ojo_controlbox->random_button)) ;
    }
    else
    {
       gtk_widget_hide(GTK_WIDGET(ojo_controlbox->prev_track_button)) ;
       gtk_widget_hide(GTK_WIDGET(ojo_controlbox->next_track_button)) ;
+      gtk_widget_hide(GTK_WIDGET(ojo_controlbox->random_button)) ;
    }
 }
 
@@ -240,6 +258,17 @@ void ojo_controlbox_repeat_button_set(int repeat_mode)
    else
       gtk_button_set_image(ojo_controlbox->repeat_button,
                            gtk_image_new_from_icon_name("media-repeat-all", GTK_ICON_SIZE_BUTTON)) ;
+}
+
+void ojo_controlbox_random_button_set(gboolean random)
+{
+   random ?
+   gtk_button_set_image(ojo_controlbox->random_button,
+                        gtk_image_new_from_icon_name("media-playlist-shuffle", GTK_ICON_SIZE_BUTTON))
+   :
+   gtk_button_set_image(ojo_controlbox->random_button,
+                        gtk_image_new_from_icon_name("media-playlist-normal", GTK_ICON_SIZE_BUTTON)) ;
+
 }
 
 char *time_to_string(double current_time, double duration)

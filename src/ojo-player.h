@@ -35,6 +35,7 @@ typedef struct _OjoPlayer
    int n_tracks ;
    int64_t duration ;
    int media_index ;
+   GRand *rand ;
 } OjoPlayer ;
 
 OjoPlayer *ojo_player_initialize(void) ;
@@ -50,6 +51,7 @@ void ojo_player_prev_track(void) ;
 void ojo_player_next_track(void) ;
 void ojo_player_backward(void) ;
 void ojo_player_forward(void) ;
+void ojo_player_random_track(void) ;
 
 int ojo_player_get_n_tracks(void) ;
 int64_t ojo_player_get_duration(void) ;

@@ -60,6 +60,7 @@ void ojo_window_seek_bar_start() ;
 void ojo_window_set_view_playlist(gboolean view_playlist) ;
 void ojo_window_set_title(char *trackName) ;
 void ojo_window_set_repeat(int repeat_mode) ;
+void ojo_window_set_random(gboolean random) ;
 void ojo_window_setup(void) ;
 void ojo_window_format_display_for_media(void) ;
 void ojo_window_set_prev_next_track_control_visibility(int n_tracks) ;
