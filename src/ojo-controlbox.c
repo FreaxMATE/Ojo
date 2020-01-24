@@ -250,24 +250,24 @@ void ojo_controlbox_fullscreen_button_set(gboolean fullscreen_mode)
 void ojo_controlbox_repeat_button_set(int repeat_mode)
 {
    if (repeat_mode == 0)
-      gtk_button_set_image(ojo_controlbox->repeat_button,
-                           gtk_image_new_from_icon_name("media-repeat-none", GTK_ICON_SIZE_BUTTON)) ;
+      gtk_button_set_image(ojo_controlbox->repeat_button, gtk_image_new_from_icon_name(
+                           "media-playlist-no-repeat-symbolic", GTK_ICON_SIZE_BUTTON)) ;
    else if (repeat_mode == 1)
       gtk_button_set_image(ojo_controlbox->repeat_button,
-                           gtk_image_new_from_icon_name("media-repeat-track-amarok", GTK_ICON_SIZE_BUTTON)) ;
+                           gtk_image_new_from_icon_name("media-playlist-repeat-song-symbolic", GTK_ICON_SIZE_BUTTON)) ;
    else
       gtk_button_set_image(ojo_controlbox->repeat_button,
-                           gtk_image_new_from_icon_name("media-repeat-all", GTK_ICON_SIZE_BUTTON)) ;
+                           gtk_image_new_from_icon_name("media-playlist-repeat-symbolic", GTK_ICON_SIZE_BUTTON)) ;
 }
 
 void ojo_controlbox_random_button_set(gboolean random)
 {
    random ?
    gtk_button_set_image(ojo_controlbox->random_button,
-                        gtk_image_new_from_icon_name("media-playlist-shuffle", GTK_ICON_SIZE_BUTTON))
+                        gtk_image_new_from_icon_name("media-playlist-shuffle-symbolic", GTK_ICON_SIZE_BUTTON))
    :
    gtk_button_set_image(ojo_controlbox->random_button,
-                        gtk_image_new_from_icon_name("media-playlist-normal", GTK_ICON_SIZE_BUTTON)) ;
+                        gtk_image_new_from_icon_name("media-playlist-consecutive-symbolic", GTK_ICON_SIZE_BUTTON)) ;
 
 }
 
