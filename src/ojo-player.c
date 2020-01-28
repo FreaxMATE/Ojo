@@ -35,6 +35,7 @@ OjoPlayer *ojo_player_initialize()
    new->n_tracks = 0 ;
    new->duration = 0 ;
    new->media_index = 0 ;
+   new->rand = g_rand_new () ;
    return new ;
 }
 
@@ -207,6 +208,11 @@ void ojo_player_forward()
 {
    libvlc_media_player_set_position(ojo_player->media_player,
                                     libvlc_media_player_get_position(ojo_player->media_player)+0.05) ;
+}
+
+void ojo_player_random_track()
+{
+   ojo_player_media_play(g_rand_int_range(ojo_player->rand, 0, ojo_player->n_tracks)) ;
 }
 
 int ojo_player_get_n_tracks()

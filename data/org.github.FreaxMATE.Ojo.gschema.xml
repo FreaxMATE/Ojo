@@ -39,6 +39,11 @@
       <summary>If enabled, coverart will be drawn, when available</summary>
       <description>Toggle borders</description>
     </key>
+    <key name='random-playback' type='b'>
+      <default>false</default>
+      <summary>If enabled, next track will be a random one</summary>
+      <description>If enabled, next track will be a random one</description>
+    </key>
     <key name='repeat-mode' type='i'>
       <default>0</default>
       <summary>repeat mode - 0: none, 1: single, 2: all</summary>

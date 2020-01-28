@@ -42,18 +42,20 @@ typedef struct _OjoControlBox
                    *next_track_button,
                    *fullscreen_button,
                    *playlist_button,
-                   *repeat_button ;
+                   *repeat_button,
+                   *random_button ;
 } OjoControlBox ;
 
 OjoControlBox *ojo_controlbox_initialize(GtkBuilder *builder) ;
 void ojo_controlbox_show() ;
 void ojo_controlbox_hide() ;
 void ojo_controlbox_free(OjoControlBox *controlbox) ;
-void ojo_controlbox_set_prev_next_track_control_visibility(int n_tracks) ;
+void ojo_controlbox_set_playlist_control_visibility(int n_tracks) ;
 void ojo_controlbox_seek_bar_start() ;
 void ojo_controlbox_set_border_style (gboolean border_style) ;
 void ojo_controlbox_fullscreen_button_set(gboolean fullscreen_mode) ;
 void ojo_controlbox_repeat_button_set(int repeat_mode) ;
+void ojo_controlbox_random_button_set(gboolean random) ;
 
 #endif /* _ojo_controlbox_h_ */
 

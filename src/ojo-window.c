@@ -49,7 +49,7 @@ void ojo_window_set_art_cover_image(char *artist, char *album)
 void ojo_window_media_open_prepare(GSList *uri_list, gboolean add)
 {
    n_tracks = g_slist_length(uri_list) ;
-   ojo_controlbox_set_prev_next_track_control_visibility(n_tracks) ;
+   ojo_controlbox_set_playlist_control_visibility(n_tracks) ;
    media_already_opened = TRUE ;
    ojo_player_media_open(uri_list, n_tracks, add) ;
 }
@@ -104,7 +104,7 @@ void on_ojo_filechooser_open_clicked()
    ojo_window_media_open_prepare(list, FALSE) ;
 }
 
-void ojo_window_format_display_for_media () //FIXME: only hide currently-shown widgets
+void ojo_window_format_display_for_media ()
 {
    if (ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist"))
    {
@@ -258,21 +258,14 @@ void ojo_window_set_view_coverart (gboolean view_coverart)
 
 void ojo_window_set_repeat(int repeat_mode)
 {
-   if (repeat_mode == 0)
-   {
-      ojo_controlbox_repeat_button_set(repeat_mode) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 0) ;
-   }
-   else if (repeat_mode == 1)
-   {
-      ojo_controlbox_repeat_button_set(repeat_mode) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 1) ;
-   }
-   else
-   {
-      ojo_controlbox_repeat_button_set(repeat_mode) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", 2) ;
-   }
+   ojo_controlbox_repeat_button_set(repeat_mode) ;
+   ojo_settings_set_int(ojo_settings->gsettings, "repeat-mode", repeat_mode) ;
+}
+
+void ojo_window_set_random(gboolean random)
+{
+   ojo_controlbox_random_button_set(random) ;
+   ojo_settings_set_boolean(ojo_settings->gsettings, "random-playback", random) ;
 }
 
 gboolean ojo_window_mouse_motion_handler()
@@ -345,7 +338,8 @@ void ojo_window_setup()
 
    ojo_playlist = ojo_playlist_initialize (builder) ;
    window = GTK_WINDOW(gtk_builder_get_object(builder, "window_main")) ;
-   gtk_window_set_default_size(window, ojo_settings_get_int(ojo_settings->gsettings, "width"), ojo_settings_get_int(ojo_settings->gsettings, "height")) ;
+   gtk_window_set_default_size(window, ojo_settings_get_int(ojo_settings->gsettings, "width"),
+                                       ojo_settings_get_int(ojo_settings->gsettings, "height")) ;
    window_width = ojo_window_get_width() ;
    window_height = ojo_window_get_height() ;
 
@@ -363,8 +357,10 @@ void ojo_window_setup()
    file_menu_open = GTK_WIDGET(gtk_builder_get_object(builder, "ojo_open")) ;
 
    preferences_dark_mode = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_dark_mode")) ;
-   preferences_border_style = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_border_style")) ;
-   preferences_view_coverart = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "ojo_preferences_view_coverart")) ;
+   preferences_border_style = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,
+                                                "ojo_preferences_border_style")) ;
+   preferences_view_coverart = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder,
+                                                 "ojo_preferences_view_coverart")) ;
 
    background_image = GTK_IMAGE(gtk_builder_get_object(builder, "img_ojo_background_image")) ;
 
@@ -379,6 +375,7 @@ void ojo_window_setup()
    ojo_window_set_view_playlist(FALSE) ;
    ojo_window_set_view_coverart(ojo_settings_get_boolean(ojo_settings->gsettings, "view-coverart")) ;
    ojo_window_set_repeat(ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode")) ;
+   ojo_window_set_random(ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode")) ;
    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(view_menu_showplaylist),
                                   ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
 
