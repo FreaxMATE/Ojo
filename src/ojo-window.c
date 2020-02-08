@@ -330,11 +330,10 @@ void ojo_window_setup()
    user_input = TRUE ;
    mouse_sensitivity = 50 ;
 
-   builder = gtk_builder_new () ;
    if (access("/usr/local/share/ojo/org.github.FreaxMATE.Ojo.glade", F_OK))
-      gtk_builder_add_from_file (builder, "../data/org.github.FreaxMATE.Ojo.glade", NULL) ;
+      builder = gtk_builder_new_from_file ("../data/org.github.FreaxMATE.Ojo.glade") ;
    else
-      gtk_builder_add_from_file (builder, "/usr/local/share/ojo/org.github.FreaxMATE.Ojo.glade", NULL) ;
+      builder = gtk_builder_new_from_file ("/usr/local/share/ojo/org.github.FreaxMATE.Ojo.glade") ;
 
    ojo_playlist = ojo_playlist_initialize (builder) ;
    window = GTK_WINDOW(gtk_builder_get_object(builder, "window_main")) ;
