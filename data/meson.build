@@ -24,11 +24,6 @@ install_data([
   'org.github.FreaxMATE.Ojo.png',
 ],  install_dir: icondir)
 
-abouticondir = join_paths(get_option('datadir'), 'ojo')
-install_data([
-  'org.github.FreaxMATE.Ojo.aboutdialog.png',
-],  install_dir: abouticondir)
-
 gladedir = join_paths(get_option('datadir'), 'ojo/')
 install_data([
   'org.github.FreaxMATE.Ojo.glade',
