@@ -22,7 +22,7 @@ sudo apt install gcc meson pkg-config libgtk-3-dev vlc libvlc-dev
 
 #### Manjaro (18.1.0)
 ```bash
-sudo pacman -Sy gcc meson pkg-config gtk3 vlc
+sudo pacman -Syu gcc meson pkg-config gtk3 vlc
 ```
 
 ### Install from source
