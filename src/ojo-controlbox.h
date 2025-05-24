@@ -47,15 +47,15 @@ typedef struct _OjoControlBox
 } OjoControlBox ;
 
 OjoControlBox *ojo_controlbox_initialize(GtkBuilder *builder) ;
-void ojo_controlbox_show() ;
-void ojo_controlbox_hide() ;
+void ojo_controlbox_show(OjoControlBox *controlbox) ;
+void ojo_controlbox_hide(OjoControlBox *controlbox) ;
 void ojo_controlbox_free(OjoControlBox *controlbox) ;
-void ojo_controlbox_set_playlist_control_visibility(int n_tracks) ;
-void ojo_controlbox_seek_bar_start() ;
-void ojo_controlbox_set_border_style (gboolean border_style) ;
-void ojo_controlbox_fullscreen_button_set(gboolean fullscreen_mode) ;
-void ojo_controlbox_repeat_button_set(int repeat_mode) ;
-void ojo_controlbox_random_button_set(gboolean random) ;
+void ojo_controlbox_set_playlist_control_visibility(OjoControlBox *controlbox, int n_tracks) ;
+void ojo_controlbox_seek_bar_start(OjoControlBox *controlbox) ;
+void ojo_controlbox_set_border_style(OjoControlBox *controlbox, gboolean border_style) ;
+void ojo_controlbox_fullscreen_button_set(OjoControlBox *controlbox, gboolean fullscreen_mode) ;
+void ojo_controlbox_repeat_button_set(OjoControlBox *controlbox, int repeat_mode) ;
+void ojo_controlbox_random_button_set(OjoControlBox *controlbox, gboolean random) ;
 
 #endif /* _ojo_controlbox_h_ */
 

@@ -34,58 +34,58 @@ OjoPlaylist *ojo_playlist_initialize(GtkBuilder *builder)
 
 void on_ojo_playlist_listbox_row_activated(GtkListBox *box, GtkListBoxRow *row, gpointer user_data)
 {
-   ojo_player_media_play(gtk_list_box_row_get_index(row)) ;
+   ojo_player_media_play(ojo_player, gtk_list_box_row_get_index(row)) ;
 }
 
 void on_ojo_menu_showplaylist_toggled()
 {
-   ojo_window_set_view_playlist(!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
+   ojo_window_set_view_playlist(ojo_window, !ojo_settings_get_boolean(ojo_settings, "view-playlist")) ;
 }
 
 void on_ojo_playlist_clicked()
 {
-   ojo_window_set_view_playlist(!ojo_settings_get_boolean(ojo_settings->gsettings, "view-playlist")) ;
+   ojo_window_set_view_playlist(ojo_window, !ojo_settings_get_boolean(ojo_settings, "view-playlist")) ;
 }
 
-void ojo_playlist_gtk_initialize()
+void ojo_playlist_gtk_initialize(OjoPlaylist *ojo_playlist)
 {
-   GtkWidget *playlist_widgets[ojo_player_get_n_tracks()] ;
+   GtkWidget *playlist_widgets[ojo_player_get_n_tracks(ojo_player)];
 
-   for (int i = 0; i < ojo_player_get_n_tracks(); ++i)
+   for (int i = 0; i < ojo_player_get_n_tracks(ojo_player); ++i)
    {
-      playlist_widgets[i] = gtk_label_new(ojo_player_get_title_by_index(i)) ;
-      gtk_label_set_xalign(GTK_LABEL(playlist_widgets[i]), 0.0) ;
-      gtk_widget_show(playlist_widgets[i]) ;
-      gtk_list_box_insert(ojo_playlist->playlist_listbox, playlist_widgets[i], i) ;
+      playlist_widgets[i] = gtk_label_new(ojo_player_get_title_by_index(ojo_player, i));
+      gtk_label_set_xalign(GTK_LABEL(playlist_widgets[i]), 0.0);
+      gtk_widget_show(playlist_widgets[i]);
+      gtk_list_box_insert(ojo_playlist->playlist_listbox, playlist_widgets[i], i);
    }
 }
 
-void ojo_playlist_entries_remove()
+void ojo_playlist_entries_remove(OjoPlaylist *ojo_playlist)
 {
    GList *children, *iter;
 
-   children = gtk_container_get_children(GTK_CONTAINER(ojo_playlist->playlist_listbox)) ;
+   children = gtk_container_get_children(GTK_CONTAINER(ojo_playlist->playlist_listbox));
    for (iter = children; iter != NULL; iter = g_list_next(iter))
-      gtk_widget_destroy(GTK_WIDGET(iter->data)) ;
-   g_list_free(children) ;
+      gtk_widget_destroy(GTK_WIDGET(iter->data));
+   g_list_free(children);
 }
 
-void ojo_playlist_show()
+void ojo_playlist_show(OjoPlaylist *ojo_playlist)
 {
    if (!gtk_widget_is_visible(GTK_WIDGET(ojo_playlist->playlist_box)))
-      gtk_widget_show_all(GTK_WIDGET(ojo_playlist->playlist_box)) ;
+      gtk_widget_show_all(GTK_WIDGET(ojo_playlist->playlist_box));
 }
 
-void ojo_playlist_hide()
+void ojo_playlist_hide(OjoPlaylist *ojo_playlist)
 {
    if (gtk_widget_is_visible(GTK_WIDGET(ojo_playlist->playlist_box)))
-      gtk_widget_hide(GTK_WIDGET(ojo_playlist->playlist_box)) ;
+      gtk_widget_hide(GTK_WIDGET(ojo_playlist->playlist_box));
 }
 
-void ojo_playlist_select_row(int index)
+void ojo_playlist_select_row(OjoPlaylist *ojo_playlist, int index)
 {
-   gtk_list_box_select_row (ojo_playlist->playlist_listbox,
-                            gtk_list_box_get_row_at_index(ojo_playlist->playlist_listbox, index)) ;
+   gtk_list_box_select_row(ojo_playlist->playlist_listbox,
+                           gtk_list_box_get_row_at_index(ojo_playlist->playlist_listbox, index));
 }
 
 

@@ -23,7 +23,7 @@
 
 #include "ojo-player.h"
 
-void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add) ;
+void ojo_player_tracks_initialize(OjoPlayer *ojo_player, GSList *list, int n_tracks, gboolean add) ;
 
 OjoPlayer *ojo_player_initialize()
 {
@@ -39,282 +39,280 @@ OjoPlayer *ojo_player_initialize()
    return new ;
 }
 
-void ojo_player_quit()
+void ojo_player_quit(OjoPlayer *ojo_player)
 {
-   libvlc_media_player_stop(ojo_player->media_player) ;
-   libvlc_media_player_release(ojo_player->media_player) ;
-   libvlc_release(ojo_player->inst) ;
+   libvlc_media_player_stop(ojo_player->media_player);
+   libvlc_media_player_release(ojo_player->media_player);
+   libvlc_release(ojo_player->inst);
 }
 
-void ojo_player_tracks_initialize (GSList *list, int n_tracks, gboolean add)
+void ojo_player_tracks_initialize(OjoPlayer *ojo_player, GSList *list, int n_tracks, gboolean add)
 {
-   libvlc_media_track_t ***libvlc_tracks ;
-   libvlc_tracks = malloc(sizeof(libvlc_media_track_t ***)) ;
-   libvlc_media_parsed_status_t parsed_status ;
-   int n_streams = 0, track_index = 0 ;
+   libvlc_media_track_t ***libvlc_tracks;
+   libvlc_tracks = malloc(sizeof(libvlc_media_track_t ***));
+   libvlc_media_parsed_status_t parsed_status;
+   int n_streams = 0, track_index = 0;
 
    if (add == TRUE)
    {
-      track_index = ojo_player->n_tracks ;
-      ojo_player->n_tracks += n_tracks ;
-      ojo_player->tracks = realloc(ojo_player->tracks, (ojo_player->n_tracks)*sizeof(OjoTrack **)) ;
+      track_index = ojo_player->n_tracks;
+      ojo_player->n_tracks += n_tracks;
+      ojo_player->tracks = realloc(ojo_player->tracks, (ojo_player->n_tracks) * sizeof(OjoTrack **));
    }
    else
    {
-      ojo_player->n_tracks = n_tracks ;
-      ojo_player->tracks = calloc(ojo_player->n_tracks, sizeof(OjoTrack **)) ;
+      ojo_player->n_tracks = n_tracks;
+      ojo_player->tracks = calloc(ojo_player->n_tracks, sizeof(OjoTrack **));
    }
 
    if (ojo_player->tracks == NULL)
    {
-      fprintf (stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: player->tracks calloc/realloc returned NULL\n") ;
-      return ;
+      fprintf(stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: player->tracks calloc/realloc returned NULL\n");
+      return;
    }
-   // initalize every track
+   // initialize every track
    while (list != NULL)
    {
-      ojo_player->tracks[track_index] = ojo_track_initialize() ;
-      ojo_track_set_uri(ojo_player->tracks[track_index], list->data) ;
+      ojo_player->tracks[track_index] = ojo_track_initialize();
+      ojo_track_set_uri(ojo_player->tracks[track_index], list->data);
       ojo_track_set_media(ojo_player->tracks[track_index], libvlc_media_new_path(ojo_player->inst,
-                          ojo_player->tracks[track_index]->uri)) ;
+                          ojo_player->tracks[track_index]->uri));
       if (ojo_player->tracks[track_index]->media == NULL)
       {
-         fprintf (stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: on opening media check uri\n") ;
-         return ;
+         fprintf(stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: on opening media check uri\n");
+         return;
       }
       if (libvlc_media_parse_with_options(ojo_player->tracks[track_index]->media, libvlc_media_fetch_local, 0) == -1)
       {
-         fprintf (stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: media_parse returned -1\n") ;
-         return ;
+         fprintf(stderr, "ERROR: ojo_player_tracks_initialize() in ojo-player.c: media_parse returned -1\n");
+         return;
       }
-      while ((parsed_status=libvlc_media_get_parsed_status(ojo_player->tracks[track_index]->media))
+      while ((parsed_status = libvlc_media_get_parsed_status(ojo_player->tracks[track_index]->media))
              != libvlc_media_parsed_status_done)
       {
          if (parsed_status == libvlc_media_parsed_status_skipped ||
-             parsed_status == libvlc_media_parsed_status_failed  ||
+             parsed_status == libvlc_media_parsed_status_failed ||
              parsed_status == libvlc_media_parsed_status_timeout)
          {
-            fprintf (stderr, "WARNING: ojo_player_tracks_initialize() in ojo-player.c: failed to fetch metadata\n") ;
-            break ;
+            fprintf(stderr, "WARNING: ojo_player_tracks_initialize() in ojo-player.c: failed to fetch metadata\n");
+            break;
          }
       }
       ojo_track_set_title(ojo_player->tracks[track_index],
-                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Title)) ;
+                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Title));
       ojo_track_set_artist(ojo_player->tracks[track_index],
-                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Artist)) ;
+                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Artist));
       ojo_track_set_album(ojo_player->tracks[track_index],
-                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Album)) ;
+                          libvlc_media_get_meta(ojo_player->tracks[track_index]->media, libvlc_meta_Album));
 
       if ((n_streams = libvlc_media_tracks_get(ojo_player->tracks[track_index]->media, libvlc_tracks)) == 0)
       {
-         fprintf (stderr, "WARNING: open_media() in vlcPlayer.c: could not get track description\n") ;
-         return ;
+         fprintf(stderr, "WARNING: open_media() in vlcPlayer.c: could not get track description\n");
+         return;
       }
       if (libvlc_tracks[0][0]->i_type == libvlc_track_audio)
-         ojo_track_set_type(ojo_player->tracks[track_index], AUDIO) ;
+         ojo_track_set_type(ojo_player->tracks[track_index], AUDIO);
       else if (libvlc_tracks[0][0]->i_type == libvlc_track_video)
-         ojo_track_set_type(ojo_player->tracks[track_index], VIDEO) ;
+         ojo_track_set_type(ojo_player->tracks[track_index], VIDEO);
       else
-         ojo_track_set_type(ojo_player->tracks[track_index], UNKNOWN) ;
+         ojo_track_set_type(ojo_player->tracks[track_index], UNKNOWN);
 
-      libvlc_media_tracks_release(libvlc_tracks[0], n_streams) ;
-      track_index++ ;
-      list = list->next ;
+      libvlc_media_tracks_release(libvlc_tracks[0], n_streams);
+      track_index++;
+      list = list->next;
    }
-   g_slist_free_full(list, g_free) ;
+   g_slist_free_full(list, g_free);
 }
 
-void ojo_player_tracks_free()
+void ojo_player_tracks_free(OjoPlayer *ojo_player)
 {
-   int i = 0 ;
-   while(i < ojo_player->n_tracks)
+   int i = 0;
+   while (i < ojo_player->n_tracks)
    {
-      ojo_track_free(ojo_player->tracks[i]) ;
-      free(ojo_player->tracks[i++]) ;
+      ojo_track_free(ojo_player->tracks[i]);
+      free(ojo_player->tracks[i++]);
    }
-   free(ojo_player->tracks) ;
+   free(ojo_player->tracks);
 }
 
-void ojo_player_media_open (GSList *list, int n_tracks, gboolean add)
+void ojo_player_media_open(OjoPlayer *ojo_player, GSList *list, int n_tracks, gboolean add)
 {
-   ojo_player_tracks_initialize(list, n_tracks, add) ;
+   ojo_player_tracks_initialize(ojo_player, list, n_tracks, add);
    libvlc_media_player_set_xwindow(ojo_player->media_player,
-                                   gdk_x11_window_get_xid(gtk_widget_get_window(GTK_WIDGET(drawing_area)))) ;
-   ojo_playlist_gtk_initialize() ;
+                                   gdk_x11_window_get_xid(gtk_widget_get_window(GTK_WIDGET(ojo_window->drawing_area))));
+   ojo_playlist_gtk_initialize(ojo_playlist);
    if (!add)
-      ojo_player_media_play(0) ;
-   ojo_playlist_select_row(ojo_player->media_index) ;
+      ojo_player_media_play(ojo_player, 0);
+   ojo_playlist_select_row(ojo_playlist, ojo_player->media_index);
 }
 
-int ojo_player_media_play(int index)
+int ojo_player_media_play(OjoPlayer *ojo_player, int index)
 {
    if (index < ojo_player->n_tracks && index >= 0)
    {
-      ojo_player->media_index = index ;
-      libvlc_media_player_set_media(ojo_player->media_player, ojo_player->tracks[ojo_player->media_index]->media) ;
-      ojo_playlist_select_row(ojo_player->media_index) ;
-      ojo_player_play() ;
-      ojo_window_set_title(ojo_player->tracks[ojo_player->media_index]->title) ;
+      ojo_player->media_index = index;
+      libvlc_media_player_set_media(ojo_player->media_player, ojo_player->tracks[ojo_player->media_index]->media);
+      ojo_playlist_select_row(ojo_playlist, ojo_player->media_index);
+      ojo_player_play(ojo_player);
+      ojo_window_set_title(ojo_window, ojo_player->tracks[ojo_player->media_index]->title);
    }
    else
    {
-      fprintf (stderr, "WARNING: play_media() in vlcPlayer.c: index out of track range\n") ;
-      return -1 ;
+      fprintf(stderr, "WARNING: play_media() in vlcPlayer.c: index out of track range\n");
+      return -1;
    }
-   ojo_controlbox_seek_bar_start() ;
-   ojo_window_format_display_for_media() ;
+   ojo_controlbox_seek_bar_start(ojo_controlbox);
+   ojo_window_format_display_for_media(ojo_window);
 
-   return 0 ;
+   return 0;
 }
 
-
-void ojo_player_play()
+void ojo_player_play(OjoPlayer *ojo_player)
 {
-   libvlc_media_player_play(ojo_player->media_player) ;
-   gtk_button_set_image (GTK_BUTTON(ojo_controlbox->playpause_button),
-                         gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON)) ;
+   libvlc_media_player_play(ojo_player->media_player);
+   gtk_button_set_image(GTK_BUTTON(ojo_controlbox->playpause_button),
+                        gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON));
 }
 
-void ojo_player_pause()
+void ojo_player_pause(OjoPlayer *ojo_player)
 {
-   libvlc_media_player_pause(ojo_player->media_player) ;
-   gtk_button_set_image (GTK_BUTTON(ojo_controlbox->playpause_button),
-                         gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON)) ;
+   libvlc_media_player_pause(ojo_player->media_player);
+   gtk_button_set_image(GTK_BUTTON(ojo_controlbox->playpause_button),
+                        gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON));
 }
 
-void ojo_player_stop()
+void ojo_player_stop(OjoPlayer *ojo_player)
 {
-   libvlc_media_player_stop(ojo_player->media_player) ;
+   libvlc_media_player_stop(ojo_player->media_player);
 }
 
-void ojo_player_prev_track()
+void ojo_player_prev_track(OjoPlayer *ojo_player)
 {
-   ojo_player->media_index-1 < 0 ? ojo_player_media_play(0) : ojo_player_media_play(ojo_player->media_index-1) ;
+   ojo_player->media_index - 1 < 0 ? ojo_player_media_play(ojo_player, 0) : ojo_player_media_play(ojo_player, ojo_player->media_index - 1);
 }
 
-void ojo_player_next_track()
+void ojo_player_next_track(OjoPlayer *ojo_player)
 {
-   ojo_player->media_index+1 < ojo_player->n_tracks ?
-   ojo_player_media_play(ojo_player->media_index+1) : ojo_player_media_play(0) ;
+   ojo_player->media_index + 1 < ojo_player->n_tracks ?
+   ojo_player_media_play(ojo_player, ojo_player->media_index + 1) : ojo_player_media_play(ojo_player, 0);
 }
 
-void ojo_player_backward()
-{
-   libvlc_media_player_set_position(ojo_player->media_player,
-                                    libvlc_media_player_get_position(ojo_player->media_player)-0.05) ;
-}
-
-void ojo_player_forward()
+void ojo_player_backward(OjoPlayer *ojo_player)
 {
    libvlc_media_player_set_position(ojo_player->media_player,
-                                    libvlc_media_player_get_position(ojo_player->media_player)+0.05) ;
+                                    libvlc_media_player_get_position(ojo_player->media_player) - 0.05);
 }
 
-void ojo_player_random_track()
+void ojo_player_forward(OjoPlayer *ojo_player)
 {
-   ojo_player_media_play(g_rand_int_range(ojo_player->rand, 0, ojo_player->n_tracks)) ;
+   libvlc_media_player_set_position(ojo_player->media_player,
+                                    libvlc_media_player_get_position(ojo_player->media_player) + 0.05);
 }
 
-int ojo_player_get_n_tracks()
+void ojo_player_random_track(OjoPlayer *ojo_player)
 {
-   return ojo_player->n_tracks ;
+   ojo_player_media_play(ojo_player, g_rand_int_range(ojo_player->rand, 0, ojo_player->n_tracks));
 }
 
-int64_t ojo_player_get_duration()
+int ojo_player_get_n_tracks(OjoPlayer *ojo_player)
 {
-   return libvlc_media_get_duration(libvlc_media_player_get_media(ojo_player->media_player)) ;
+   return ojo_player->n_tracks;
 }
 
-int64_t ojo_player_get_current_time()
+int64_t ojo_player_get_duration(OjoPlayer *ojo_player)
 {
-   return libvlc_media_player_get_time(ojo_player->media_player) ;
+   return libvlc_media_get_duration(libvlc_media_player_get_media(ojo_player->media_player));
 }
 
-void ojo_player_set_current_time(double time)
+int64_t ojo_player_get_current_time(OjoPlayer *ojo_player)
 {
-   libvlc_media_player_set_time(ojo_player->media_player, time) ;
+   return libvlc_media_player_get_time(ojo_player->media_player);
 }
 
-char *ojo_player_get_title_by_index(int index)
+void ojo_player_set_current_time(OjoPlayer *ojo_player, double time)
 {
-   return ojo_player->n_tracks > 0 ? ojo_player->tracks[index]->title : NULL ;
+   libvlc_media_player_set_time(ojo_player->media_player, time);
 }
 
-char *ojo_player_get_album()
+char *ojo_player_get_title_by_index(OjoPlayer *ojo_player, int index)
 {
-   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->album : NULL ;
+   return ojo_player->n_tracks > 0 ? ojo_player->tracks[index]->title : NULL;
 }
 
-char *ojo_player_get_artist()
+char *ojo_player_get_album(OjoPlayer *ojo_player)
 {
-   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->artist : NULL ;
+   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->album : NULL;
 }
 
-FileType ojo_player_get_filetype()
+char *ojo_player_get_artist(OjoPlayer *ojo_player)
 {
-   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->type : UNKNOWN ;
+   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->artist : NULL;
 }
 
-gboolean ojo_player_is_playing()
+FileType ojo_player_get_filetype(OjoPlayer *ojo_player)
+{
+   return ojo_player->n_tracks > 0 ? ojo_player->tracks[ojo_player->media_index]->type : UNKNOWN;
+}
+
+gboolean ojo_player_is_playing(OjoPlayer *ojo_player)
 {
    if (libvlc_media_player_is_playing(ojo_player->media_player) == 1)
-      return TRUE ;
-   return FALSE ;
+      return TRUE;
+   return FALSE;
 }
 
-gboolean ojo_player_end_reached()
+gboolean ojo_player_end_reached(OjoPlayer *ojo_player)
 {
    if (libvlc_media_player_get_state(ojo_player->media_player) == libvlc_Ended)
-      return TRUE ;
-   return FALSE ;
+      return TRUE;
+   return FALSE;
 }
 
-int ojo_player_get_media_index()
+int ojo_player_get_media_index(OjoPlayer *ojo_player)
 {
-   return ojo_player->media_index ;
+   return ojo_player->media_index;
 }
 
-libvlc_media_player_t *ojo_player_get_media_player()
+libvlc_media_player_t *ojo_player_get_media_player(OjoPlayer *ojo_player)
 {
-   return ojo_player->media_player ;
+   return ojo_player->media_player;
 }
 
-int ojo_player_get_mousepos_x()
+int ojo_player_get_mousepos_x(OjoPlayer *ojo_player)
 {
-   int x = 0, y = 0 ;
+   int x = 0, y = 0;
 
-   libvlc_video_get_cursor(ojo_player->media_player, 0, &x, &y) ;
-   return x ;
+   libvlc_video_get_cursor(ojo_player->media_player, 0, &x, &y);
+   return x;
 }
 
-int ojo_player_get_mousepos_y()
+int ojo_player_get_mousepos_y(OjoPlayer *ojo_player)
 {
-   int x = 0, y = 0 ;
+   int x = 0, y = 0;
 
-   libvlc_video_get_cursor(ojo_player->media_player, 0, &x, &y) ;
-   return y ;
+   libvlc_video_get_cursor(ojo_player->media_player, 0, &x, &y);
+   return y;
 }
 
-int ojo_player_get_size_x()
+int ojo_player_get_size_x(OjoPlayer *ojo_player)
 {
-   unsigned int x = 0, y = 0 ;
+   unsigned int x = 0, y = 0;
 
-   libvlc_video_get_size(ojo_player->media_player, 0, &x, &y) ;
-   return x ;
+   libvlc_video_get_size(ojo_player->media_player, 0, &x, &y);
+   return x;
 }
 
-int ojo_player_get_size_y()
+int ojo_player_get_size_y(OjoPlayer *ojo_player)
 {
-   unsigned int x = 0, y = 0 ;
+   unsigned int x = 0, y = 0;
 
-   libvlc_video_get_size(ojo_player->media_player, 0, &x, &y) ;
-   return y ;
+   libvlc_video_get_size(ojo_player->media_player, 0, &x, &y);
+   return y;
 }
 
-void ojo_player_set_volume(double volume)
+void ojo_player_set_volume(OjoPlayer *ojo_player, double volume)
 {
-   libvlc_audio_set_volume(ojo_player_get_media_player(), (int)(100*volume)) ;
+   libvlc_audio_set_volume(ojo_player_get_media_player(ojo_player), (int)(100 * volume));
 }
-
 
 

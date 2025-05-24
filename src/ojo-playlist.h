@@ -34,11 +34,11 @@ typedef struct _OjoPlaylist
 } OjoPlaylist ;
 
 OjoPlaylist *ojo_playlist_initialize(GtkBuilder *builder) ;
-void ojo_playlist_gtk_initialize() ;
-void ojo_playlist_entries_remove() ;
-void ojo_playlist_show() ;
-void ojo_playlist_hide() ;
-void ojo_playlist_select_row(int index) ;
+void ojo_playlist_gtk_initialize(OjoPlaylist *ojo_playlist) ;
+void ojo_playlist_entries_remove(OjoPlaylist *ojo_playlist) ;
+void ojo_playlist_show(OjoPlaylist *ojo_playlist) ;
+void ojo_playlist_hide(OjoPlaylist *ojo_playlist) ;
+void ojo_playlist_select_row(OjoPlaylist *ojo_playlist, int index) ;
 
 #endif /* _ojo_playlist_h_ */
 

@@ -25,6 +25,7 @@ typedef struct _OjoPlayer OjoPlayer ;
 typedef struct _OjoPlaylist OjoPlaylist ;
 typedef struct _OjoTrack OjoTrack ;
 typedef struct _OjoControlBox OjoControlBox ;
+typedef struct _OjoWindow OjoWindow ;
 enum _FileType {
    AUDIO,
    VIDEO,
@@ -32,10 +33,11 @@ enum _FileType {
 } ;
 typedef enum _FileType FileType ;
 
-OjoSettings   *ojo_settings ;
-OjoPlayer     *ojo_player ;
-OjoPlaylist   *ojo_playlist ;
-OjoControlBox *ojo_controlbox ;
+extern OjoSettings   *ojo_settings ;
+extern OjoPlayer     *ojo_player ;
+extern OjoPlaylist   *ojo_playlist ;
+extern OjoControlBox *ojo_controlbox ;
+extern OjoWindow     *ojo_window ;
 
 #endif /* _ojo_h_ */
 
