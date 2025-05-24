@@ -65,7 +65,6 @@ int main(int argc, char **argv)
    gtk_init(&argc, &argv) ;
 
    ojo_settings = ojo_settings_initialize() ;
-   printf("%d\n", ojo_settings_get_int(ojo_settings, "width"));
    ojo_player = ojo_player_initialize() ;
    ojo_window = ojo_window_initialize() ;
    ojo_window_connect_signals(ojo_window);

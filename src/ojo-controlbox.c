@@ -106,7 +106,7 @@ void on_ojo_next_track_clicked()
    ojo_player_next_track(ojo_player);
 }
 
-void on_ojo_volume_value_changed(OjoControlBox *ojo_controlbox)
+void on_ojo_volume_value_changed()
 {
    ojo_player_set_volume(ojo_player, gtk_scale_button_get_value(GTK_SCALE_BUTTON(ojo_controlbox->volume_button))) ;
 }
