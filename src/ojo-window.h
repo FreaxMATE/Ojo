@@ -27,43 +27,48 @@
 #include "ojo-playlist.h"
 #include "ojo-controlbox.h"
 
-GtkBuilder        *builder; 
-GtkWindow         *window ;
-GtkDrawingArea    *drawing_area ;
-GtkMenuBar        *menu_bar ;
-GtkMenuItem       *file_menu,
-                  *file_submenu ;
-GtkWidget         *file_menu_open,
-                  *view_menu_fullscreen,
-                  *view_menu_showplaylist,
-                  *play_box ;
-GtkImage          *background_image ;
-GtkToggleButton   *preferences_dark_mode ,
-                  *preferences_border_style,
-                  *preferences_view_coverart ;
-GtkBox            *main_box ;
-GtkDialog         *about ;
-GtkDialog         *preferences_dialog ;
-GtkDialog         *filechooser_dialog ;
+#define TIME_STRING_SIZE 128
 
+typedef struct _OjoWindow
+{
+    GtkBuilder        *builder; 
+    GtkWindow         *window;
+    GtkDrawingArea    *drawing_area;
+    GtkMenuBar        *menu_bar;
+    GtkMenuItem       *file_menu,
+                      *file_submenu;
+    GtkWidget         *file_menu_open,
+                      *view_menu_fullscreen,
+                      *view_menu_showplaylist,
+                      *play_box;
+    GtkImage          *background_image;
+    GtkToggleButton   *preferences_dark_mode,
+                      *preferences_border_style,
+                      *preferences_view_coverart;
+    GtkBox            *main_box;
+    GtkDialog         *about;
+    GtkDialog         *preferences_dialog;
+    GtkDialog         *filechooser_dialog;
 
-GSList *list ;
-int n_tracks ;
-gboolean about_dialog_response, media_already_opened, user_input ;
-char time_string[32] ;
-int timeout, window_width, window_height ;
-int64_t duration ;
-int old_x, old_y, mouse_sensitivity ;
+    GSList            *list;
+    int               n_tracks;
+    gboolean          about_dialog_response, media_already_opened, user_input;
+    char              time_string[TIME_STRING_SIZE];
+    int               timeout, window_width, window_height;
+    int64_t           duration;
+    int               old_x, old_y, mouse_sensitivity;
+} OjoWindow;
 
-void ojo_window_media_open_prepare(GSList *uri_list, gboolean add) ;
-void ojo_window_seek_bar_start() ;
-void ojo_window_set_view_playlist(gboolean view_playlist) ;
-void ojo_window_set_title(char *trackName) ;
-void ojo_window_set_repeat(int repeat_mode) ;
-void ojo_window_set_random(gboolean random) ;
-void ojo_window_setup(void) ;
-void ojo_window_format_display_for_media(void) ;
-void ojo_window_set_prev_next_track_control_visibility(int n_tracks) ;
+OjoWindow *ojo_window_initialize(void) ;
+void ojo_window_media_open_prepare(OjoWindow *ojo_window, GSList *uri_list, gboolean add) ;
+void ojo_window_seek_bar_start(OjoWindow *ojo_window) ;
+void ojo_window_set_view_playlist(OjoWindow *ojo_window, gboolean view_playlist) ;
+void ojo_window_set_title(OjoWindow *ojo_window, char *trackName) ;
+void ojo_window_set_repeat(OjoWindow *ojo_window, int repeat_mode) ;
+void ojo_window_set_random(OjoWindow *ojo_window, gboolean random) ;
+void ojo_window_format_display_for_media(OjoWindow *ojo_window) ;
+void ojo_window_set_prev_next_track_control_visibility(OjoWindow *ojo_window, int n_tracks) ;
+void ojo_window_connect_signals(OjoWindow *ojo_window);
 
 #endif /* _ojo_window_h_ */
 

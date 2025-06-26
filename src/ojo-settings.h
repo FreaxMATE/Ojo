@@ -23,7 +23,7 @@
 #include <gio/gio.h>
 
 #include "ojo.h"
-#include "ojo-window.h"
+//#include "ojo-window.h"
 
 typedef struct _OjoSettings
 {
@@ -32,10 +32,10 @@ typedef struct _OjoSettings
 } OjoSettings ;
 
 OjoSettings* ojo_settings_initialize() ;
-int ojo_settings_get_int(GSettings *gsettings, const gchar *key) ;
-gboolean ojo_settings_get_boolean(GSettings *gsettings, const gchar *key) ;
-void ojo_settings_set_int(GSettings *gsettings, const gchar *key, int value) ;
-void ojo_settings_set_boolean(GSettings *gsettings, const gchar *key, gboolean value) ;
+int ojo_settings_get_int(OjoSettings *ojo_settings, const gchar *key) ;
+gboolean ojo_settings_get_boolean(OjoSettings *ojo_settings, const gchar *key) ;
+void ojo_settings_set_int(OjoSettings *ojo_settings, const gchar *key, int value) ;
+void ojo_settings_set_boolean(OjoSettings *ojo_settings, const gchar *key, gboolean value) ;
 
 #endif /* _ojo_settings_h_ */
 

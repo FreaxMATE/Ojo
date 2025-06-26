@@ -32,6 +32,12 @@
 #include "ojo-window.h"
 #include "ojo-track.h"
 
+OjoSettings *ojo_settings = NULL;
+OjoPlayer *ojo_player = NULL;
+OjoPlaylist *ojo_playlist = NULL;
+OjoControlBox *ojo_controlbox = NULL;
+OjoWindow *ojo_window = NULL;
+
 void ojo_main_print_usage()
 {
    printf ("\
@@ -56,29 +62,30 @@ int main(int argc, char **argv)
       }
    }
    XInitThreads() ;
-   gtk_init (&argc, &argv) ;
+   gtk_init(&argc, &argv) ;
 
    ojo_settings = ojo_settings_initialize() ;
    ojo_player = ojo_player_initialize() ;
-   ojo_window_setup() ;
-   gtk_widget_show(GTK_WIDGET(window)) ;
+   ojo_window = ojo_window_initialize() ;
+   ojo_window_connect_signals(ojo_window);
+   gtk_widget_show(GTK_WIDGET(ojo_window->window)) ;
    if (argc > 1)
    {
       for (int i = 1; i < argc; ++i)
       {
          list = g_slist_append(list, argv[i]) ;
       }
-      ojo_window_media_open_prepare(list, FALSE) ;
+      ojo_window_media_open_prepare(ojo_window, list, FALSE) ;
    }
    gtk_main() ;
-   if (ojo_settings_get_boolean(ojo_settings->gsettings, "fullscreen") == TRUE)
+   if (ojo_settings_get_boolean(ojo_settings, "fullscreen") == TRUE)
    {
-      ojo_settings_set_boolean(ojo_settings->gsettings, "fullscreen", FALSE) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "width", 960) ;
-      ojo_settings_set_int(ojo_settings->gsettings, "height", 540) ;
+      ojo_settings_set_boolean(ojo_settings, "fullscreen", FALSE) ;
+      ojo_settings_set_int(ojo_settings, "width", 960) ;
+      ojo_settings_set_int(ojo_settings, "height", 540) ;
    }
    g_settings_sync() ;
-   ojo_player_quit() ;
+   ojo_player_quit(ojo_player) ;
 
    return 0 ;
 }

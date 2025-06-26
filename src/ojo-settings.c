@@ -17,7 +17,6 @@
  * along with Ojo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "ojo-settings.h"
 
 OjoSettings* ojo_settings_initialize()
@@ -27,25 +26,22 @@ OjoSettings* ojo_settings_initialize()
    new->gsettings = g_settings_new ("org.github.FreaxMATE.Ojo") ;
    return new ;
 }
-
-int ojo_settings_get_int(GSettings *gsettings, const gchar *key)
+int ojo_settings_get_int(OjoSettings *ojo_settings, const gchar *key)
 {
-   return g_settings_get_int(gsettings, key) ;
+   return g_settings_get_int(ojo_settings->gsettings, key);
 }
 
-gboolean ojo_settings_get_boolean(GSettings *gsettings, const gchar *key)
+gboolean ojo_settings_get_boolean(OjoSettings *ojo_settings, const gchar *key)
 {
-   return g_settings_get_boolean(gsettings, key) ;
+   return g_settings_get_boolean(ojo_settings->gsettings, key);
 }
 
-void ojo_settings_set_int(GSettings *gsettings, const gchar *key, int value)
+void ojo_settings_set_int(OjoSettings *ojo_settings, const gchar *key, int value)
 {
-   g_settings_set_int(gsettings, key, value) ;
+   g_settings_set_int(ojo_settings->gsettings, key, value);
 }
 
-void ojo_settings_set_boolean(GSettings *gsettings, const gchar *key, gboolean value)
+void ojo_settings_set_boolean(OjoSettings *ojo_settings, const gchar *key, gboolean value)
 {
-   g_settings_set_boolean(gsettings, key, value) ;
+   g_settings_set_boolean(ojo_settings->gsettings, key, value);
 }
-
-

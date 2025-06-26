@@ -39,37 +39,37 @@ typedef struct _OjoPlayer
 } OjoPlayer ;
 
 OjoPlayer *ojo_player_initialize(void) ;
-void ojo_player_quit(void) ;
-void ojo_player_tracks_free(void) ;
-void ojo_player_media_open(GSList *list, int n_tracks, int add) ;
-int ojo_player_media_play(int index) ;
+void ojo_player_quit(OjoPlayer *ojo_player) ;
+void ojo_player_tracks_free(OjoPlayer *ojo_player) ;
+void ojo_player_media_open(OjoPlayer *ojo_player, GSList *list, int n_tracks, int add) ;
+int ojo_player_media_play(OjoPlayer *ojo_player, int index) ;
 
-void ojo_player_play(void) ;
-void ojo_player_pause(void) ;
-void ojo_player_stop(void) ;
-void ojo_player_prev_track(void) ;
-void ojo_player_next_track(void) ;
-void ojo_player_backward(void) ;
-void ojo_player_forward(void) ;
-void ojo_player_random_track(void) ;
+void ojo_player_play(OjoPlayer *ojo_player) ;
+void ojo_player_pause(OjoPlayer *ojo_player) ;
+void ojo_player_stop(OjoPlayer *ojo_player) ;
+void ojo_player_prev_track(OjoPlayer *ojo_player) ;
+void ojo_player_next_track(OjoPlayer *ojo_player) ;
+void ojo_player_backward(OjoPlayer *ojo_player) ;
+void ojo_player_forward(OjoPlayer *ojo_player) ;
+void ojo_player_random_track(OjoPlayer *ojo_player) ;
 
-int ojo_player_get_n_tracks(void) ;
-int64_t ojo_player_get_duration(void) ;
-int64_t ojo_player_get_current_time(void) ;
-void ojo_player_set_current_time(double time) ;
-char *ojo_player_get_title_by_index(int index) ;
-char *ojo_player_get_album(void) ;
-char *ojo_player_get_artist(void) ;
-FileType ojo_player_get_filetype(void) ;
-gboolean ojo_player_is_playing(void) ;
-gboolean ojo_player_end_reached(void) ;
-int ojo_player_get_media_index(void) ;
-libvlc_media_player_t *ojo_player_get_media_player(void) ;
-int ojo_player_get_mousepos_x(void) ;
-int ojo_player_get_mousepos_y(void) ;
-int ojo_player_get_size_x(void) ;
-int ojo_player_get_size_y(void) ;
-void ojo_player_set_volume(double volume) ;
+int ojo_player_get_n_tracks(OjoPlayer *ojo_player) ;
+int64_t ojo_player_get_duration(OjoPlayer *ojo_player) ;
+int64_t ojo_player_get_current_time(OjoPlayer *ojo_player) ;
+void ojo_player_set_current_time(OjoPlayer *ojo_player, double time) ;
+char *ojo_player_get_title_by_index(OjoPlayer *ojo_player, int index) ;
+char *ojo_player_get_album(OjoPlayer *ojo_player) ;
+char *ojo_player_get_artist(OjoPlayer *ojo_player) ;
+FileType ojo_player_get_filetype(OjoPlayer *ojo_player) ;
+gboolean ojo_player_is_playing(OjoPlayer *ojo_player) ;
+gboolean ojo_player_end_reached(OjoPlayer *ojo_player) ;
+int ojo_player_get_media_index(OjoPlayer *ojo_player) ;
+libvlc_media_player_t *ojo_player_get_media_player(OjoPlayer *ojo_player) ;
+int ojo_player_get_mousepos_x(OjoPlayer *ojo_player) ;
+int ojo_player_get_mousepos_y(OjoPlayer *ojo_player) ;
+int ojo_player_get_size_x(OjoPlayer *ojo_player) ;
+int ojo_player_get_size_y(OjoPlayer *ojo_player) ;
+void ojo_player_set_volume(OjoPlayer *ojo_player, double volume) ;
 
 #endif /* _ojo_player_h_ */
 

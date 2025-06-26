@@ -48,10 +48,10 @@ OjoControlBox *ojo_controlbox_initialize(GtkBuilder *builder)
    return new ;
 }
 
-void ojo_controlbox_show()
+void ojo_controlbox_show(OjoControlBox *ojo_controlbox)
 {
    gtk_revealer_set_reveal_child(ojo_controlbox->revealer_controls, TRUE) ;
-   ojo_controlbox_set_playlist_control_visibility(ojo_player_get_n_tracks()) ;
+   ojo_controlbox_set_playlist_control_visibility(ojo_controlbox, ojo_player_get_n_tracks(ojo_player)) ;
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->controlbox)) ;
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->controlbutton_box)) ;
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->seek_bar)) ;
@@ -65,163 +65,160 @@ void ojo_controlbox_show()
    gtk_widget_show(GTK_WIDGET(ojo_controlbox->repeat_button)) ;
 }
 
-void ojo_controlbox_hide()
+void ojo_controlbox_hide(OjoControlBox *ojo_controlbox)
 {
    gtk_revealer_set_reveal_child(ojo_controlbox->revealer_controls, FALSE) ;
 }
 
 void on_ojo_play_pause_clicked()
 {
-   ojo_player_is_playing() ? ojo_player_pause() : ojo_player_play() ;
+   ojo_player_is_playing(ojo_player) ? ojo_player_pause(ojo_player) : ojo_player_play(ojo_player) ;
 }
 
 void on_ojo_prev_track_clicked()
 {
-   g_source_remove(timeout) ;
-   ojo_player_prev_track() ;
+   g_source_remove(ojo_window->timeout) ;
+   ojo_player_prev_track(ojo_player) ;
 }
 
 void on_ojo_forward_clicked()
 {
-   ojo_player_forward() ;
+   ojo_player_forward(ojo_player) ;
 }
 
 void on_ojo_stop_clicked()
 {
-   ojo_player_pause() ;
-   ojo_player_stop() ;
+   ojo_player_pause(ojo_player) ;
+   ojo_player_stop(ojo_player) ;
 }
 
 void on_ojo_backward_clicked()
 {
-   ojo_player_backward() ;
+   ojo_player_backward(ojo_player) ;
 }
 
 void on_ojo_next_track_clicked()
 {
-   g_source_remove(timeout) ;
+   g_source_remove(ojo_window->timeout) ;
 
-   ojo_settings_get_boolean(ojo_settings->gsettings, "random-playback") ?
-   ojo_player_random_track()
-   :
-   ojo_player_next_track() ;
+   ojo_settings_get_boolean(ojo_settings, "random-playback") ?
+   ojo_player_random_track(ojo_player) :
+   ojo_player_next_track(ojo_player);
 }
 
 void on_ojo_volume_value_changed()
 {
-   ojo_player_set_volume(gtk_scale_button_get_value(GTK_SCALE_BUTTON(ojo_controlbox->volume_button))) ;
+   ojo_player_set_volume(ojo_player, gtk_scale_button_get_value(GTK_SCALE_BUTTON(ojo_controlbox->volume_button))) ;
 }
 
 void on_ojo_repeat_clicked()
 {
-   if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 0)
-      ojo_window_set_repeat(1) ;
-   else if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 1)
-      ojo_window_set_repeat(2) ;
+   if (ojo_settings_get_int(ojo_settings, "repeat-mode") == 0)
+      ojo_window_set_repeat(ojo_window, 1) ;
+   else if (ojo_settings_get_int(ojo_settings, "repeat-mode") == 1)
+      ojo_window_set_repeat(ojo_window, 2) ;
    else
-      ojo_window_set_repeat(0) ;
+      ojo_window_set_repeat(ojo_window, 0) ;
 }
 
 void on_ojo_random_clicked()
 {
-   ojo_window_set_random(!ojo_settings_get_boolean(ojo_settings->gsettings, "random-playback")) ;
+   ojo_window_set_random(ojo_window, !ojo_settings_get_boolean(ojo_settings, "random-playback")) ;
 }
 
 // SEEKBAR
-gboolean ojo_controlbox_seek_bar_update()
+gboolean ojo_controlbox_seek_bar_update(OjoControlBox *ojo_controlbox)
 {
-   double current_time = (double)ojo_player_get_current_time() ; // in ms
-   double duration = (double)ojo_player_get_duration() ;         // in ms
+   double current_time = (double)ojo_player_get_current_time(ojo_player) ; // in ms
+   double duration = (double)ojo_player_get_duration(ojo_player) ;         // in ms
 
-   if (ojo_player_end_reached())
+   if (ojo_player_end_reached(ojo_player))
    {
-      if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 1)
-         ojo_player_media_play(ojo_player_get_media_index()) ;
-      else if (ojo_settings_get_boolean(ojo_settings->gsettings, "random-playback"))
+      if (ojo_settings_get_int(ojo_settings, "repeat-mode") == 1)
+         ojo_player_media_play(ojo_player, ojo_player_get_media_index(ojo_player)) ;
+      else if (ojo_settings_get_boolean(ojo_settings, "random-playback"))
       {
-         ojo_player_random_track() ;
+         ojo_player_random_track(ojo_player) ;
       }
-      else if (ojo_player_get_media_index() < ojo_player_get_n_tracks()-1)
+      else if (ojo_player_get_media_index(ojo_player) < ojo_player_get_n_tracks(ojo_player)-1)
       {
-         ojo_player_media_play(ojo_player_get_media_index()+1) ;
+         ojo_player_media_play(ojo_player, ojo_player_get_media_index(ojo_player)+1) ;
       }
       else
       {
-         ojo_player_media_play(0) ;
-         if (ojo_settings_get_int(ojo_settings->gsettings, "repeat-mode") == 0)
-            ojo_player_pause(), ojo_player_stop() ;
+         ojo_player_media_play(ojo_player, 0) ;
+         if (ojo_settings_get_int(ojo_settings, "repeat-mode") == 0)
+            ojo_player_pause(ojo_player), ojo_player_stop(ojo_player) ;
       }
    }
 
    gtk_label_set_text(GTK_LABEL(ojo_controlbox->time_label), time_to_string(current_time, duration)) ;
    gtk_range_set_range(GTK_RANGE(ojo_controlbox->seek_bar), 0.0, duration) ;
-   user_input = FALSE ;
+   ojo_window->user_input = FALSE ;
    gtk_range_set_value(GTK_RANGE(ojo_controlbox->seek_bar), current_time) ;
 
    return TRUE ;
 }
 
-void ojo_controlbox_seek_bar_start()
+void ojo_controlbox_seek_bar_start(OjoControlBox *ojo_controlbox)
 {
-   timeout = g_timeout_add(1000, ojo_controlbox_seek_bar_update, FALSE) ;
+   ojo_window->timeout = g_timeout_add(1000, (GSourceFunc)ojo_controlbox_seek_bar_update, ojo_controlbox) ;
 }
 
 void on_ojo_seek_bar_value_changed()
 {
-   if (user_input)
+   if (ojo_window->user_input)
    {
-      ojo_player_set_current_time(gtk_range_get_value(GTK_RANGE(ojo_controlbox->seek_bar))) ;
+      ojo_player_set_current_time(ojo_player, gtk_range_get_value(GTK_RANGE(ojo_controlbox->seek_bar))) ;
    }
-   user_input = TRUE ;
+   ojo_window->user_input = TRUE ;
 }
 
 void on_ojo_seek_bar_button_press_event()
 {
-   ojo_player_pause() ;
+   ojo_player_pause(ojo_player) ;
 }
 
 void on_ojo_seek_bar_button_release_event()
 {
-   ojo_player_play() ;
+   ojo_player_play(ojo_player) ;
 }
 
-
-void ojo_controlbox_set_border_style (gboolean border_style)
+void ojo_controlbox_set_border_style(OjoControlBox *ojo_controlbox, gboolean border_style)
 {
    if (border_style) 
    {
-      gtk_button_set_relief (ojo_controlbox->playpause_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->prev_track_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->backward_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->stop_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->forward_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->next_track_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (GTK_BUTTON(ojo_controlbox->volume_button), GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->fullscreen_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->playlist_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->repeat_button, GTK_RELIEF_NORMAL) ;
-      gtk_button_set_relief (ojo_controlbox->random_button, GTK_RELIEF_NORMAL) ;
-      ojo_settings_set_boolean(ojo_settings->gsettings, "border-style", border_style) ;
+      gtk_button_set_relief(ojo_controlbox->playpause_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->prev_track_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->backward_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->stop_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->forward_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->next_track_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(GTK_BUTTON(ojo_controlbox->volume_button), GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->fullscreen_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->playlist_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->repeat_button, GTK_RELIEF_NORMAL) ;
+      gtk_button_set_relief(ojo_controlbox->random_button, GTK_RELIEF_NORMAL) ;
+      ojo_settings_set_boolean(ojo_settings, "border-style", border_style) ;
    }
    else
    {
-      gtk_button_set_relief (ojo_controlbox->playpause_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->prev_track_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->backward_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->stop_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->forward_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->next_track_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (GTK_BUTTON(ojo_controlbox->volume_button), GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->fullscreen_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->playlist_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->repeat_button, GTK_RELIEF_NONE) ;
-      gtk_button_set_relief (ojo_controlbox->random_button, GTK_RELIEF_NONE) ;
-      ojo_settings_set_boolean(ojo_settings->gsettings, "border-style", border_style) ;
+      gtk_button_set_relief(ojo_controlbox->playpause_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->prev_track_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->backward_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->stop_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->forward_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->next_track_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(GTK_BUTTON(ojo_controlbox->volume_button), GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->fullscreen_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->playlist_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->repeat_button, GTK_RELIEF_NONE) ;
+      gtk_button_set_relief(ojo_controlbox->random_button, GTK_RELIEF_NONE) ;
+      ojo_settings_set_boolean(ojo_settings, "border-style", border_style) ;
    }
 }
 
-
-void ojo_controlbox_set_playlist_control_visibility(int n_tracks)
+void ojo_controlbox_set_playlist_control_visibility(OjoControlBox *ojo_controlbox, int n_tracks)
 {
    if (n_tracks > 1)
    {
@@ -237,17 +234,17 @@ void ojo_controlbox_set_playlist_control_visibility(int n_tracks)
    }
 }
 
-void ojo_controlbox_fullscreen_button_set(gboolean fullscreen_mode)
+void ojo_controlbox_fullscreen_button_set(OjoControlBox *ojo_controlbox, gboolean fullscreen_mode)
 {
    fullscreen_mode ?
    gtk_button_set_image(GTK_BUTTON(ojo_controlbox->fullscreen_button),
                         gtk_image_new_from_icon_name("view-fullscreen", GTK_ICON_SIZE_BUTTON))
    :
-   gtk_button_set_image (GTK_BUTTON(ojo_controlbox->fullscreen_button),
-                         gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
+   gtk_button_set_image(GTK_BUTTON(ojo_controlbox->fullscreen_button),
+                        gtk_image_new_from_icon_name("view-restore", GTK_ICON_SIZE_BUTTON)) ;
 }
 
-void ojo_controlbox_repeat_button_set(int repeat_mode)
+void ojo_controlbox_repeat_button_set(OjoControlBox *ojo_controlbox, int repeat_mode)
 {
    if (repeat_mode == 0)
       gtk_button_set_image(ojo_controlbox->repeat_button, gtk_image_new_from_icon_name(
@@ -260,7 +257,7 @@ void ojo_controlbox_repeat_button_set(int repeat_mode)
                            gtk_image_new_from_icon_name("media-playlist-repeat-symbolic", GTK_ICON_SIZE_BUTTON)) ;
 }
 
-void ojo_controlbox_random_button_set(gboolean random)
+void ojo_controlbox_random_button_set(OjoControlBox *ojo_controlbox, gboolean random)
 {
    random ?
    gtk_button_set_image(ojo_controlbox->random_button,
@@ -268,7 +265,6 @@ void ojo_controlbox_random_button_set(gboolean random)
    :
    gtk_button_set_image(ojo_controlbox->random_button,
                         gtk_image_new_from_icon_name("media-playlist-consecutive-symbolic", GTK_ICON_SIZE_BUTTON)) ;
-
 }
 
 char *time_to_string(double current_time, double duration)
@@ -282,15 +278,15 @@ char *time_to_string(double current_time, double duration)
    if (cur_minutes > 59 || all_minutes > 59)
    {
        int cur_hours = ((int)cur_minutes)/60 ; int all_hours = ((int)all_minutes)/60 ;
-       sprintf(time_string, "%02d:%02d:%02d / %02d:%02d:%02d  ", cur_hours,
+       snprintf(ojo_window->time_string, sizeof(ojo_window->time_string), "%02d:%02d:%02d / %02d:%02d:%02d  ", cur_hours,
                cur_minutes-(cur_hours*60), cur_seconds, all_hours, all_minutes-(all_hours*60), all_seconds) ;
    }
    else
    {
-      sprintf(time_string, "%02d:%02d / %02d:%02d  ", cur_minutes, cur_seconds, all_minutes, all_seconds) ;
+      snprintf(ojo_window->time_string, sizeof(ojo_window->time_string), "%02d:%02d / %02d:%02d  ", cur_minutes, cur_seconds, all_minutes, all_seconds) ;
    }
 
-   return time_string ;
+   return ojo_window->time_string ;
 }
 
 
